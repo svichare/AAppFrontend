@@ -5,6 +5,10 @@ import './App.css'
 
 import ProfileCreation from './pages/ProfileCreation';
 import Home from './pages/Home';
+import CallBack from './pages/CallBack';
+
+import {GoogleLogin} from './components';
+
 
 const App = () =>{
   const [isLargeScreen, setIsLargeScreen] = useState(true);
@@ -47,11 +51,19 @@ const App = () =>{
           <li>
             <Link to="/ProfileCreation">Profile Creation</Link>
           </li>
+          <li>
+            <Link to="/CallBack">Call Back from auth tools</Link>
+          </li>
+          <li>
+            <Link to="/LoginWithGoogle">Login with Google</Link>
+          </li>
         </ul>
       </nav>
       <Routes>
         <Route path="/Home" Component={Home} handleChangeUrl={handleChangeUrl} />
         <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl}/>
+        <Route path="/CallBack" Component={CallBack} handleChangeUrl={handleChangeUrl}/>
+        <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl}/>
       </Routes>
     </BrowserRouter>);
   }
