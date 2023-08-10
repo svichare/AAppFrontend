@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link, useParams } from "react-router-dom";
 
 import './App.css'
 
 import ProfileCreation from './pages/ProfileCreation';
 import Home from './pages/Home';
-import CallBack from './pages/CallBack';
+import OAuthCallback from './pages/OAuthCallback';
 
 import {GoogleLogin} from './components';
 
@@ -52,7 +52,7 @@ const App = () =>{
             <Link to="/ProfileCreation">Profile Creation</Link>
           </li>
           <li>
-            <Link to="/CallBack">Call Back from auth tools</Link>
+            <Link to="/OAuthCallback">Call Back from auth tools</Link>
           </li>
           <li>
             <Link to="/LoginWithGoogle">Login with Google</Link>
@@ -62,7 +62,7 @@ const App = () =>{
       <Routes>
         <Route path="/Home" Component={Home} handleChangeUrl={handleChangeUrl} />
         <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl}/>
-        <Route path="/CallBack" Component={CallBack} handleChangeUrl={handleChangeUrl}/>
+        <Route path="/OAuthCallback" Component={OAuthCallback} />
         <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl}/>
       </Routes>
     </BrowserRouter>);
