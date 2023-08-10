@@ -13,6 +13,8 @@ import {GoogleLogin} from './components';
 const App = () =>{
   const [isLargeScreen, setIsLargeScreen] = useState(true);
   const [currentUrl, setCurrentUrl] = useState("/home");
+  const [userEmail, setUserEmail] = useState("");
+  
 
   const handleChangeUrl = (newUrl) => {
     setCurrentUrl(newUrl);
@@ -61,9 +63,9 @@ const App = () =>{
       </nav>
       <Routes>
         <Route path="/Home" Component={Home} handleChangeUrl={handleChangeUrl} />
-        <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl}/>
-        <Route path="/OAuthCallback" Component={OAuthCallback} />
-        <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl}/>
+        <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl} />
+        <Route path="/OAuthCallback" Component={OAuthCallback} setUserEmail={setUserEmail} />
+        <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl} />
       </Routes>
     </BrowserRouter>);
   }
