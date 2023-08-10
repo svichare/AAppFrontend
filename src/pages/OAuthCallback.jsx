@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import axios from 'axios';
 
 
-const OAuthCallback = (setUserEmail) => {
+export default function OAuthCallback({setUserEmail}) {
   const [localUserEmail, setLocalUserEmail] = useState('');
   useEffect(() => {
     // Parse the access token from the URL query parameters
@@ -31,7 +30,6 @@ const OAuthCallback = (setUserEmail) => {
         // Extract the user's primary email address from the API response
         const primaryEmail = response.data.emailAddresses.find(email => email.metadata.primary).value;
         // Set email ID for calling function.
-        setUserEmail(primaryEmail);
         setLocalUserEmail(primaryEmail);
       } catch (error) {
         console.error('Error fetching user email:', error);
@@ -42,7 +40,6 @@ const OAuthCallback = (setUserEmail) => {
     // Fetch User profile from DocumentDB.
   }, []);
   
+  // setUserEmail(localUserEmail);
   return <div>OAuth Callback. User authenticated : {localUserEmail} </div>;
-};
-
-export default OAuthCallback;
+}

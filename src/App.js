@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, Link, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 
 import './App.css'
 
@@ -48,7 +48,7 @@ const App = () =>{
       <nav>
         <ul>
           <li>
-            <Link to="/Home">Home</Link>
+            <Link to="/Home">Home </Link>
           </li>
           <li>
             <Link to="/ProfileCreation">Profile Creation</Link>
@@ -64,7 +64,7 @@ const App = () =>{
       <Routes>
         <Route path="/Home" Component={Home} handleChangeUrl={handleChangeUrl} />
         <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl} />
-        <Route path="/OAuthCallback" Component={OAuthCallback} setUserEmail={setUserEmail} />
+        <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail}/>)}/>
         <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl} />
       </Routes>
     </BrowserRouter>);
