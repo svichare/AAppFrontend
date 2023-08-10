@@ -48,7 +48,7 @@ const App = () =>{
       <nav>
         <ul>
           <li>
-            <Link to="/Home">Home </Link>
+            <Link to="/Home">Home of {userEmail} on {currentUrl} street</Link>
           </li>
           <li>
             <Link to="/ProfileCreation">Profile Creation</Link>

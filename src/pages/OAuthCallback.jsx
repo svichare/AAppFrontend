@@ -31,14 +31,14 @@ export default function OAuthCallback({setUserEmail}) {
         const primaryEmail = response.data.emailAddresses.find(email => email.metadata.primary).value;
         // Set email ID for calling function.
         setLocalUserEmail(primaryEmail);
+        setUserEmail(primaryEmail);
       } catch (error) {
         console.error('Error fetching user email:', error);
       }
     };
 
     fetchUserEmail();
-    // Fetch User profile from DocumentDB.
-  }, []);
+   }, );
   
   // setUserEmail(localUserEmail);
   return <div>OAuth Callback. User authenticated : {localUserEmail} </div>;
