@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 
 
 export default function OAuthCallback({setUserEmail}) {
+  const navigate = useNavigate();
+
   const [localUserEmail, setLocalUserEmail] = useState('');
   useEffect(() => {
     // Parse the access token from the URL query parameters
@@ -32,8 +35,11 @@ export default function OAuthCallback({setUserEmail}) {
         // Set email ID for calling function.
         setLocalUserEmail(primaryEmail);
         setUserEmail(primaryEmail);
+        // redirect to profile page.
+        navigate('/ProfileHome');
       } catch (error) {
         console.error('Error fetching user email:', error);
+        navigate('/ErrorPage');
       }
     };
 

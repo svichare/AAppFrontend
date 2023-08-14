@@ -1,0 +1,36 @@
+@import "../assets/fonts/fonts.css";
+
+.AboutContainer {
+    font-family: 'SawarabiGothic', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 100;
+
+    width: 100%;
+    background-color: #FFF0C3;
+    height: 100%;
+}
+
+.AboutTopImage img {
+    width: 40%;
+    height: 30%;
+    left: 10px;
+    top: 20px;
+}
+
+.AboutMain {
+  width: 100%;
+  margin-left: 15rem;
+  align-items: center;
+}
+
+.AboutBottom {
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .AboutMain {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}

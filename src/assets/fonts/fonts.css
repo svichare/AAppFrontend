@@ -1,0 +1,18 @@
+
+@font-face {
+  font-family: 'SlacksideOne'; /* Use your desired font family name */
+  src: url('./SlacksideOne-Regular.ttf') format('ttf') /* Adjust the path and format accordingly */
+  /* Add more src entries for different font formats if needed */
+}
+
+@font-face {
+  font-family: 'Sansation'; /* Use your desired font family name */
+  src: url('./Sansation_Light.ttf') format('truetype') /* Adjust the path and format accordingly */
+  /* Add more src entries for different font formats if needed */
+}
+
+@font-face {
+  font-family: 'SawarabiGothic'; /* Use your desired font family name */
+  src: url('./SawarabiGothic-Regular.ttf') format('truetype') /* Adjust the path and format accordingly */
+  /* Add more src entries for different font formats if needed */
+}
