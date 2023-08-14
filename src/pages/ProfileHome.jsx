@@ -31,9 +31,9 @@ export default function ProfileHome({userEmail}) {
 
   return (
     <div className="Container">
+      <NavBar />
       <div className="Main">
-          <NavBar />
-          <h2>Welcome back {userData.name}</h2>
+          <h2>Welcome back {userData.name} ..</h2>
           <h4>Email : {userEmail}</h4>
           <h4>Your super-heros .. </h4>
           {result}

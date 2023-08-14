@@ -1,6 +1,7 @@
 import {React, useState} from "react";
 
-import * as S from "./DependentProfileStyles";
+import "./DependentProfile.css"
+
 import { NavBar } from '../components';
 
 export default function DependentProfile({dependentId}) {
@@ -12,13 +13,16 @@ export default function DependentProfile({dependentId}) {
   });
 
   return (
-    <S.Container>
-      <S.Main>
-          <NavBar />
+    <div className="Container">
+      <NavBar />
+      <div className="Main">
           <h2> Super hero profile</h2>
           <h2>{dependentData.name}</h2>
           <h3>Age: {dependentData.age}</h3>
-      </S.Main>
-    </S.Container>
+      </div>
+      <div className="Bottom">
+        <p>.</p>
+      </div>
+    </div>
   );
 }
