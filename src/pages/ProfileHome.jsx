@@ -1,12 +1,11 @@
 import {React, useState} from "react";
 import { Link } from 'react-router-dom';
 
-import * as S from "./ProfileHomeStyles";
 import { NavBar } from '../components';
 
 import "./ProfileHome.css"
 
-export default function ProfileHome({userEmail}) {
+export default function ProfileHome({userEmail, resetUserEmail}) {
   const [userData, setUserData] = useState({
     name: "Rahagir",
     lastName: "Kaavi",
@@ -24,23 +23,22 @@ export default function ProfileHome({userEmail}) {
   userData.Kids.forEach((actionItem, index) => {
     result.push(
         <p>{actionItem.name}, {actionItem.id}</p>,
-        <Link to="/DependentProfile">Go to Profile Page (Using Link)</Link>,
+        <Link to="/DependentProfile">Go to Profile Page</Link>,
         <p></p>
       );
   });
 
   return (
-    <div className="Container">
-      <NavBar />
-      <div className="Main">
-          <h2>Welcome back {userData.name} ..</h2>
-          <h4>Email : {userEmail}</h4>
-          <h4>Your super-heros .. </h4>
-          {result}
+      <div className="ProfileHomeContainer">
+        <div className="ProfileHomeMain">
+            <h4>Welcome back {userData.name} ..</h4>
+            <p>Email : {userEmail}</p>
+            <p>Your super-heros .. </p>
+            {result}
+        </div>
+        <div className="ProfileHomeBottom">
+          <p>.</p>
+        </div>
       </div>
-      <div className="Bottom">
-      <p>.</p>
-      </div>
-    </div>
   );
 }

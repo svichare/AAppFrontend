@@ -10,17 +10,17 @@
     height: 100%;
 }
 
+.AboutMain {
+  width: 100%;
+  margin-left: 15rem;
+  align-items: center;
+}
+
 .AboutTopImage img {
     width: 40%;
     height: 30%;
     left: 10px;
     top: 20px;
-}
-
-.AboutMain {
-  width: 100%;
-  margin-left: 15rem;
-  align-items: center;
 }
 
 .AboutBottom {

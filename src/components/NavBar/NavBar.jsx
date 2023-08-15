@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 // import logo from '../../assets/logo/svg_logo.svg';
 import sp_logo from '../../assets/logo/g_y_b.png';
@@ -10,8 +10,9 @@ import '../../assets/fonts/fonts.css';
 
 import './NavBar.css';
 
-const NavbarUiTwo = ({setSelectedTask}) => {
-   const [toggleMenu, setToggleMenu] = useState(false);
+const Navbar = ({userLoggedIn, resetUserEmail}) => {
+  const navigate = useNavigate();
+  const [toggleMenu, setToggleMenu] = useState(false);
 
 const handleLoginWithGoogle = () => {
     const redirectUrlFromEnv = process.env.REACT_APP_OAUTH_REDIRECT_URL
@@ -27,23 +28,26 @@ const handleLoginWithGoogle = () => {
     window.location.href = authUrl;
   };
   
+  const handleLogout = () => {
+    // Reset saved email address
+    // Navigate to the Home screen.
+    resetUserEmail();
+    navigate('/Home');
+  };
+  
   return (
     <div className="gpt3__navbar">
       <div className="gpt3__navbar-links">
         <div className="gpt3__navbar-links_logo">
-          <img src={sp_logo} alt="logo" />
+          <Link to="/Home"> <img src={sp_logo} alt="logo" /> </Link>
         </div>
         <div className="gpt3__navbar-button">
-          <Link to="/Home">
-            <button type="button">
-              Home
-            </button>
-          </Link>
+          {userLoggedIn ? <Link to="/ProfileHome"> <button type="button">Home</button> </Link> :
+          <Link to="/Home"> <button type="button">Home</button> </Link>}
         </div>
         <div className="gpt3__navbar-button">
-          <button type="button" onClick={handleLoginWithGoogle}>
-            Login
-          </button>
+          {userLoggedIn ? <button type="button" onClick={handleLogout}>Logout</button> :
+          <button type="button" onClick={handleLoginWithGoogle}> Login </button>}
         </div> 
         <div className="gpt3__navbar-button">
           <Link to="/About">
@@ -75,4 +79,4 @@ const handleLoginWithGoogle = () => {
   );
 };
 
-export default NavbarUiTwo;
+export default Navbar;

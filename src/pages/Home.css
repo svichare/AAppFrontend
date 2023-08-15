@@ -11,6 +11,13 @@
   align-items: center;
 }
 
+.HomeTopImage img {
+  width: 40%;
+  height: 30%;
+  left: 10px;
+  top: 20px;
+}
+
 .Bottom {
   width: 100%;
   padding-bottom: 1000px;

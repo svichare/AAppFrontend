@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { NavBar } from './components';
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './assets/fonts/fonts.css';
 import './App.css'
@@ -23,20 +25,25 @@ const App = () =>{
     setCurrentUrl(newUrl);
   };
 
+  var resetUserEmail = () => {
+    setUserEmail("");
+  };
   console.log("outer Width : " + window.innerWidth);
 
   return (
   <BrowserRouter>
+    <NavBar userLoggedIn={userEmail.length >0 ? true : false}
+        resetUserEmail={resetUserEmail}/>
     <Routes>
       <Route exact path="/" Component={Home} />
-      <Route path="/Home" Component={Home} handleChangeUrl={handleChangeUrl} />
-      <Route path="/About" Component={About} />
-      <Route path="/ProfileCreation" Component={ProfileCreation} handleChangeUrl={handleChangeUrl} />
+      <Route path="/Home" Component={Home} />
+      <Route path="/About" Component={() => (<About />)} />
+      <Route path="/ProfileCreation" Component={ProfileCreation} />
       <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail}/>)}/>
-      <Route path="/LoginWithGoogle" Component={GoogleLogin} handleChangeUrl={handleChangeUrl} />
-      <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail}/>)} handleChangeUrl={handleChangeUrl} />
-      <Route path="/DependentProfile" Component={() => (<DependentProfile/>)} handleChangeUrl={handleChangeUrl} />
-      <Route path="/ErrorPage" Component={ErrorPage} handleChangeUrl={handleChangeUrl} />
+      <Route path="/LoginWithGoogle" Component={GoogleLogin} />
+      <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
+      <Route path="/DependentProfile" Component={() => (<DependentProfile/>)} />
+      <Route path="/ErrorPage" Component={ErrorPage} />
     </Routes>
   </BrowserRouter>);
 };

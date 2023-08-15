@@ -14,7 +14,6 @@ export default function DependentProfile({dependentId}) {
 
   return (
     <div className="Container">
-      <NavBar />
       <div className="Main">
           <h2> Super hero profile</h2>
           <h2>{dependentData.name}</h2>
