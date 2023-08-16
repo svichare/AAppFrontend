@@ -13,6 +13,7 @@ import ErrorPage from './pages/ErrorPage';
 import ProfileHome from './pages/ProfileHome';
 import DependentProfile from './pages/DependentProfile';
 
+import traitRoutes from './pages/trait_pages/TraitRoutes.js';
 import {GoogleLogin} from './components';
 
 
@@ -35,7 +36,7 @@ const App = () =>{
     <NavBar userLoggedIn={userEmail.length >0 ? true : false}
         resetUserEmail={resetUserEmail}/>
     <Routes>
-      <Route exact path="/" Component={Home} />
+      <Route exact='true' path="/" Component={Home} />
       <Route path="/Home" Component={Home} />
       <Route path="/About" Component={() => (<About />)} />
       <Route path="/ProfileCreation" Component={ProfileCreation} />
@@ -44,8 +45,17 @@ const App = () =>{
       <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
       <Route path="/DependentProfile" Component={() => (<DependentProfile/>)} />
       <Route path="/ErrorPage" Component={ErrorPage} />
+      {traitRoutes.map(route => (
+          <Route
+            key={route.path}
+            path={route.path}
+            Component={route.Component}
+            exact={route.exact}
+          />
+        ))}
     </Routes>
-  </BrowserRouter>);
+  </BrowserRouter>
+  );
 };
 
 export default App

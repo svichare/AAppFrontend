@@ -43,7 +43,7 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
               <h4>Welcome back {userData.name} ..</h4>
             </div>
           </div>
-            
+
           <p>Email : {userEmail}</p>
           <h4>Your super-heros .. </h4>
           <div className="DependentList">

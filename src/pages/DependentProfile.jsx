@@ -1,8 +1,7 @@
 import {React, useState} from "react";
+import { useNavigate } from 'react-router-dom';
 
 import "./DependentProfile.css"
-
-import { NavBar } from '../components';
 
 import profile_picture from '../assets/images/profile_picture.jpg'
 
@@ -13,6 +12,12 @@ export default function DependentProfile({dependentId}) {
     id: "topId",
     age: 4
   });
+  
+  const navigate = useNavigate();
+  
+  const onUpdate = () => {
+    navigate('/TraitCategories');
+  };
 
   return (
     <div className="Container">
@@ -26,6 +31,7 @@ export default function DependentProfile({dependentId}) {
             </div>
         </div>
           <h3>Age: {dependentData.age}</h3>
+          <button type="button" onClick={onUpdate}> Update profile </button>
       </div>
       <div className="Bottom">
         <p>.</p>

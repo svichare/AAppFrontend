@@ -1,0 +1,37 @@
+@import "../../assets/fonts/fonts.css";
+
+.Container {
+  width: 100%;
+  background-color: #FFF0C3;
+  height: 100%;
+  font-family: 'Sansation', Helvetica, sans-serif;
+}
+
+.Main {
+  width: 100%;
+  margin-left: 15rem;
+  align-items: center;
+}
+
+.TraitCategoriesTopbar {
+  display: flex;
+  align-items: center;
+}
+
+.TraitCategoriesName {
+  /*margin: 5rem 5rem; */
+  width: 50%;
+  text-align: center;
+}
+
+.Bottom {
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}
