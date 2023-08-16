@@ -4,7 +4,7 @@ import "./DependentProfile.css"
 
 import { NavBar } from '../components';
 
-import profile_rishaan from '../assets/photos/rishaan_profile_pic.jpg'
+import profile_picture from '../assets/images/profile_picture.jpg'
 
 export default function DependentProfile({dependentId}) {
   const [dependentData, setDependentData] = useState({
@@ -19,7 +19,7 @@ export default function DependentProfile({dependentId}) {
       <div className="Main">
         <div className="DependentHomeTopbar">
             <div className="DependentHomeImage">
-              <img src={profile_rishaan} alt="profile_photo" />
+              <img src={profile_picture} alt="profile_photo" />
             </div>
             <div className="DependentHomeName">
               <h3> {dependentData.name} </h3>

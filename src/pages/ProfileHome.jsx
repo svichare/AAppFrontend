@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import profile_photo from '../assets/images/profile_picture.jpg'
 import profile_pic_round from '../assets/images/profile_pic_round.png'
-import profile_my_photo from '../assets/photos/about_alone.jpg'
 
 import "./ProfileHome.css"
 
@@ -38,7 +37,7 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
         <div className="ProfileHomeMain">
           <div className="ProfileHomeTopbar">
             <div className="ProfileImage">
-              <img src={profile_my_photo} alt="profile_photo" />
+              <img src={profile_photo} alt="profile_photo" />
             </div>
             <div className="ProfileName">
               <h4>Welcome back {userData.name} ..</h4>
