@@ -1,14 +1,31 @@
+@import "../assets/fonts/fonts.css";
 
 .Container {
   width: 100%;
   background-color: #FFF0C3;
   height: 100%;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
 .Main {
   width: 100%;
   margin-left: 15rem;
   align-items: center;
+}
+
+.DependentHomeTopbar {
+  display: flex;
+  align-items: center;
+}
+
+.DependentHomeImage img {
+  margin: 2rem;
+  width: 20rem;
+  height: auto;
+}
+
+.DependentHomeName {
+  margin: 5rem 5rem; 
 }
 
 .Bottom {
