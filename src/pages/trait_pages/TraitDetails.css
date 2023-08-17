@@ -7,32 +7,42 @@
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
-.Main {
+.Main {    
   width: 100%;
-  margin-left: 15rem;
+  /*margin-left: 15rem;*/
   align-items: center;
 }
 
-.TraitCategoriesTopbar {
+.TraitDetailsTopbar {
   display: flex;
   align-items: center;
 }
 
-.TraitCategoriesName {
+.TraitDetailsName {
   /*margin: 5rem 5rem; */
   width: 50%;
   text-align: center;
 }
 
-.TraitCategoriesList {
+.TraitDetailsList {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: .1rem;
+   /*This should ideally be 100. invetigate the issue*/
   width: 50%;
+  padding-top: 2rem;
 }
 
-.TraitCategory button {
+.TraitDetails {
+  /*margin: 5rem 5rem; */
+  text-align: flex-start;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.TraitDetails button {
   /*margin: 5rem 5rem; */
   /*text-align: center;*/
   padding: 10px;
@@ -47,7 +57,7 @@
 
 
 .Bottom {
-  width: 100%;
+  /*width: 100%;*/
   padding-bottom: 1000px;
 }
 

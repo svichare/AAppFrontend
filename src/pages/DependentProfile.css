@@ -13,6 +13,17 @@
   align-items: center;
 }
 
+.Main button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #94E5FF80;
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
 .DependentHomeTopbar {
   display: flex;
   align-items: center;
