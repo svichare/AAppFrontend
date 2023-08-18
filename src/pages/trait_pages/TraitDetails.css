@@ -55,6 +55,40 @@
   font-size: 1.1rem;
 }
 
+.TraitQuestionsList {
+  display: flex;
+  width: 70%;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: flex-start;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.TraitQuestionDetails button {
+  padding: 10px;
+  background-color: #94E5FF80;
+  /*color: white;*/
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.TraitOptionsList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  text-align: center;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
 
 .Bottom {
   /*width: 100%;*/
