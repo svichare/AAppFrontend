@@ -1,19 +1,28 @@
 @import "../assets/fonts/fonts.css";
 
-.Container {
+.DependentProfileContainer {
   width: 100%;
   background-color: #FFF0C3;
   height: 100%;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
-.Main {
+.DependentProfileMain {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-left: 15rem;
+  /*margin-left: 15rem;*/
+  justify-content: center; /* Center horizontally */
   align-items: center;
 }
 
-.Main button {
+.DependentProfileLeftSidebar {
+  width: 10rem;
+  height: 100%;
+  /*margin-left: 15rem;*/
+}
+
+.DependentProfileMain button {
   padding-top: 10px;
   padding-bottom: 10px;
   background-color: #94E5FF80;
@@ -26,6 +35,7 @@
 
 .DependentHomeTopbar {
   display: flex;
+  justify-content: center; /* Center horizontally */
   align-items: center;
 }
 

@@ -1,15 +1,15 @@
 @import "../../assets/fonts/fonts.css";
 
-.Container {
+.TraitCategoriesContainer {
   width: 100%;
   background-color: #FFF0C3;
   height: 100%;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
-.Main {
+.TraitCategoriesMain {
   width: 100%;
-  margin-left: 15rem;
+  /*margin-left: 15rem;*/
   align-items: center;
 }
 
@@ -20,16 +20,16 @@
 
 .TraitCategoriesName {
   /*margin: 5rem 5rem; */
-  width: 50%;
+  width: 100%;
   text-align: center;
 }
 
 .TraitCategoriesList {
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  width: 50%;
 }
 
 .TraitCategory button {

@@ -7,12 +7,16 @@
 
     width: 100%;
     background-color: #FFF0C3;
-    height: 100%;
+    height: auto;
 }
 
 .ProfileHomeMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   width: 100%;
-  margin-left: 15rem;
+  /*margin-left: 15rem;*/
   align-items: center;
 }
 .ProfileHomeTopbar {

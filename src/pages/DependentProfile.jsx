@@ -20,8 +20,8 @@ export default function DependentProfile({dependentId}) {
   };
 
   return (
-    <div className="Container">
-      <div className="Main">
+    <div className="DependentProfileContainer">
+      <div className="DependentProfileMain">
         <div className="DependentHomeTopbar">
             <div className="DependentHomeImage">
               <img src={profile_picture} alt="profile_photo" />

@@ -1,63 +1,21 @@
 @import "../../assets/fonts/fonts.css";
 
-.Container {
+.TraitDetailsContainer {
   width: 100%;
   background-color: #FFF0C3;
   height: 100%;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
-.Main {    
+.TraitDetailsMain {    
   width: 100%;
   /*margin-left: 15rem;*/
   align-items: center;
 }
 
-.TraitDetailsTopbar {
-  display: flex;
-  align-items: center;
-}
-
-.TraitDetailsName {
-  /*margin: 5rem 5rem; */
-  width: 50%;
-  text-align: center;
-}
-
-.TraitDetailsList {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: .1rem;
-   /*This should ideally be 100. invetigate the issue*/
-  width: 50%;
-  padding-top: 2rem;
-}
-
-.TraitDetails {
-  /*margin: 5rem 5rem; */
-  text-align: flex-start;
-  border: none;
-  font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
-}
-
-.TraitDetails button {
-  /*margin: 5rem 5rem; */
-  /*text-align: center;*/
-  padding: 10px;
-  background-color: #94E5FF80;
-  /*color: white;*/
-  width: 20rem;
-  border: none;
-  cursor: pointer;
-  font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
-}
-
 .TraitQuestionsList {
   display: flex;
-  width: 70%;
+  width: 100%;
   flex-direction: column;
   align-items: center;
 
@@ -70,7 +28,7 @@
 .TraitQuestionDetails button {
   padding: 10px;
   background-color: #94E5FF80;
-  /*color: white;*/
+  border-radius: 5px;
   width: 20rem;
   border: none;
   cursor: pointer;
@@ -78,8 +36,18 @@
   font-size: 1.1rem;
 }
 
+.TraitQuestionDetails p {
+  /*color: white;*/
+  width: 30rem;
+  text-align: left;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
 .TraitOptionsList {
   display: flex;
+  padding-bottom: .5rem;
   flex-direction: column;
   align-items: center;
   gap: .5rem;
@@ -89,6 +57,22 @@
   font-size: 1rem;
 }
 
+.TraitOptionDetails {
+  width: 30rem;
+  gap: 1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  /*background-color: #FFF0C3;*/
+  
+  font-size: 16px;
+  color: #333;
+}
+
+.TraitOptionDetails:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
 
 .Bottom {
   /*width: 100%;*/

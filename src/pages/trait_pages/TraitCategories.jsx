@@ -81,11 +81,11 @@ export default function TraitCategories({dependentId}) {
   }, []);
 
   return (
-    <div className="Container">
-      <div className="Main">
+    <div className="TraitCategoriesContainer">
+      <div className="TraitCategoriesMain">
         <div className="TraitCategoriesTopbar">
             <div className="TraitCategoriesName">
-              <h3>Select a category to view or update</h3>
+              <h3>Select a category to view/update</h3>
             </div>
         </div>
           <DisplayTraitCategories TraitCategoryList={localTraitCategoryList}

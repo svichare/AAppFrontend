@@ -1,20 +1,21 @@
 
-.Container {
+.HomeContainer {
   width: 100%;
   background-color: #FFF0C3;
-  height: 100%;
+  /*height: 100%;*/
 }
 
-.Main {
+.HomeMain {
   width: 100%;
-  margin-left: 15rem;
+  /*margin-left: 15rem;*/
   align-items: center;
+  align-text: center;
 }
 
 .HomeTopImage img {
-  width: 40%;
+  /*width: 40%;*/
   height: 30%;
-  left: 10px;
+  /*left: 10px;*/
   top: 20px;
 }
 

@@ -121,37 +121,6 @@ async function list_trait_questions(id) {
   }
 }
 
-function PopulateOptionsOld({TraitQuestion}) {
-  var options_div = "";
-  console.log("Checking if TraitQuestion is undefined");
-  if (typeof TraitQuestion === 'undefined') {
-    return options_div;
-  }
-  console.log("Checking if TraitQuestion.type is undefined");
-  if (typeof TraitQuestion.type === 'undefined') {
-    return options_div;
-  }
-  
-  console.log("Options in the question length :" + TraitQuestion.options.length);
-  var options_div = "<div class=\"TraitOptionsList\">";
-  
-  TraitQuestion.options.map(value => {
-    options_div += "<button > " + value.text + " </button>";
-    });
-  
-  options_div += "</div>";
-
-  switch (TraitQuestion.type) {
-    case "single":
-      break;
-    case "multiple":
-      break;
-  }
-  // Add details text box.
-  
-  return options_div;
-}
-
 function PopulateOptions({TraitQuestion}) {
   var options_div = "";
   console.log("Checking if TraitQuestion is undefined");
@@ -179,7 +148,6 @@ function PopulateOptions({TraitQuestion}) {
     case "multiple":
       break;
   }
-  // Add details text box.
   const onOptionClick = () => {
     console.log("Option clicked");
     // setSelectedTrait(value);
@@ -201,7 +169,7 @@ function PopulateOptions({TraitQuestion}) {
 
 function PopulateDescriptionOption() {
   return (
-    <input type="text" placeholder="Enter details if any .." />
+    <input className="TraitOptionDetails" type="text" placeholder="Enter details if any .." />
   );
 }
 
@@ -217,7 +185,7 @@ function DisplayTraitQuestions({TraitQuestionsList}) {
     <div className="TraitQuestionsList">
       {TraitQuestionsList.map((value, index) => (
       <div className="TraitQuestionDetails">
-        <p> #{index+1}/{TraitQuestionsList.length} {value.description} </p>
+        <p> {index+1}/{TraitQuestionsList.length}: {value.description} </p>
         <PopulateOptions TraitQuestion={value} />
         <PopulateDescriptionOption />
       </div>
@@ -241,8 +209,8 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   },[]);
 
   return (
-    <div className="Container">
-      <div className="Main">
+    <div className="TraitDetailsContainer">
+      <div className="TraitDetailsMain">
           <DisplayTraitQuestions TraitQuestionsList={localTraitQuestionsList} />
       </div>
       <div className="Bottom">
