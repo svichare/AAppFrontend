@@ -36,6 +36,14 @@
   font-size: 1.1rem;
 }
 
+.TraitQuestionDetails button:active {
+  background-color: white;
+}
+
+.TraitQuestionDetails button:disabled {
+  background-color: grey;
+}
+
 .TraitQuestionDetails p {
   /*color: white;*/
   width: 30rem;
