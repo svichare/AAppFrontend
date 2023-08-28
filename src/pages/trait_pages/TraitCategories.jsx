@@ -9,20 +9,6 @@ import "./TraitCategories.css"
 
 import profile_picture from '../../assets/images/profile_picture.jpg'
 
-// API.configure({
-//   // "aws_project_region": process.env.REACT_APP_PROJECT_REGION,
-//   // "aws_appsync_graphqlEndpoint": process.env.REACT_APP_APPSYNC_GRAPHQLENDPOINT,
-//   // "aws_appsync_region": process.env.REACT_APP_APPSYNC_REGION,
-//   //"aws_appsync_authenticationType": process.env.REACT_APP_APPSYNC_AUTHENTICATIONTYPE,
-// //   "aws_appsync_apiKey": process.env.REACT_APP_APPSYNC_APIKEY
-//   "aws_project_region": "us-east-1",
-//   "aws_appsync_graphqlEndpoint": "https://tixhdigrwnbwrciiub3l25fmui.appsync-api.us-east-1.amazonaws.com/graphql",
-//   "aws_appsync_region": "us-east-1",
-//   "aws_appsync_authenticationType": "API_KEY",
-//   "aws_appsync_apiKey": "da2-xn5orfnwpjf7fkcnrfdtf3mgwi"
-// })
-
-
 async function list_project_tasks(id) {
   try {
     const response = await API.graphql({
