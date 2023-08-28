@@ -9,7 +9,7 @@ import "./TraitCategories.css"
 
 import profile_picture from '../../assets/images/profile_picture.jpg'
 
-async function list_project_tasks(id) {
+async function list_trait_categories(id) {
   try {
     const response = await API.graphql({
       query: allTraitCategories,
@@ -72,7 +72,7 @@ export default function TraitCategories({dependentId}) {
   const navigate = useNavigate();
 
   useEffect( () => {
-    list_project_tasks()
+    list_trait_categories()
     .then((trait_categories_from_async) => {
       setLocalTraitCategoryList(trait_categories_from_async);
     });

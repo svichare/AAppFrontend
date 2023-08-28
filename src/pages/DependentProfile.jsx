@@ -1,24 +1,28 @@
-import {React, useState} from "react";
+import {React, useState, useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 
 import "./DependentProfile.css"
 
 import profile_picture from '../assets/images/profile_picture.jpg'
+import { ParameterContext } from '../App';
 
-export default function DependentProfile({dependentId}) {
+export default function DependentProfile() {
+
+ const { dependentId } = useContext(ParameterContext);
   const [dependentData, setDependentData] = useState({
     name: "Rishaan",
     lastName: "Vic",
     id: "topId",
     age: 4
   });
-  
+
   const navigate = useNavigate();
   
   const onUpdate = () => {
     navigate('/TraitCategories');
   };
 
+  console.log("Showing dependent details for " + dependentId);
   return (
     <div className="DependentProfileContainer">
       <div className="DependentProfileMain">

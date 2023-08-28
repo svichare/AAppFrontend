@@ -41,7 +41,24 @@ export const getTraitOptionList = /* GraphQL */ `
     getTraitOptionList(id: $id) {
       OptionList {
         id
-        QuestionText
+        OptionText
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const getParentDetails = /* GraphQL */ `
+  query GetParentDetails($email: String) {
+    getParentDetails(email: $email) {
+      id
+      Name
+      LastName
+      ImageURL
+      DependentList {
+        id
+        name
+        thumbnail_url
         __typename
       }
       __typename
