@@ -76,7 +76,7 @@ async function get_profile_details(user_email) {
 }
 
 export default function ProfileHome({userEmail, resetUserEmail}) {
-  const { setDependentId } = useContext(ParameterContext);
+  const { setDependentName } = useContext(ParameterContext);
 
   
   const [userData, setUserData] = useState({
@@ -108,7 +108,7 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
     result.push(
       <div className="DependentListItem">
         <Link to="/DependentProfile">
-          <div className="DependentPhoto" onClick={()=>{setDependentId(dependentData.id)}}>
+          <div className="DependentPhoto" onClick={()=>{setDependentName(dependentData.name)}}>
             <img src={profile_pic_round} alt="profile_pic_round"/>
           </div>
         </Link>

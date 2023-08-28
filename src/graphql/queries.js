@@ -59,6 +59,33 @@ export const getParentDetails = /* GraphQL */ `
         id
         name
         thumbnail_url
+        image_url
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const getDependentDetails = /* GraphQL */ `
+  query GetDependentDetails($name: String) {
+    getDependentDetails(name: $name) {
+      id
+      name
+      thumbnail_url
+      image_url
+      __typename
+    }
+  }
+`;
+export const getTraitCategoryResponses = /* GraphQL */ `
+  query GetTraitCategoryResponses($compound_id: String) {
+    getTraitCategoryResponses(compound_id: $compound_id) {
+      compound_id
+      dependent_id
+      trait_category_id
+      trait_responses {
+        trait_id
+        text_response
         __typename
       }
       __typename

@@ -42,7 +42,7 @@ function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, na
   TraitCategoryList.length === 0 ) {
     // nothing to do as project not selected.
     console.log("Undefined TraitCategoryList returning without fuss. XXXXXXX");
-    return <div className="TraitCategoriesList"><div className="TraitCategory" href="#" key={0}>List empty..</div></div>;
+    return <div className="TraitCategoriesList"><div className="TraitCategory" href="#" key={0}>List loading..</div></div>;
   }
   
   const onCategoryClick = (categoryId) => {

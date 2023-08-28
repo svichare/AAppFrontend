@@ -5,6 +5,65 @@ import { ParameterContext } from '../../App';
 
 import "./TraitDetails.css"
 
+import { getTraitCategoryResponses } from '../../graphql/queries'
+
+function isIterable(item) {
+  return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
+}
+
+async function get_category_responses(dependent_name, trait_category) {
+  var cur_compound_id = dependent_name+ "_" + trait_category;
+  console.log("Looking for responses for compund_id : " + cur_compound_id);
+  try {
+    console.log("Checking request  : " + dependent_name);
+    const response = await API.graphql({
+      query: getTraitCategoryResponses,
+      variables: {
+        compound_id: cur_compound_id
+      },
+    });
+    console.log("Checking response  : " + cur_compound_id);
+    if (typeof response.data.getTraitCategoryResponses == 'undefined') {
+      return{
+      "compound_id": "Beta_1",
+      "dependent_id": "101",
+      "trait_category_id": "1",
+      "trait_responses": [
+        {
+          "text_response": "This is mocky response1.",
+          "trait_id": "1"
+        },
+        {
+          "text_response": "This is mocky response2.",
+          "trait_id": "2"
+        }
+      ]
+    };
+    }
+    console.log("Returning data from lambda for ID : " + dependent_name);
+    return response.data.getDependentDetails;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return{
+      "compound_id": "Beta_1",
+      "dependent_id": "101",
+      "trait_category_id": "1",
+      "trait_responses": [
+        {
+          "text_response": "This is errory response1.",
+          "trait_id": "1"
+        },
+        {
+          "text_response": "This is errory response2.",
+          "trait_id": "2"
+        }
+      ]
+    };
+  }
+}
+
+
+// The schema was initially not updated. Now it is. So this is probably not needed.
 const localGetTraitQuestionList = /* GraphQL Update this if schema changes */ `
   query GetTraitQuestionList($id: ID!) {
     getTraitQuestionList(id: $id) {
@@ -56,12 +115,6 @@ async function list_trait_questions(id) {
                }, {
                    id: 3,
                    text: "8-10 hours.",
-               }, {
-                   id: 4,
-                   text: "Less than 4.",
-               }, {
-                   id: 5,
-                   text: "more than 10.",
                }],
                default_selection: 2,
                id:101},
@@ -83,9 +136,6 @@ async function list_trait_questions(id) {
                }, {
                    id: 3,
                    text: "Smells."
-               }, {
-                   id: 4,
-                   text: "Touch."
                }
                ],
                default_selection: [1, 4],
@@ -186,20 +236,27 @@ function DisplayTraitQuestions({TraitQuestionsList}) {
 
 export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   let [localTraitQuestionsList, setLocalTraitQuestionsList] = useState([]);
-  const { selectedTraitCategory } = useContext(ParameterContext);
+  let [localTraitReponseList, setLocalTraitReponseList] = useState([]);
+
+  const { selectedTraitCategory, dependentName } = useContext(ParameterContext);
   console.log("Showing trait details for :  " + selectedTraitCategory);
 
   useEffect( () => {
     list_trait_questions(selectedTraitCategory)
         .then((trait_questions_from_async) => {
             setLocalTraitQuestionsList(trait_questions_from_async);
+            get_category_responses(dependentName, selectedTraitCategory)
+            .then((trait_responses_from_async) => {
+                setLocalTraitReponseList(trait_responses_from_async);
+            });
         });
   }, [selectedTraitCategory]);
 
   return (
     <div className="TraitDetailsContainer">
       <div className="TraitDetailsMain">
-          <DisplayTraitQuestions TraitQuestionsList={localTraitQuestionsList} />
+          <DisplayTraitQuestions TraitQuestionsList={localTraitQuestionsList}
+          TraitResponsesList={localTraitReponseList}/>
       </div>
       <div className="Bottom">
         <p>.</p>

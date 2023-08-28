@@ -22,7 +22,7 @@ export const ParameterContext = React.createContext();
 const App = () =>{
   const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
-  const [dependentId, setDependentId] =  useState(100);
+  const [dependentName, setDependentName] =  useState("DefaultDepName");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
 
   const handleChangeUrl = (newUrl) => {
@@ -37,7 +37,7 @@ const App = () =>{
   return (
   <BrowserRouter>
   <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
-  userEmail, dependentId, setDependentId }}>
+  userEmail, dependentName, setDependentName }}>
       <NavBar userLoggedIn={userEmail.length >0 ? true : false}
           resetUserEmail={resetUserEmail}/>
       <Routes>
@@ -48,7 +48,7 @@ const App = () =>{
         <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail}/>)}/>
         <Route path="/LoginWithGoogle" Component={GoogleLogin} />
         <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
-        <Route path="/DependentProfile" Component={() => (<DependentProfile dependentId={dependentId} />)} />
+        <Route path="/DependentProfile" Component={() => (<DependentProfile dependentId={dependentName} />)} />
         <Route path="/ErrorPage" Component={ErrorPage} />
         {traitRoutes.map(route => (
             <Route
