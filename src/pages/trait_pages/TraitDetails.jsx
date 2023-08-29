@@ -41,7 +41,7 @@ async function get_category_responses(dependent_name, trait_category) {
     };
     }
     console.log("Returning data from lambda for ID : " + dependent_name);
-    return response.data.getDependentDetails;
+    return response.data.getTraitCategoryResponses;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
     return{
@@ -188,7 +188,7 @@ function PopulateOptions({TraitOptions}) {
 
   if (TraitOptions.length === 1) {
       if (TraitOptions[0].OptionText == null) {
-         console.log("TraitOptions has null value");
+        // console.log("TraitOptions has null value");
          return;
       }
   }
@@ -207,9 +207,11 @@ function PopulateOptions({TraitOptions}) {
   );
 }
 
-function PopulateDescriptionOption() {
+function PopulateDescriptionOption({TextResponse}) {
+  var placeholder_text = (TextResponse == "" ? "Enter details if any .." : "");
+  
   return (
-    <input className="TraitOptionDetails" type="text" placeholder="Enter details if any .." />
+    <input className="TraitOptionDetails" type="text" placeholder={placeholder_text} defaultValue={TextResponse} />
   );
 }
 
@@ -227,7 +229,7 @@ function DisplayTraitQuestions({TraitQuestionsList}) {
       <div className="TraitQuestionDetails" key={index}>
         <p> {index+1}/{TraitQuestionsList.length}: {value.Description} </p>
         <PopulateOptions TraitOptions={value.Options} key={value.id}/>
-        <PopulateDescriptionOption />
+        <PopulateDescriptionOption TextResponse={value.text_response}/>
       </div>
       ))}
     </div>
@@ -242,12 +244,45 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   console.log("Showing trait details for :  " + selectedTraitCategory);
 
   useEffect( () => {
+    console.log("Quering Question List.");
     list_trait_questions(selectedTraitCategory)
         .then((trait_questions_from_async) => {
-            setLocalTraitQuestionsList(trait_questions_from_async);
+            console.log("Received QuestionList. Now quering responses.");
             get_category_responses(dependentName, selectedTraitCategory)
             .then((trait_responses_from_async) => {
                 setLocalTraitReponseList(trait_responses_from_async);
+                console.log("Received responses. Now checking if there is any match.");
+                console.log("Question list length : " + trait_questions_from_async.length);
+                if (typeof trait_responses_from_async == 'undefined' ||
+                  typeof trait_responses_from_async.trait_responses == 'undefined' || 
+                  trait_responses_from_async == null ||
+                  trait_responses_from_async.trait_responses == null) {
+                  // Nothing to match with.
+                  setLocalTraitQuestionsList(trait_questions_from_async);
+                  return;
+                }
+                console.log("Typeof trait_responses_from_async.trait_responses" +
+                  typeof trait_responses_from_async.trait_responses);
+                for (var trait_question of trait_questions_from_async) {
+                    const matchingEntry =
+                        trait_responses_from_async.trait_responses.find(
+                            entry => entry.trait_id == trait_question.id);
+                    if (matchingEntry) {
+                      console.log("Found matching entry for : " + matchingEntry.trait_id);
+                      if (typeof matchingEntry.selected_response_ids != 'undefined') {
+                        console.log("  including response of length : " + matchingEntry.selected_response_ids.length);
+                        trait_question.selected_response_ids = matchingEntry.selected_response_ids;
+                      }
+                      console.log("Including text_response : " + matchingEntry.text_response);
+                      // Should the entire object be copied instead of specific values?
+                      trait_question.text_response = matchingEntry.text_response;
+                    } else {
+                        console.log("DID NOT find matching entry for : " + trait_question.id);
+                    }
+                }
+                
+                setLocalTraitQuestionsList(trait_questions_from_async);
+
             });
         });
   }, [selectedTraitCategory]);
