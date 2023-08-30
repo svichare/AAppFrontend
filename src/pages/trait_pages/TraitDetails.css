@@ -41,7 +41,7 @@
 }
 
 .TraitQuestionDetails button:disabled {
-  background-color: grey;
+  background-color: #BEBEBE;
 }
 
 .TraitQuestionDetails p {

@@ -175,7 +175,7 @@ async function list_trait_questions(id) {
   }
 }
 
-function PopulateOptions({TraitOptions}) {
+function PopulateOptions({TraitOptions, SelectedResponseIds}) {
   const onOptionClick = (OptionText) => {
     console.log("Option clicked : " + OptionText);
     // setSelectedTrait(value);
@@ -192,13 +192,29 @@ function PopulateOptions({TraitOptions}) {
          return;
       }
   }
+  console.log("Checking which options are selected");
+  
+  if (typeof SelectedResponseIds !== 'undefined' &&
+      SelectedResponseIds != null) {
+    console.log("Size of TraitOptions : " + TraitOptions.length + " : SelectedResponseIds" + SelectedResponseIds.length);
+    for (var i = 0; i < TraitOptions.length; ++i) {
+      TraitOptions[i].is_selected = false;
+      const matchingEntry = SelectedResponseIds.find(entry => 
+          entry.id == TraitOptions[i].id
+        );
+      if (matchingEntry) {
+        TraitOptions[i].is_selected = true;
+      }
+    }
+  }
+  
   // Check selected options here.
   return (
     <div className="TraitOptionsList">
     {
         TraitOptions.map((value, index) => (
           <div className="TraitOptionItem" key={value.id + Math.random()}>
-            <button type="button" onClick={() => {onOptionClick(value.OptionText)}} key={value.id} disabled={false}> {value.OptionText}
+            <button type="button" onClick={() => {onOptionClick(value.OptionText)}} key={value.id} disabled={value.is_selected}> {value.OptionText}
             </button>
           </div>
         ))
@@ -228,7 +244,7 @@ function DisplayTraitQuestions({TraitQuestionsList}) {
       {TraitQuestionsList.map((value, index) => (
       <div className="TraitQuestionDetails" key={index}>
         <p> {index+1}/{TraitQuestionsList.length}: {value.Description} </p>
-        <PopulateOptions TraitOptions={value.Options} key={value.id}/>
+        <PopulateOptions TraitOptions={value.Options} SelectedResponseIds={value.selected_response_ids} key={value.id}/>
         <PopulateDescriptionOption TextResponse={value.text_response}/>
       </div>
       ))}
