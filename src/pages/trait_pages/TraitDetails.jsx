@@ -1,11 +1,13 @@
 import {React, useState, useEffect, useContext} from "react";
-import { API } from '@aws-amplify/api'
+import { API, graphqlOperation } from '@aws-amplify/api'
 import { ParameterContext } from '../../App';
 
 
 import "./TraitDetails.css"
 
 import { getTraitCategoryResponses } from '../../graphql/queries'
+import { updateTraitResponse } from '../../graphql/mutations'
+
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
@@ -223,15 +225,58 @@ function PopulateOptions({TraitOptions, SelectedResponseIds}) {
   );
 }
 
-function PopulateDescriptionOption({TextResponse}) {
+async function update_trait_response(curTraitId, curCategoryId,
+    curDependentStringId, curSelectedId, curSelectedText, curSelectedUpdated,
+    curTextResponse, curTextResponseUpdated) {
+  // update actionItem with the response.
+  console.log("Updating response to : " + curTextResponse);
+  const update_trait_response_details = {
+    traitId: curTraitId,
+    traitCategoryId: curCategoryId,
+    dependentId: curDependentStringId,
+    selectedId: 0,
+    selectedIdText: "",
+    isSelectedIdUpdated: false,
+    textResponse: curTextResponse,
+    textResponseUpdated: curTextResponseUpdated
+  };
+
+  try {
+    console.log("Updating the text response.");
+      const response = await API.graphql(
+        graphqlOperation(updateTraitResponse,
+          {updateTraitResponseInput: update_trait_response_details}));
+      console.log("received response : ", JSON.stringify(response));
+  } catch (error) {
+      console.error('Cought error in update_action_response function :',  JSON.stringify(error));
+  }
+}
+
+function PopulateDescriptionOption({TextResponse, TraitCategoryId, TraitId}) {
   var placeholder_text = (TextResponse == "" ? "Enter details if any .." : "");
+
+  // Populate actual parameters after testing.  
+  // var trait_id = 1;
+  // var trait_category_id = 1;
+  var dependent_string_id = "Beta";
   
+  const handleTextResponseChange = (updatedResponse) => {
+    update_trait_response(TraitId, TraitCategoryId, dependent_string_id, 0,
+    "", false,  updatedResponse, true);
+  };
+
+    
   return (
-    <input className="TraitOptionDetails" type="text" placeholder={placeholder_text} defaultValue={TextResponse} />
+    <input className="TraitOptionDetails" type="text"
+           placeholder={placeholder_text} defaultValue={TextResponse}
+           onChange={(e) => {
+            // TextResponse = e.target.value;
+            handleTextResponseChange(e.target.value);
+          }}/>
   );
 }
 
-function DisplayTraitQuestions({TraitQuestionsList}) {
+function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId}) {
   if (typeof TraitQuestionsList === "undefined" ||
       TraitQuestionsList.length === 0 ) {
     // nothing to do as project not selected.
@@ -245,7 +290,9 @@ function DisplayTraitQuestions({TraitQuestionsList}) {
       <div className="TraitQuestionDetails" key={index}>
         <p> {index+1}/{TraitQuestionsList.length}: {value.Description} </p>
         <PopulateOptions TraitOptions={value.Options} SelectedResponseIds={value.selected_response_ids} key={value.id}/>
-        <PopulateDescriptionOption TextResponse={value.text_response}/>
+        <PopulateDescriptionOption TextResponse={value.text_response}
+                                   TraitCategoryId={TraitCategoryId}
+                                   TraitId={value.id}/>
       </div>
       ))}
     </div>
@@ -307,7 +354,8 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
     <div className="TraitDetailsContainer">
       <div className="TraitDetailsMain">
           <DisplayTraitQuestions TraitQuestionsList={localTraitQuestionsList}
-          TraitResponsesList={localTraitReponseList}/>
+          TraitCategoryId={selectedTraitCategory}
+          />
       </div>
       <div className="Bottom">
         <p>.</p>

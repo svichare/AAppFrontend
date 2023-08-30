@@ -86,10 +86,6 @@ export const getTraitCategoryResponses = /* GraphQL */ `
       trait_responses {
         trait_id
         text_response
-        selected_response_ids {
-          OptionText
-          id
-        }
         __typename
       }
       __typename

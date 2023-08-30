@@ -20,14 +20,9 @@ import {GoogleLogin} from './components';
 export const ParameterContext = React.createContext();
 
 const App = () =>{
-  const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
   const [dependentName, setDependentName] =  useState("DefaultDepName");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
-
-  const handleChangeUrl = (newUrl) => {
-    setCurrentUrl(newUrl);
-  };
 
   var resetUserEmail = () => {
     setUserEmail("");
