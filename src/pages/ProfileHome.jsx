@@ -50,6 +50,9 @@ async function get_profile_details(user_email) {
     console.log("Deepndent list is : ");
     if (isIterable(response.data.getParentDetails.DependentList)) {
       console.log(response.data.getParentDetails.DependentList.length);
+      response.data.getParentDetails.DependentList.map((value) => {
+        console.log("String_id : " + value.string_id);
+      });
     }
     return response.data.getParentDetails;
   } catch (error) {
@@ -76,9 +79,9 @@ async function get_profile_details(user_email) {
 }
 
 export default function ProfileHome({userEmail, resetUserEmail}) {
-  const { setDependentName } = useContext(ParameterContext);
+  const { setDependentStringId } = useContext(ParameterContext);
 
-  
+
   const [userData, setUserData] = useState({
     Name: "Rahagir",
     LastName: "Kaavi",
@@ -108,7 +111,7 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
     result.push(
       <div className="DependentListItem">
         <Link to="/DependentProfile">
-          <div className="DependentPhoto" onClick={()=>{setDependentName(dependentData.name)}}>
+          <div className="DependentPhoto" onClick={()=>{setDependentStringId(dependentData.string_id)}}>
             <img src={profile_pic_round} alt="profile_pic_round"/>
           </div>
         </Link>

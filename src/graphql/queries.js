@@ -60,6 +60,7 @@ export const getParentDetails = /* GraphQL */ `
         name
         thumbnail_url
         image_url
+        string_id
         __typename
       }
       __typename
@@ -67,12 +68,13 @@ export const getParentDetails = /* GraphQL */ `
   }
 `;
 export const getDependentDetails = /* GraphQL */ `
-  query GetDependentDetails($name: String) {
-    getDependentDetails(name: $name) {
+  query GetDependentDetails($string_id: String) {
+    getDependentDetails(string_id: $string_id) {
       id
       name
       thumbnail_url
       image_url
+      string_id
       __typename
     }
   }

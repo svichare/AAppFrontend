@@ -255,9 +255,6 @@ async function update_trait_response(curTraitId, curCategoryId,
 function PopulateDescriptionOption({TextResponse, TraitCategoryId, TraitId}) {
   var placeholder_text = (TextResponse == "" ? "Enter details if any .." : "");
 
-  // Populate actual parameters after testing.  
-  // var trait_id = 1;
-  // var trait_category_id = 1;
   var dependent_string_id = "Beta";
   
   const handleTextResponseChange = (updatedResponse) => {
@@ -303,7 +300,7 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   let [localTraitQuestionsList, setLocalTraitQuestionsList] = useState([]);
   let [localTraitReponseList, setLocalTraitReponseList] = useState([]);
 
-  const { selectedTraitCategory, dependentName } = useContext(ParameterContext);
+  const { selectedTraitCategory, dependentStringId } = useContext(ParameterContext);
   console.log("Showing trait details for :  " + selectedTraitCategory);
 
   useEffect( () => {
@@ -311,7 +308,7 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
     list_trait_questions(selectedTraitCategory)
         .then((trait_questions_from_async) => {
             console.log("Received QuestionList. Now quering responses.");
-            get_category_responses(dependentName, selectedTraitCategory)
+            get_category_responses(dependentStringId, selectedTraitCategory)
             .then((trait_responses_from_async) => {
                 setLocalTraitReponseList(trait_responses_from_async);
                 console.log("Received responses. Now checking if there is any match.");

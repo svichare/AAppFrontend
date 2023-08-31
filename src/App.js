@@ -20,9 +20,14 @@ import {GoogleLogin} from './components';
 export const ParameterContext = React.createContext();
 
 const App = () =>{
+  const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
-  const [dependentName, setDependentName] =  useState("DefaultDepName");
+  const [dependentStringId, setDependentStringId] =  useState("Name loading..");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
+
+  const handleChangeUrl = (newUrl) => {
+    setCurrentUrl(newUrl);
+  };
 
   var resetUserEmail = () => {
     setUserEmail("");
@@ -32,7 +37,7 @@ const App = () =>{
   return (
   <BrowserRouter>
   <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
-  userEmail, dependentName, setDependentName }}>
+  userEmail, dependentStringId, setDependentStringId }}>
       <NavBar userLoggedIn={userEmail.length >0 ? true : false}
           resetUserEmail={resetUserEmail}/>
       <Routes>
@@ -43,7 +48,7 @@ const App = () =>{
         <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail}/>)}/>
         <Route path="/LoginWithGoogle" Component={GoogleLogin} />
         <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
-        <Route path="/DependentProfile" Component={() => (<DependentProfile dependentId={dependentName} />)} />
+        <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
         <Route path="/ErrorPage" Component={ErrorPage} />
         {traitRoutes.map(route => (
             <Route
