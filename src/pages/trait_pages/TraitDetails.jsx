@@ -177,12 +177,46 @@ async function list_trait_questions(id) {
   }
 }
 
-function PopulateOptions({TraitOptions, SelectedResponseIds}) {
-  const onOptionClick = (OptionText) => {
-    console.log("Option clicked : " + OptionText);
-    // setSelectedTrait(value);
+async function update_trait_response(curTraitId, curCategoryId,
+    curDependentStringId, curSelectedId, curSelectedText, curSelectedUpdated,
+    curTextResponse, curTextResponseUpdated) {
+  // update actionItem with the response.
+  const update_trait_response_details = {
+    traitId: curTraitId,
+    traitCategoryId: curCategoryId,
+    dependentId: curDependentStringId,
+    selectedId: curSelectedId,
+    selectedIdText: curSelectedText,
+    isSelectedIdUpdated: curSelectedUpdated,
+    textResponse: curTextResponse,
+    textResponseUpdated: curTextResponseUpdated
   };
-  
+  // const update_trait_response_details = {
+  //   traitId: 1,
+  //   traitCategoryId: 1,
+  //   dependentId: "Beta",
+  //   selectedId: 5,
+  //   selectedIdText: "Before 5am (hardcoded)",
+  //   isSelectedIdUpdated: true,
+  //   textResponse: "Just for fun text update (hardcoded)",
+  //   textResponseUpdated: false
+  // };
+  console.log("Using hardcoded values."); 
+
+  try {
+    console.log("Updating the response. : ", JSON.stringify(update_trait_response_details));
+      const response = await API.graphql(
+        graphqlOperation(updateTraitResponse,
+          {updateTraitResponseInput: update_trait_response_details}));
+      console.log("received response : ", JSON.stringify(response));
+  } catch (error) {
+      console.error('Cought error in update_action_response function :',  JSON.stringify(error));
+  }
+}
+
+function PopulateOptions({TraitOptions, SelectedResponseIds,
+                          TraitCategoryId, TraitId, DependentId, setCounter}) {
+
   if (typeof TraitOptions === 'undefined' || TraitOptions.length === 0) {
       console.log("TraitOptions : undefined or empty");
       return;
@@ -194,8 +228,7 @@ function PopulateOptions({TraitOptions, SelectedResponseIds}) {
          return;
       }
   }
-  console.log("Checking which options are selected");
-  
+
   if (typeof SelectedResponseIds !== 'undefined' &&
       SelectedResponseIds != null) {
     console.log("Size of TraitOptions : " + TraitOptions.length + " : SelectedResponseIds" + SelectedResponseIds.length);
@@ -210,13 +243,25 @@ function PopulateOptions({TraitOptions, SelectedResponseIds}) {
     }
   }
   
+  const handleSelectedIdChange = (updatedResponse, optionText) => {
+    console.log("Updating selectedID : " + updatedResponse + " : " + optionText);
+    update_trait_response(TraitId, TraitCategoryId, DependentId, updatedResponse,
+    optionText, true,  "", false);
+    setCounter(Math.random());
+  };
+  
   // Check selected options here.
   return (
     <div className="TraitOptionsList">
     {
         TraitOptions.map((value, index) => (
-          <div className="TraitOptionItem" key={value.id + Math.random()}>
-            <button type="button" onClick={() => {onOptionClick(value.OptionText)}} key={value.id} disabled={value.is_selected}> {value.OptionText}
+          <div className="TraitOptionItem" key={value.id} value={value.is_selected ? "selected" : "not-selected"}>
+            <button type="button"
+            onClick={() => {
+              value.is_selected = !value.is_selected;
+              handleSelectedIdChange(value.id, value.OptionText);
+            }}
+            key={value.id} > {value.OptionText}
             </button>
           </div>
         ))
@@ -225,55 +270,25 @@ function PopulateOptions({TraitOptions, SelectedResponseIds}) {
   );
 }
 
-async function update_trait_response(curTraitId, curCategoryId,
-    curDependentStringId, curSelectedId, curSelectedText, curSelectedUpdated,
-    curTextResponse, curTextResponseUpdated) {
-  // update actionItem with the response.
-  console.log("Updating response to : " + curTextResponse);
-  const update_trait_response_details = {
-    traitId: curTraitId,
-    traitCategoryId: curCategoryId,
-    dependentId: curDependentStringId,
-    selectedId: 0,
-    selectedIdText: "",
-    isSelectedIdUpdated: false,
-    textResponse: curTextResponse,
-    textResponseUpdated: curTextResponseUpdated
-  };
-
-  try {
-    console.log("Updating the text response.");
-      const response = await API.graphql(
-        graphqlOperation(updateTraitResponse,
-          {updateTraitResponseInput: update_trait_response_details}));
-      console.log("received response : ", JSON.stringify(response));
-  } catch (error) {
-      console.error('Cought error in update_action_response function :',  JSON.stringify(error));
-  }
-}
-
-function PopulateDescriptionOption({TextResponse, TraitCategoryId, TraitId}) {
+function PopulateDescriptionOption({TextResponse, TraitCategoryId,
+                                    TraitId, DependentId}) {
   var placeholder_text = (TextResponse == "" ? "Enter details if any .." : "");
 
-  var dependent_string_id = "Beta";
-  
   const handleTextResponseChange = (updatedResponse) => {
-    update_trait_response(TraitId, TraitCategoryId, dependent_string_id, 0,
+    update_trait_response(TraitId, TraitCategoryId, DependentId, 0,
     "", false,  updatedResponse, true);
   };
-
     
   return (
     <input className="TraitOptionDetails" type="text"
            placeholder={placeholder_text} defaultValue={TextResponse}
            onChange={(e) => {
-            // TextResponse = e.target.value;
             handleTextResponseChange(e.target.value);
           }}/>
   );
 }
 
-function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId}) {
+function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId, setCounter}) {
   if (typeof TraitQuestionsList === "undefined" ||
       TraitQuestionsList.length === 0 ) {
     // nothing to do as project not selected.
@@ -286,10 +301,17 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId}) {
       {TraitQuestionsList.map((value, index) => (
       <div className="TraitQuestionDetails" key={index}>
         <p> {index+1}/{TraitQuestionsList.length}: {value.Description} </p>
-        <PopulateOptions TraitOptions={value.Options} SelectedResponseIds={value.selected_response_ids} key={value.id}/>
+        <PopulateOptions TraitOptions={value.Options}
+                         SelectedResponseIds={value.selected_response_ids}
+                         key={value.id}
+                         TraitCategoryId={TraitCategoryId}
+                         TraitId={value.id}
+                         DependentId={DependentId}
+                         setCounter={setCounter}/>
         <PopulateDescriptionOption TextResponse={value.text_response}
                                    TraitCategoryId={TraitCategoryId}
-                                   TraitId={value.id}/>
+                                   TraitId={value.id}
+                                   DependentId={DependentId}/>
       </div>
       ))}
     </div>
@@ -299,6 +321,7 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId}) {
 export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   let [localTraitQuestionsList, setLocalTraitQuestionsList] = useState([]);
   let [localTraitReponseList, setLocalTraitReponseList] = useState([]);
+  const [counter, setCounter] = useState(0);  // will be using it to re-render the page.
 
   const { selectedTraitCategory, dependentStringId } = useContext(ParameterContext);
   console.log("Showing trait details for :  " + selectedTraitCategory);
@@ -329,9 +352,12 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
                             entry => entry.trait_id == trait_question.id);
                     if (matchingEntry) {
                       console.log("Found matching entry for : " + matchingEntry.trait_id);
-                      if (typeof matchingEntry.selected_response_ids != 'undefined') {
+                      if (typeof matchingEntry.selected_response_ids !== 'undefined' && 
+                          matchingEntry.selected_response_ids !== null) {
                         console.log("  including response of length : " + matchingEntry.selected_response_ids.length);
                         trait_question.selected_response_ids = matchingEntry.selected_response_ids;
+                      } else {
+                        console.log("Type of matchingEntry.selected_response_ids : ", typeof matchingEntry.selected_response_ids)
                       }
                       console.log("Including text_response : " + matchingEntry.text_response);
                       // Should the entire object be copied instead of specific values?
@@ -345,13 +371,15 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
 
             });
         });
-  }, [selectedTraitCategory]);
+  }, [selectedTraitCategory, counter]);
 
   return (
     <div className="TraitDetailsContainer">
       <div className="TraitDetailsMain">
           <DisplayTraitQuestions TraitQuestionsList={localTraitQuestionsList}
           TraitCategoryId={selectedTraitCategory}
+          DependentId={dependentStringId}
+          setCounter={setCounter}
           />
       </div>
       <div className="Bottom">
