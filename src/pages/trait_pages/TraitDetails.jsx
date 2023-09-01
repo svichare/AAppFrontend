@@ -201,7 +201,7 @@ async function update_trait_response(curTraitId, curCategoryId,
   //   textResponse: "Just for fun text update (hardcoded)",
   //   textResponseUpdated: false
   // };
-  console.log("Using hardcoded values."); 
+  // console.log("Using hardcoded values."); 
 
   try {
     console.log("Updating the response. : ", JSON.stringify(update_trait_response_details));
@@ -215,8 +215,8 @@ async function update_trait_response(curTraitId, curCategoryId,
 }
 
 function PopulateOptions({TraitOptions, SelectedResponseIds,
-                          TraitCategoryId, TraitId, DependentId, setCounter}) {
-
+                          TraitCategoryId, TraitId, DependentId, setCounter,
+                          counter, setSelectedIdChanged}) {
   if (typeof TraitOptions === 'undefined' || TraitOptions.length === 0) {
       console.log("TraitOptions : undefined or empty");
       return;
@@ -231,7 +231,6 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
 
   if (typeof SelectedResponseIds !== 'undefined' &&
       SelectedResponseIds != null) {
-    console.log("Size of TraitOptions : " + TraitOptions.length + " : SelectedResponseIds" + SelectedResponseIds.length);
     for (var i = 0; i < TraitOptions.length; ++i) {
       TraitOptions[i].is_selected = false;
       const matchingEntry = SelectedResponseIds.find(entry => 
@@ -243,11 +242,39 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
     }
   }
   
-  const handleSelectedIdChange = (updatedResponse, optionText) => {
+  const handleSelectedIdChange = async (updatedResponse, optionText, is_selected) => {
     console.log("Updating selectedID : " + updatedResponse + " : " + optionText);
+    // await 
     update_trait_response(TraitId, TraitCategoryId, DependentId, updatedResponse,
     optionText, true,  "", false);
     setCounter(Math.random());
+    if (is_selected) {
+      console.log("Setting local copy changed to : ", JSON.stringify({
+        has_changed: true,
+        trait_id_changed: TraitId,
+        selected_id_added: updatedResponse,
+        selected_id_removed: 0
+      }));
+      setSelectedIdChanged({
+        has_changed: true,
+        trait_id_changed: TraitId,
+        selected_id_added: updatedResponse,
+        selected_id_removed: 0
+      });
+    } else {
+      console.log("Setting local copy changed to : ", JSON.stringify({
+        has_changed: true,
+        trait_id_changed: TraitId,
+        selected_id_added: 0,
+        selected_id_removed: updatedResponse
+      }));
+      setSelectedIdChanged({
+        has_changed: true,
+        trait_id_changed: TraitId,
+        selected_id_added: 0,
+        selected_id_removed: updatedResponse
+      });
+    }
   };
   
   // Check selected options here.
@@ -255,11 +282,11 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
     <div className="TraitOptionsList">
     {
         TraitOptions.map((value, index) => (
-          <div className="TraitOptionItem" key={value.id} value={value.is_selected ? "selected" : "not-selected"}>
+          <div className="TraitOptionItem" key={value.id + counter} value={value.is_selected ? "selected" : "not-selected"}>
             <button type="button"
             onClick={() => {
               value.is_selected = !value.is_selected;
-              handleSelectedIdChange(value.id, value.OptionText);
+              handleSelectedIdChange(value.id, value.OptionText, value.is_selected);
             }}
             key={value.id} > {value.OptionText}
             </button>
@@ -288,7 +315,7 @@ function PopulateDescriptionOption({TextResponse, TraitCategoryId,
   );
 }
 
-function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId, setCounter}) {
+function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId, setCounter, counter, setSelectedIdChanged}) {
   if (typeof TraitQuestionsList === "undefined" ||
       TraitQuestionsList.length === 0 ) {
     // nothing to do as project not selected.
@@ -307,7 +334,9 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
                          TraitCategoryId={TraitCategoryId}
                          TraitId={value.id}
                          DependentId={DependentId}
-                         setCounter={setCounter}/>
+                         setCounter={setCounter}
+                         counter={counter}
+                         setSelectedIdChanged={setSelectedIdChanged}/>
         <PopulateDescriptionOption TextResponse={value.text_response}
                                    TraitCategoryId={TraitCategoryId}
                                    TraitId={value.id}
@@ -320,20 +349,62 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
 
 export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
   let [localTraitQuestionsList, setLocalTraitQuestionsList] = useState([]);
-  let [localTraitReponseList, setLocalTraitReponseList] = useState([]);
   const [counter, setCounter] = useState(0);  // will be using it to re-render the page.
+  let [selectedIdChanged, setSelectedIdChanged] = useState({
+    has_changed: false,
+    trait_id_changed: 0,
+    selected_id_added: 0,
+    selected_id_removed: 0
+  });
+
+  let [textResponseChanged, setTextResponseChanged] = useState({
+    has_changed: false,
+    trait_id_changed: 0,
+    updated_test_response: ""
+  });
 
   const { selectedTraitCategory, dependentStringId } = useContext(ParameterContext);
   console.log("Showing trait details for :  " + selectedTraitCategory);
 
   useEffect( () => {
+    if (localTraitQuestionsList.length > 0 ) {
+      console.log("Already have question list, so skipping the query.");
+      if (selectedIdChanged.has_changed ===true) {
+        var copy_of_q_list = localTraitQuestionsList; 
+        console.log("Looking for matching entry");
+        for (var trait_question of copy_of_q_list) {
+          if (trait_question.id === selectedIdChanged.trait_id_changed) {
+            console.log("Found the trait");
+            if (selectedIdChanged.selected_id_added !== 0) {
+              console.log("Adding the entry");
+              trait_question.selected_response_ids.push({id: selectedIdChanged.selected_id_added});
+            } else if (selectedIdChanged.selected_id_removed !== 0) {
+              console.log("Removing the entry");
+              var temp_array = trait_question.selected_response_ids.filter(item => item.id !== selectedIdChanged.selected_id_removed);
+              trait_question.selected_response_ids = temp_array;
+            }
+          }
+        }
+        // Reset this as the value has been used.
+        setSelectedIdChanged({
+          has_changed: false,
+          trait_id_changed: 0,
+          selected_id_added: 0,
+          selected_id_removed: 0
+        });
+        console.log("Updating the local copy now");
+        setLocalTraitQuestionsList(copy_of_q_list);
+      }
+      // No need to query cloud as local copy is updated.
+      return;
+    }
+
     console.log("Quering Question List.");
     list_trait_questions(selectedTraitCategory)
         .then((trait_questions_from_async) => {
             console.log("Received QuestionList. Now quering responses.");
             get_category_responses(dependentStringId, selectedTraitCategory)
             .then((trait_responses_from_async) => {
-                setLocalTraitReponseList(trait_responses_from_async);
                 console.log("Received responses. Now checking if there is any match.");
                 console.log("Question list length : " + trait_questions_from_async.length);
                 if (typeof trait_responses_from_async == 'undefined' ||
@@ -371,7 +442,7 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
 
             });
         });
-  }, [selectedTraitCategory, counter]);
+  }, [selectedTraitCategory, selectedIdChanged, localTraitQuestionsList]);
 
   return (
     <div className="TraitDetailsContainer">
@@ -380,6 +451,8 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
           TraitCategoryId={selectedTraitCategory}
           DependentId={dependentStringId}
           setCounter={setCounter}
+          counter={counter}
+          setSelectedIdChanged={setSelectedIdChanged}
           />
       </div>
       <div className="Bottom">
