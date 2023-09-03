@@ -1,5 +1,6 @@
 import {React, useEffect, useState, useContext} from "react";
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import profile_photo from '../assets/images/profile_picture.jpg'
 import profile_pic_round from '../assets/images/profile_pic_round.png'
@@ -98,6 +99,8 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
     }]
   });
 
+  const navigate = useNavigate();
+  
   useEffect( () => {
       get_profile_details(userEmail)
       .then((profile_details_from_async) => {
@@ -119,6 +122,16 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
         </div>
       );
     });
+    result.push(
+      <div className="DependentListItem">
+        <Link to="/AddDependent">
+          <div className="DependentPhoto">
+            <img src={profile_pic_round} alt="profile_pic_round"/>
+          </div>
+        </Link>
+        <div className="DependentName"><p>Add one</p></div>
+        </div>
+      );
   }
   
 
@@ -139,7 +152,13 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
           <div className="DependentList">
             {result}
           </div>
+          <Link to="/UpdateProfile">
+            <div className="UpdateProfileButton" onClick={()=>{}}>
+              <button type="button">Update Profile</button> 
+            </div>
+          </Link>
         </div>
+
         <div className="ProfileHomeBottom">
           <p>.</p>
         </div>

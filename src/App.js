@@ -14,6 +14,7 @@ import ProfileHome from './pages/ProfileHome';
 import DependentProfile from './pages/DependentProfile';
 
 import traitRoutes from './pages/trait_pages/TraitRoutes.js';
+import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
 import {GoogleLogin} from './components';
 
 // Create a context for managing the parameter
@@ -51,6 +52,14 @@ const App = () =>{
         <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
         <Route path="/ErrorPage" Component={ErrorPage} />
         {traitRoutes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              Component={route.Component}
+              exact={route.exact}
+            />
+          ))}
+        {profileRoutes.map(route => (
             <Route
               key={route.path}
               path={route.path}

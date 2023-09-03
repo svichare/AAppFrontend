@@ -57,6 +57,16 @@
   padding-bottom: 1000px;
 }
 
+.UpdateProfileButton button {
+  padding: 10px;
+  background-color: #94E5FF80;
+  border-radius: 5px;
+  width: 10rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
 @media screen and (max-width: 900px) {
     .ProfileHomeMain {
         margin-top: 0.1rem;

@@ -11,3 +11,19 @@ export const updateTraitResponse = /* GraphQL */ `
     }
   }
 `;
+export const updateProfile = /* GraphQL */ `
+  mutation UpdateProfile($updateProfileInput: UpdateProfileInput) {
+    updateProfile(updateProfileInput: $updateProfileInput) {
+      status
+      __typename
+    }
+  }
+`;
+export const addDependent = /* GraphQL */ `
+  mutation AddDependent($addDependentInput: AddDependentInput) {
+    addDependent(addDependentInput: $addDependentInput) {
+      status
+      __typename
+    }
+  }
+`;

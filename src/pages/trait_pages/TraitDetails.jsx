@@ -377,7 +377,12 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
             console.log("Found the trait");
             if (selectedIdChanged.selected_id_added !== 0) {
               console.log("Adding the entry");
-              trait_question.selected_response_ids.push({id: selectedIdChanged.selected_id_added});
+              if (typeof trait_question.selected_response_ids === 'undefined' ||
+                trait_question.selected_response_ids === null) {
+                trait_question.selected_response_ids = [{id: selectedIdChanged.selected_id_added}];
+              } else {
+                trait_question.selected_response_ids.push({id: selectedIdChanged.selected_id_added});
+              }
             } else if (selectedIdChanged.selected_id_removed !== 0) {
               console.log("Removing the entry");
               var temp_array = trait_question.selected_response_ids.filter(item => item.id !== selectedIdChanged.selected_id_removed);

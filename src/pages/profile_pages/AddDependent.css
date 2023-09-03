@@ -1,0 +1,120 @@
+@import "../../assets/fonts/fonts.css";
+
+.AddDependentContainer {
+  width: 100%;
+  background-color: #FFF0C3;
+  height: 100%;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+}
+
+.AddDependentItem {    
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.AddDependentLocationItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+
+  width: 30rem;
+}
+
+.AddDependentItem button {
+  padding: 10px;
+  background-color: #94E5FF80;
+  border-radius: 5px;
+  width: 10rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.AddDependentItem button:active {
+  background-color: white;
+}
+
+.AddDependentItem button:disabled {
+  background-color: #BEBEBE;
+}
+
+.AddDependentMain {    
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: flex-start;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.AddDependentMain h1 {    
+  font-family: 'Sansation', Consolas, sans-serif;
+}
+
+.AddDependentMain h2 {    
+  font-family: 'Sansation', Consolas, sans-serif;
+}
+
+.AddDependentDetails button {
+  padding: 10px;
+  background-color: #94E5FF80;
+  border-radius: 5px;
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.AddDependentDetails button:active {
+  background-color: white;
+}
+
+.AddDependentDetails button:disabled {
+  background-color: #BEBEBE;
+}
+
+.AddDependentDetails p {
+  /*color: white;*/
+  width: 30rem;
+  text-align: left;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.AddDependentDetails {
+  width: 30rem;
+  gap: 1rem;
+  padding: 1rem;
+  border: none;
+  border-radius: 10px;
+  /*background-color: #FFF0C3;*/
+  
+  font-size: 16px;
+  color: #333;
+}
+
+.AddDependentDetails:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.Bottom {
+  /*width: 100%;*/
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}
