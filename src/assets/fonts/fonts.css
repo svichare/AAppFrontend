@@ -16,3 +16,9 @@
   src: url('./SawarabiGothic-Regular.ttf') format('truetype') /* Adjust the path and format accordingly */
   /* Add more src entries for different font formats if needed */
 }
+
+@font-face {
+  font-family: 'Seoulnamsan'; /* Use your desired font family name */
+  src: url('./seoulnamsan-medium.ttf') format('truetype') /* Adjust the path and format accordingly */
+  /* Add more src entries for different font formats if needed */
+}

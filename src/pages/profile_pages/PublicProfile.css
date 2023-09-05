@@ -1,0 +1,75 @@
+@import "../../assets/fonts/fonts.css";
+
+.PublicProfileContainer {
+  width: 100%;
+  background-color: #FFF0C3;
+  height: 100%;
+  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+}
+
+.PublicProfileMain {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /*margin-left: 15rem;*/
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+  gap: .5rem;
+}
+
+.PublicProfileLeftSidebar {
+  width: 10rem;
+  height: 100%;
+  /*margin-left: 15rem;*/
+}
+
+.PublicProfileMain button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background-color: #94E5FF80;
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.PublicHomeTopbar {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+}
+
+.PublicHomeImage img {
+  margin: 2rem;
+  width: 20rem;
+  height: auto;
+}
+
+.PublicHomeName {
+  margin: 5rem 5rem; 
+}
+
+.PublicHomeName p {
+  font-size: 18px;
+}
+
+.PublicEmergencyContact {
+    background-color: #FAAABD80;
+    width: 20rem;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    border-radius: 5px;
+}
+.Bottom {
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}

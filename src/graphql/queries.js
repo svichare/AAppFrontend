@@ -61,6 +61,9 @@ export const getParentDetails = /* GraphQL */ `
         thumbnail_url
         image_url
         string_id
+        diagnosis
+        verbal
+        age
         __typename
       }
       __typename
@@ -75,6 +78,9 @@ export const getDependentDetails = /* GraphQL */ `
       thumbnail_url
       image_url
       string_id
+      diagnosis
+      verbal
+      age
       __typename
     }
   }
@@ -88,10 +94,6 @@ export const getTraitCategoryResponses = /* GraphQL */ `
       trait_responses {
         trait_id
         text_response
-        selected_response_ids {
-          id
-          OptionText
-        }
         __typename
       }
       __typename

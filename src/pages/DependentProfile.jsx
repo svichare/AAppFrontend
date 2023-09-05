@@ -81,6 +81,7 @@ export default function DependentProfile() {
             </div>
         </div>
           <button type="button" onClick={onUpdate}> Update profile </button>
+          <button type="button" onClick={onUpdate}> See Public profile </button>
       </div>
       <div className="Bottom">
         <p>.</p>
