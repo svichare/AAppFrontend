@@ -125,6 +125,9 @@ export default function PublicProfile() {
               <div className="PublicEmergencyContact">
                 <p> Emergency contact: {returnEmergencyContact()} </p>
               </div>
+              <button type="button" onClick={() => {
+                navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
+              }}> Details for Caregivers </button>
             </div>
         </div>
       </div>

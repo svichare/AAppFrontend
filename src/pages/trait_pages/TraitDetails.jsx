@@ -5,7 +5,7 @@ import { ParameterContext } from '../../App';
 
 import "./TraitDetails.css"
 
-import { getTraitCategoryResponses } from '../../graphql/queries'
+// import { getTraitCategoryResponses } from '../../graphql/queries'
 import { updateTraitResponse } from '../../graphql/mutations'
 
 
@@ -13,13 +13,34 @@ function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
 }
 
+// Using local copy as the remote one keeps removing the subitems.
+const getTraitCategoryResponsesLocal = /* GraphQL */ `
+  query GetTraitCategoryResponses($compound_id: String) {
+    getTraitCategoryResponses(compound_id: $compound_id) {
+      compound_id
+      dependent_id
+      trait_category_id
+      trait_responses {
+        trait_id
+        text_response
+        selected_response_ids {
+          OptionText
+          id
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+
 async function get_category_responses(dependent_name, trait_category) {
   var cur_compound_id = dependent_name+ "_" + trait_category;
   console.log("Looking for responses for compund_id : " + cur_compound_id);
   try {
     console.log("Checking request  : " + dependent_name);
     const response = await API.graphql({
-      query: getTraitCategoryResponses,
+      query: getTraitCategoryResponsesLocal,
       variables: {
         compound_id: cur_compound_id
       },

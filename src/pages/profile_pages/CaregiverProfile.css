@@ -1,0 +1,92 @@
+@import "../../assets/fonts/fonts.css";
+
+.CaregiverProfileContainer {
+  width: 100%;
+  background-color: #FFF0C3;
+  height: 100%;
+  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+  scroll-behavior: smooth;
+}
+
+.CaregiverProfileMain {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /*margin-left: 15rem;*/
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+  gap: .5rem;
+}
+
+.CaregiverProfileLeftSidebar {
+  width: 10rem;
+  height: 100%;
+  /*margin-left: 15rem;*/
+}
+
+.CaregiverProfileMain button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background-color: #94E5FF80;
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.CaregiverHomeTopbar {
+  display: flex;
+  /*justify-content: left;*/
+  /*align-items: left;*/
+}
+
+.CaregiverHomeImage img {
+  /*margin: 2rem;*/
+  /*width: 20rem;*/
+  /*height: auto;*/
+}
+
+.CaregiverHomeName {
+    justify-content: center;
+    margin: 2rem;
+    margin-left: 5rem;
+    gap: 1rem;
+    width: 10;
+}
+
+.CaregiverHomeName p {
+  font-size: 18px;
+  justify-content: center;
+}
+
+.CaregiverHomeName button {
+  font-size: 18px;
+  /*padding: 1rem;*/
+  width: 12rem;
+  margin-left: 1rem;
+}
+
+.CaregiverHomeName a {
+  text-decoration: none;
+}
+
+.CaregiverEmergencyContact {
+    background-color: #FAAABD80;
+    width: 20rem;
+    padding-left: .3rem;
+    padding-right: .3rem;
+    border-radius: 5px;
+}
+.Bottom {
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}

@@ -65,7 +65,7 @@ export default function DependentProfile() {
   const navigate = useNavigate();
   
   const onUpdate = () => {
-    navigate('/TraitCategories');
+    navigate('/PublicProfile/' + dependentData.string_id );
   };
 
   console.log("Showing dependent details for " + dependentStringId);
