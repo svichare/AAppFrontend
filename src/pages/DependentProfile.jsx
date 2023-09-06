@@ -80,7 +80,7 @@ export default function DependentProfile() {
               <h3> {dependentData.name} </h3>
             </div>
         </div>
-          <button type="button" onClick={onUpdate}> Update profile </button>
+          <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update profile </button>
           <button type="button" onClick={onUpdate}> See Public profile </button>
       </div>
       <div className="Bottom">

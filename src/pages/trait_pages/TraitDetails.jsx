@@ -26,6 +26,7 @@ const getTraitCategoryResponsesLocal = /* GraphQL */ `
         selected_response_ids {
           OptionText
           id
+          __typename
         }
         __typename
       }
