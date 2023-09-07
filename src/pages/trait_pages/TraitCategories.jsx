@@ -9,7 +9,7 @@ import "./TraitCategories.css"
 
 import profile_picture from '../../assets/images/profile_picture.jpg'
 
-async function list_trait_categories(id) {
+async function list_trait_categories() {
   try {
     const response = await API.graphql({
       query: allTraitCategories,

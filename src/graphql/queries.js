@@ -100,3 +100,31 @@ export const getTraitCategoryResponses = /* GraphQL */ `
     }
   }
 `;
+export const getTraitCategoryDisplayStrings = /* GraphQL */ `
+  query GetTraitCategoryDisplayStrings($compound_id: String) {
+    getTraitCategoryDisplayStrings(compound_id: $compound_id) {
+      compound_id
+      dependent_id
+      trait_category_id
+      trait_display_strings {
+        Trait
+        Response
+        __typename
+      }
+      __typename
+    }
+  }
+`;
+export const getCaregiverProfile = /* GraphQL */ `
+  query GetCaregiverProfile($dependent_id: String) {
+    getCaregiverProfile(dependent_id: $dependent_id) {
+      dependent_id
+      caregiver_categories {
+        trait_category_id
+        trait_category_description
+        __typename
+      }
+      __typename
+    }
+  }
+`;

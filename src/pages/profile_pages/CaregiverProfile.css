@@ -4,7 +4,7 @@
   width: 100%;
   background-color: #FFF0C3;
   height: 100%;
-  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
   scroll-behavior: smooth;
 }
 
@@ -32,7 +32,7 @@
   width: 20rem;
   border: none;
   cursor: pointer;
-  font-family: 'Seoulnamsan','SawarabiGothic', Helvetica, sans-serif;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
   font-size: 1.1rem;
 }
 

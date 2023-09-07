@@ -64,7 +64,7 @@ export default function DependentProfile() {
   
   const navigate = useNavigate();
   
-  const onUpdate = () => {
+  const navigateToPublicProf = () => {
     navigate('/PublicProfile/' + dependentData.string_id );
   };
 
@@ -81,7 +81,7 @@ export default function DependentProfile() {
             </div>
         </div>
           <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update profile </button>
-          <button type="button" onClick={onUpdate}> See Public profile </button>
+          <button type="button" onClick={navigateToPublicProf}> See Public profile </button>
       </div>
       <div className="Bottom">
         <p>.</p>
