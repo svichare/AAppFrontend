@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import "./PublicProfile.css"
 
+import rish_photo from '../../assets/photos/rishaan_profile_pic.jpg'
 import profile_picture from '../../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../../App';
 
@@ -116,15 +117,15 @@ export default function PublicProfile() {
       <div className="PublicProfileMain">
         <div className="PublicHomeTopbar">
             <div className="PublicHomeImage">
-              <img src={dependentData.image_url} alt="profile_photo" />
+              <img src={/*dependentData.image_url*/ rish_photo} alt="profile_photo" />
             </div>
             <div className="PublicHomeName">
               <h3> {returnName()} </h3>
               <p> {returnDiagnosis()} {returnDiagnosis().length > 0 &&  returnVerbal().length > 0 ? "," : "" } {returnVerbal()}</p>
               <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
-              <div className="PublicEmergencyContact">
-                <p> Emergency contact: {returnEmergencyContact()} </p>
-              </div>
+              <button type="button" onClick={() => {
+                navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
+              }}> Contact Caregiver </button>
               <button type="button" onClick={() => {
                 navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
               }}> Details for Caregivers </button>

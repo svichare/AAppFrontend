@@ -24,7 +24,7 @@ const getTraitCategoryResponsesLocal = /* GraphQL */ `
         trait_id
         text_response
         selected_response_ids {
-          OptionText
+          option_text
           id
           __typename
         }
@@ -99,7 +99,7 @@ const localGetTraitQuestionList = /* GraphQL Update this if schema changes */ `
         DefaultSelection
         Options {
             id
-            OptionText
+            option_text
         }
         __typename
       }
@@ -245,7 +245,7 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
   }
 
   if (TraitOptions.length === 1) {
-      if (TraitOptions[0].OptionText == null) {
+      if (TraitOptions[0].option_text == null) {
         // console.log("TraitOptions has null value");
          return;
       }
@@ -264,11 +264,11 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
     }
   }
   
-  const handleSelectedIdChange = async (updatedResponse, optionText, is_selected) => {
-    console.log("Updating selectedID : " + updatedResponse + " : " + optionText);
+  const handleSelectedIdChange = async (updatedResponse, option_text, is_selected) => {
+    console.log("Updating selectedID : " + updatedResponse + " : " + option_text);
     // await 
     update_trait_response(TraitId, TraitCategoryId, DependentId, updatedResponse,
-    optionText, true,  "", false);
+    option_text, true,  "", false);
     setCounter(Math.random());
     if (is_selected) {
       console.log("Setting local copy changed to : ", JSON.stringify({
@@ -308,9 +308,9 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
             <button type="button"
             onClick={() => {
               value.is_selected = !value.is_selected;
-              handleSelectedIdChange(value.id, value.OptionText, value.is_selected);
+              handleSelectedIdChange(value.id, value.option_text, value.is_selected);
             }}
-            key={value.id} > {value.OptionText}
+            key={value.id} > {value.option_text}
             </button>
           </div>
         ))

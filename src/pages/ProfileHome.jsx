@@ -2,6 +2,7 @@ import {React, useEffect, useState, useContext} from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import svichare_photo from '../assets/photos/about_alone.jpg'
 import profile_photo from '../assets/images/profile_picture.jpg'
 import profile_pic_round from '../assets/images/profile_pic_round.png'
 
@@ -140,7 +141,7 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
         <div className="ProfileHomeMain">
           <div className="ProfileHomeTopbar">
             <div className="ProfileImage">
-              <img src={userData.ImageURL} alt="profile_photo" />
+              <img src={/*userData.ImageURL*/ svichare_photo} alt="profile_photo" />
             </div>
             <div className="ProfileName">
               <h4>Welcome back {userData.Name} ..</h4>

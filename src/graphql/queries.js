@@ -41,7 +41,7 @@ export const getTraitOptionList = /* GraphQL */ `
     getTraitOptionList(id: $id) {
       OptionList {
         id
-        OptionText
+        option_text
         __typename
       }
       __typename
@@ -120,8 +120,7 @@ export const getCaregiverProfile = /* GraphQL */ `
     getCaregiverProfile(dependent_id: $dependent_id) {
       dependent_id
       caregiver_categories {
-        trait_category_id
-        trait_category_description
+        trait_category_name
         __typename
       }
       __typename

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import "./DependentProfile.css"
 
+import rish_photo from '../assets/photos/about_rish_crop2.jpg'
 import profile_picture from '../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../App';
 
@@ -74,7 +75,7 @@ export default function DependentProfile() {
       <div className="DependentProfileMain">
         <div className="DependentHomeTopbar">
             <div className="DependentHomeImage">
-              <img src={dependentData.image_url} alt="profile_photo" />
+              <img src={/*dependentData.image_url*/ rish_photo} alt="profile_photo" />
             </div>
             <div className="DependentHomeName">
               <h3> {dependentData.name} </h3>
