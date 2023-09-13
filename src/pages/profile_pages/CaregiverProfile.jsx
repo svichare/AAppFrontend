@@ -9,10 +9,42 @@ import profile_picture from '../../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../../App';
 
 import { API } from '@aws-amplify/api'
-import { getDependentDetails } from '../../graphql/queries'
+import { getDependentDetails, getDependentPublicDetails } from '../../graphql/queries'
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
+}
+
+async function get_public_dependent_details(public_id) {
+
+  try { 
+    console.log("Checking request  : " + public_id);
+    const response = await API.graphql({
+      query: getDependentPublicDetails,
+      variables: {
+        public_id: public_id
+      },
+    });
+    console.log("Checking response  : " + public_id);
+    if (typeof response.data.getDependentPublicDetails == 'undefined') {
+      return {
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+        "name": "Mock User",
+        "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+        "id": 1505
+      };
+    }
+    console.log("Returning data from lambda for ID : " + public_id);
+    return response.data.getDependentPublicDetails;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return {
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+        "name": "Error User",
+        "last_name": "SomeLastname",
+        "id": 1505
+      };
+  }
 }
 
 const getCaregiverProfileLocal = /* GraphQL */ `
@@ -36,6 +68,7 @@ const getCaregiverProfileLocal = /* GraphQL */ `
 async function get_caregiver_profile(dependent_id) {
   try {
     console.log("Trying query now");
+    
     const response = await API.graphql({
       query: getCaregiverProfileLocal,
       variables: {
@@ -84,7 +117,7 @@ function GetCategoryButtonList(props) {
   if (typeof props.caregiverCategories.caregiver_categories !== 'undefined') {
     console.log("Adding buttos now  ",  props.caregiverCategories.caregiver_categories.length);
     props.caregiverCategories.caregiver_categories.forEach((category, index) => {
-      result.push(<button type="button" > <a href={"#" + category.trait_category_name}>  {category.trait_category_name} </a> </button>);
+      result.push(<button type="button" key={Math.random()}> <a href={"#" + category.trait_category_name}>  {category.trait_category_name} </a> </button>);
     });
   } else {
     console.log("Setting LocalCaregiverProfile : ", typeof props.caregiverCategories.caregiver_categories);
@@ -180,12 +213,18 @@ export default function CaregiverProfile() {
 
   useEffect( () => {
       if (dependent_public_id.length > 0) {
-        get_caregiver_profile(dependent_public_id)
-        .then((caregiver_profile_from_async) => {
-          setLocalCaregiverProfile(caregiver_profile_from_async);
-          console.log("Setting LocalCaregiverProfile : ", typeof caregiver_profile_from_async.caregiver_categories);
-          console.log("Setting LocalCaregiverProfile length  : ", caregiver_profile_from_async.caregiver_categories.length);
-        });
+        // Get ID from public ID
+        get_public_dependent_details(dependent_public_id)
+          .then((dependent_profile_from_async) => {
+            // Pass the ID to the next function.
+            get_caregiver_profile(dependent_profile_from_async.string_id)
+              .then((caregiver_profile_from_async) => {
+                setLocalCaregiverProfile(caregiver_profile_from_async);
+                console.log("Setting LocalCaregiverProfile : ", typeof caregiver_profile_from_async.caregiver_categories);
+                console.log("Setting LocalCaregiverProfile length  : ", caregiver_profile_from_async.caregiver_categories.length);
+            });
+          }
+        );
       } else {
           setLocalCaregiverProfile({caregiver_categories: [{
             trait_category_name: "Categories loading .. ",

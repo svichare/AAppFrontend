@@ -141,7 +141,7 @@ export default function PublicProfile() {
               <p> {returnDiagnosis()} {returnDiagnosis().length > 0 &&  returnVerbal().length > 0 ? "," : "" } {returnVerbal()}</p>
               <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
               <button type="button" onClick={() => {
-                navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
+                navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
               }}> Details for Caregivers </button>
             </div>
 
