@@ -8,7 +8,7 @@ import profile_picture from '../../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../../App';
 
 import { API } from '@aws-amplify/api'
-import { getDependentDetails } from '../../graphql/queries'
+import { getDependentPublicDetails } from '../../graphql/queries'
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
@@ -19,13 +19,13 @@ async function get_dependent_details(dependent_string_id) {
   try { 
     console.log("Checking request  : " + dependent_string_id);
     const response = await API.graphql({
-      query: getDependentDetails,
+      query: getDependentPublicDetails,
       variables: {
-        string_id: dependent_string_id
+        public_id: dependent_string_id
       },
     });
     console.log("Checking response  : " + dependent_string_id);
-    if (typeof response.data.getDependentDetails == 'undefined') {
+    if (typeof response.data.getDependentPublicDetails == 'undefined') {
       return {
         "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
         "name": "Mock User",
@@ -34,7 +34,7 @@ async function get_dependent_details(dependent_string_id) {
       };
     }
     console.log("Returning data from lambda for ID : " + dependent_string_id);
-    return response.data.getDependentDetails;
+    return response.data.getDependentPublicDetails;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
     return {
@@ -49,7 +49,6 @@ async function get_dependent_details(dependent_string_id) {
 export default function PublicProfile() {
 
   const { dependent_public_id } = useParams();
-  const { dependentStringId } = useContext(ParameterContext);
   const [dependentData, setDependentData] = useState({
     name: "a",
     lastName: "a",
@@ -106,12 +105,30 @@ export default function PublicProfile() {
       }
       return dependentData.verbal;
   }
+
+  const returnIntroLine = () => {
+    var intro_text = "Rishaan is a sweet quiet boy who likes to be with his family.";
+      return intro_text;
+  }
+  
+  const returnDaignosisStory = () => {
+      var intro_text = "Rishaan was daignosed with ASD by the age of 3." +
+      " He hit all his milestones till the age of 2. After that he slowly started forgetting his skills. " +
+      " By the age of 2.5, he stopped talking completely.";
+      return intro_text;
+  }
+
+  const returnLikes = () => {
+      var intro_text = "Rishaan likes to explore different textures and play with small textured toys." +
+      " Rishaan likes to play in water. He likes to be picked up and swirled around.";
+      return intro_text;
+  }
+
   
   const returnEmergencyContact = () => {
       return ("408 230 8529, 703 663 0271 shivaji.vichare@gmail.com");
   }
 
-  console.log("Showing dependent details for " + dependentStringId);
   return (
     <div className="PublicProfileContainer">
       <div className="PublicProfileMain">
@@ -125,11 +142,15 @@ export default function PublicProfile() {
               <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
               <button type="button" onClick={() => {
                 navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
-              }}> Contact Caregiver </button>
-              <button type="button" onClick={() => {
-                navigate('/PublicProfile/' + dependentData.string_id + '/CaregiverProfile' );
               }}> Details for Caregivers </button>
             </div>
+
+        </div>
+        <div className="ProfileIntroduction">
+          <h2> Introduction </h2>
+          <p> {returnIntroLine()} </p>
+          <p> {returnDaignosisStory()} </p>
+          <p> {returnLikes()} </p>
         </div>
       </div>
       <div className="Bottom">

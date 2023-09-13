@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import "./CaregiverProfile.css"
 
+// import rish_photo from '../assets/photos/about_rish_crop2.jpg'
+import rish_photo from '../../assets/images/profile_picture.jpg'
 import profile_picture from '../../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../../App';
 

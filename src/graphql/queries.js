@@ -85,6 +85,21 @@ export const getDependentDetails = /* GraphQL */ `
     }
   }
 `;
+export const getDependentPublicDetails = /* GraphQL */ `
+  query GetDependentPublicDetails($public_id: String) {
+    getDependentPublicDetails(public_id: $public_id) {
+      id
+      name
+      thumbnail_url
+      image_url
+      string_id
+      diagnosis
+      verbal
+      age
+      __typename
+    }
+  }
+`;
 export const getTraitCategoryResponses = /* GraphQL */ `
   query GetTraitCategoryResponses($compound_id: String) {
     getTraitCategoryResponses(compound_id: $compound_id) {

@@ -79,6 +79,16 @@
     padding-right: .3rem;
     border-radius: 5px;
 }
+
+.CaregiverCategory {
+  text-align: left; /* Left-justify the text within the section */
+  max-width: 80%; /* Set a maximum width for the section, adjust as needed */
+  min-width: 300px; /* Set a minimum width for the section */
+  padding: 10px;
+  border: 0.5px solid #ddd; /* Optional border for the section */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Optional box shadow for the section */
+  margin: 0 auto; /* Center the section horizontally within the container */
+}
 .Bottom {
   width: 100%;
   padding-bottom: 1000px;
