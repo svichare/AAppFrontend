@@ -66,7 +66,7 @@ export default function DependentProfile() {
   const navigate = useNavigate();
   
   const navigateToPublicProf = () => {
-    navigate('/PublicProfile/' + dependentData.string_id );
+    navigate('/PublicProfile/' + dependentData.public_id );
   };
 
   console.log("Showing dependent details for " + dependentStringId);
