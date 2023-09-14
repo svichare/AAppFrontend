@@ -61,6 +61,7 @@ export const getParentDetails = /* GraphQL */ `
         thumbnail_url
         image_url
         string_id
+        public_id
         diagnosis
         verbal
         age
@@ -78,6 +79,7 @@ export const getDependentDetails = /* GraphQL */ `
       thumbnail_url
       image_url
       string_id
+      public_id
       diagnosis
       verbal
       age
@@ -93,6 +95,7 @@ export const getDependentPublicDetails = /* GraphQL */ `
       thumbnail_url
       image_url
       string_id
+      public_id
       diagnosis
       verbal
       age
