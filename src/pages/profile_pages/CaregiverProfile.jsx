@@ -82,7 +82,7 @@ async function get_caregiver_profile(dependent_id) {
           console.log("Returning mock result");
       return {
           caregiver_categories: [{
-            trait_category_name: "Food mock",
+            trait_category_name: "Something went wrong. Try refresh for a couple of times.",
             trait_response_strings: [
                 {
                     trait_question: "Breakfast time",
@@ -204,12 +204,6 @@ export default function CaregiverProfile() {
   let [localTraitCategoryList, setLocalTraitCategoryList] = useState([]);
   const { dependent_public_id } = useParams();
   const { dependentStringId } = useContext(ParameterContext);
-  const [dependentData, setDependentData] = useState({
-    name: "a",
-    lastName: "a",
-    id: "a",
-    age: 0
-  });
 
   useEffect( () => {
       if (dependent_public_id.length > 0) {
@@ -241,13 +235,6 @@ export default function CaregiverProfile() {
 
   const navigate = useNavigate();
 
-  const returnName = () => {
-      if (dependentData.name == null || typeof dependentData.name === 'undefined') {
-          return "";
-      }
-      return dependentData.name;
-  }
-
   console.log("Showing dependent details for " + dependentStringId);
   console.log("localCaregiverProfile details :  ", typeof localCaregiverProfile.caregiver_categories);
   if (typeof localCaregiverProfile.caregiver_categories !== 'undefined') {
@@ -260,7 +247,7 @@ export default function CaregiverProfile() {
         <div className="CaregiverHomeTopbar">
             <div className="CaregiverHomeName">
               <h2> Caregiver Profile </h2>
-              <p> Find all the important information required to help {returnName()} with daily needs.</p>
+              <p> Important information required to help with daily needs.</p>
               <GetCategoryButtonList caregiverCategories={localCaregiverProfile} />
             </div>
         </div>

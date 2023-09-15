@@ -50,7 +50,7 @@ export default function PublicProfile() {
 
   const { dependent_public_id } = useParams();
   const [dependentData, setDependentData] = useState({
-    name: "a",
+    name: "Loading..",
     lastName: "a",
     id: "a",
     age: 0
@@ -65,7 +65,7 @@ export default function PublicProfile() {
           });
       } else {
           setDependentData({
-              name: "a",
+              name: "Please refresh page ... sign",
               lastName: "a",
               id: "a",
               age: 0
@@ -144,7 +144,6 @@ export default function PublicProfile() {
                 navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
               }}> Details for Caregivers </button>
             </div>
-
         </div>
         <div className="ProfileIntroduction">
           <h2> Introduction </h2>
@@ -152,9 +151,6 @@ export default function PublicProfile() {
           <p> {returnDaignosisStory()} </p>
           <p> {returnLikes()} </p>
         </div>
-      </div>
-      <div className="Bottom">
-        <p>.</p>
       </div>
     </div>
   );
