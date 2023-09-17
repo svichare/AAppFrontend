@@ -16,6 +16,7 @@ import DependentProfile from './pages/DependentProfile';
 import traitRoutes from './pages/trait_pages/TraitRoutes.js';
 import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
 import {GoogleLogin} from './components';
+import mixpanel from 'mixpanel-browser';
 
 // Create a context for managing the parameter
 export const ParameterContext = React.createContext();
@@ -25,6 +26,8 @@ const App = () =>{
   const [userEmail, setUserEmail] = useState("");
   const [dependentStringId, setDependentStringId] =  useState("Name loading..");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
+
+  mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const handleChangeUrl = (newUrl) => {
     setCurrentUrl(newUrl);
@@ -38,7 +41,7 @@ const App = () =>{
   return (
   <BrowserRouter>
   <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
-  userEmail, dependentStringId, setDependentStringId }}>
+  userEmail, dependentStringId, setDependentStringId, mixpanel }}>
       <NavBar userLoggedIn={userEmail.length >0 ? true : false}
           resetUserEmail={resetUserEmail}/>
       <Routes>

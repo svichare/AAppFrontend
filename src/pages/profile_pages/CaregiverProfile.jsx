@@ -7,6 +7,7 @@ import "./CaregiverProfile.css"
 import rish_photo from '../../assets/images/profile_picture.jpg'
 import profile_picture from '../../assets/images/profile_picture.jpg'
 import { ParameterContext } from '../../App';
+import mixpanel from 'mixpanel-browser';
 
 import { API } from '@aws-amplify/api'
 import { getDependentDetails, getDependentPublicDetails } from '../../graphql/queries'
@@ -205,6 +206,11 @@ export default function CaregiverProfile() {
   const { dependent_public_id } = useParams();
   const { dependentStringId } = useContext(ParameterContext);
 
+  mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.track('Caregiver Profile opened', {
+      'Dependent Name': dependent_public_id
+    });
+
   useEffect( () => {
       if (dependent_public_id.length > 0) {
         // Get ID from public ID
@@ -221,10 +227,10 @@ export default function CaregiverProfile() {
         );
       } else {
           setLocalCaregiverProfile({caregiver_categories: [{
-            trait_category_name: "Categories loading .. ",
+            trait_category_name: "Please go back to the public profile page ",
             trait_response_strings: [
                 {
-                    trait_question: "..",
+                    trait_question: "The ",
                     trait_responses: ["."],
                     trait_text_response: ".."
                 }]

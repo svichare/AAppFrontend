@@ -67,6 +67,7 @@ export default function UpdateProfile({existingProfile}) {
     <div className="ProfileUpdateContainer">
       <div className="ProfileUpdateMain">
         <h1>My details ...</h1>
+        <p>(Update all details with every request, yes the tool is still in beta :P)</p>
         <p>Email : {userEmail}</p>
         <div className="ProfileUpdateItem">
             <p> Name </p>

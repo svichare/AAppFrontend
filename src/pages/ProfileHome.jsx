@@ -10,16 +10,16 @@ import { API } from '@aws-amplify/api'
 import { getParentDetails } from '../graphql/queries'
 import { ParameterContext } from '../App';
 
-
 import "./ProfileHome.css"
 
 function isIterable(item) {
+  if (item === null) {
+    return false;
+  }
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
 }
 
-
 async function get_profile_details(user_email) {
-  
   try {
     const response = await API.graphql({
       query: getParentDetails,
@@ -27,92 +27,78 @@ async function get_profile_details(user_email) {
         email: user_email
       },
     });
-    // For local testing.
     if (typeof response.data.getParentDetails == 'undefined') {
       return {
         "DependentList": [
-          {
-            "name": "Beta",
-            "thumbnail_url": "",
-            "id": "101"
-          },
-          {
-            "name": "Beti",
-            "thumbnail_url": "",
-            "id": "102"
-          }
         ],
         "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "Name": "Mock User",
-        "LastName": "SomeLastname",
+        "Name": "",
+        "LastName": "",
         "id": null
       };
     }
-    console.log("Returning data from lambda for email : " + user_email);
-    console.log("Deepndent list is : ");
-    if (isIterable(response.data.getParentDetails.DependentList)) {
-      console.log(response.data.getParentDetails.DependentList.length);
-      response.data.getParentDetails.DependentList.map((value) => {
-        console.log("String_id : " + value.string_id);
-      });
-    }
+
     return response.data.getParentDetails;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
     return {
         "DependentList": [
-          {
-            "name": "Beta",
-            "thumbnail_url": "",
-            "id": "101"
-          },
-          {
-            "name": "Beti",
-            "thumbnail_url": "",
-            "id": "102"
-          }
         ],
         "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "Name": "Error user",
+        "Name": "Error",
         "LastName": "FunLastname",
         "id": null
       };
   }
 }
 
-export default function ProfileHome({userEmail, resetUserEmail}) {
+export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   const { setDependentStringId } = useContext(ParameterContext);
 
+  const { userEmail } = useContext(ParameterContext);
 
+  const [localUserEmail, setLocalUserEmail] = useState("");
+  
   const [userData, setUserData] = useState({
-    Name: "Rahagir",
+    Name: "Loading ...",
     LastName: "Kaavi",
     id: "topId",
     ImageURL: "../assets/images/profile_picture.jpg",
-    DependentList: [{
-      name: "Beta",
-      thumbnail_url: "../assets/images/profile_pic_round.png",
-      id: "myId1"
-    }, {
-      name: "Beti",
-      thumbnail_url: "../assets/images/profile_pic_round.png",
-      id: "myId2"
-    }]
+    DependentList: []
   });
 
   const navigate = useNavigate();
   
   useEffect( () => {
-      get_profile_details(userEmail)
-      .then((profile_details_from_async) => {
-        setUserData(profile_details_from_async);
-      });
+      if (typeof userEmail === 'undefined' || userEmail === "") {
+        console.log("NOT Using userEmail ");
+        setLocalUserEmail(userEmailParameter);
+        if (userEmailParameter != "") {
+          get_profile_details(userEmailParameter)
+          .then((profile_details_from_async) => {
+            setUserData(profile_details_from_async);
+          });
+        } else {
+          console.log("No user email set"); 
+          console.log ("userEmail : " + userEmail + "  userEmailParameter : " + userEmailParameter );
+        }
+      } else {
+        console.log("Using userEmail ");
+        setLocalUserEmail(userEmail);
+        get_profile_details(userEmail)
+        .then((profile_details_from_async) => {
+          setUserData(profile_details_from_async);
+        });
+      }
+
+      
+      
   }, []);
   
-  const result = [];
+  const dependent_list = [];
   if (isIterable(userData.DependentList)) {
     userData.DependentList.forEach((dependentData, index) => {
-    result.push(
+    dependent_list.push(
       <div className="DependentListItem">
         <Link to="/DependentProfile">
           <div className="DependentPhoto" onClick={()=>{setDependentStringId(dependentData.string_id)}}>
@@ -123,35 +109,61 @@ export default function ProfileHome({userEmail, resetUserEmail}) {
         </div>
       );
     });
-    result.push(
-      <div className="DependentListItem">
-        <Link to="/AddDependent">
-          <div className="DependentPhoto">
-            <img src={profile_pic_round} alt="profile_pic_round"/>
-          </div>
-        </Link>
-        <div className="DependentName"><p>Add one</p></div>
+  }
+  dependent_list.push(
+    <div className="DependentListItem">
+      <Link to="/AddDependent">
+        <div className="DependentPhoto">
+          <img src={profile_pic_round} alt="profile_pic_round"/>
         </div>
-      );
+      </Link>
+      <div className="DependentName"><p>Add one</p></div>
+      </div>
+    );
+  
+  const returnProfilePic = () => {
+      if (userData.Name == null || typeof userData.Name === 'undefined') {
+          return profile_photo;
+      }
+      if (userData.Name == "Shivaji Prafull") {
+        return svichare_photo
+      }
+
+      return profile_photo
+  }
+
+  const returnWelcomeMessage = () => {
+      if (userData.Name == null || typeof userData.Name === 'undefined') {
+          return "Welcome new user. Update your profile using options below.";
+      }
+
+      if ( userData.Name === "Error") {
+          return "Error connecting to cloud. Try refreshing this page.";
+      }
+
+      if (userData.Name == "") {
+        return "Welcome new user. Update your profile using options below.";
+      }
+
+      return "Welcome back " + userData.Name;
   }
   
-
   return (
       <div className="ProfileHomeContainer">
         <div className="ProfileHomeMain">
           <div className="ProfileHomeTopbar">
             <div className="ProfileImage">
-              <img src={/*userData.ImageURL*/ svichare_photo} alt="profile_photo" />
+              <img src={returnProfilePic()} alt="profile_photo" />
             </div>
             <div className="ProfileName">
-              <h4>Welcome back {userData.Name} ..</h4>
+              <h4>{returnWelcomeMessage()} ..</h4>
             </div>
           </div>
 
-          <p>Email : {userEmail}</p>
+          <p>Email : {localUserEmail}</p>
           <h4>Your super-heros .. </h4>
           <div className="DependentList">
-            {result}
+            {dependent_list}
           </div>
           <Link to="/UpdateProfile">
             <div className="UpdateProfileButton" onClick={()=>{}}>

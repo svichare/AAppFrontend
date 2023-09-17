@@ -9,6 +9,7 @@ import { ParameterContext } from '../../App';
 
 import { API } from '@aws-amplify/api'
 import { getDependentPublicDetails } from '../../graphql/queries'
+import mixpanel from 'mixpanel-browser';
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
@@ -56,6 +57,10 @@ export default function PublicProfile() {
     age: 0
   });
 
+  mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.track('PublicProfile opened', {
+      'Dependent Name': dependent_public_id
+    });
   useEffect( () => {
       
       if (dependent_public_id.length > 0) {

@@ -1,5 +1,6 @@
 import {React, useEffect, useState, useContext} from "react";
 import { API, graphqlOperation } from '@aws-amplify/api'
+import { useNavigate } from 'react-router-dom';
 
 import { ParameterContext } from '../../App';
 
@@ -11,7 +12,11 @@ async function add_dependent(dependentDetails) {
   // update actionItem with the response.
   const add_dependent_details = {
     parent_email: dependentDetails.parent_email,
-    name: dependentDetails.name
+    name: dependentDetails.name,
+    verbal: dependentDetails.verbal,
+    age: dependentDetails.age,
+    diagnosis: dependentDetails.diagnosis,
+    public_id: dependentDetails.public_id
   };
 
   try {
@@ -42,6 +47,8 @@ export default function AddDependent({}) {
         });
     };
 
+    const navigate = useNavigate();
+
     const handleSubmit = () => {
         add_dependent(localProfileDetails);
     };
@@ -54,6 +61,22 @@ export default function AddDependent({}) {
             <p> Name </p>
             <input className="AddDependentDetails" type="text"
                placeholder="Enter name" name="name"
+               onChange={handleInputChange}/>
+            <p> Diagnosis </p>
+            <input className="AddDependentDetails" type="text"
+               placeholder="Diagnosis" name="diagnosis"
+               onChange={handleInputChange}/>
+            <p> Age </p>
+            <input className="AddDependentDetails" type="text"
+               placeholder="Age" name="age"
+               onChange={handleInputChange}/>
+            <p> Verbal </p>
+            <input className="AddDependentDetails" type="text"
+               placeholder="Verbal" name="verbal"
+               onChange={handleInputChange}/>
+            <p> Public ID </p>
+            <input className="AddDependentDetails" type="text"
+               placeholder="Verbal" name="public_id"
                onChange={handleInputChange}/>
         </div>
         <div className="AddDependentItem">
