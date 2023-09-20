@@ -5,6 +5,8 @@ import "./PublicProfile.css"
 
 import rish_photo from '../../assets/photos/rishaan_profile_pic.jpg'
 import profile_picture from '../../assets/images/profile_picture.jpg'
+import profile_pic_round from '../../assets/images/profile_pic_round.png'
+
 import { ParameterContext } from '../../App';
 
 import { API } from '@aws-amplify/api'
@@ -113,25 +115,64 @@ export default function PublicProfile() {
 
   const returnIntroLine = () => {
     var intro_text = "Rishaan is a sweet quiet boy who likes to be with his family.";
-      return intro_text;
+    if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+          return "";
+      }
+      if (dependentData.name === "Rishaan") {
+        return intro_text;
+      } else {
+        return "";
+    }
   }
   
   const returnDaignosisStory = () => {
       var intro_text = "Rishaan was daignosed with ASD by the age of 3." +
       " He hit all his milestones till the age of 2. After that he slowly started forgetting his skills. " +
       " By the age of 2.5, he stopped talking completely.";
-      return intro_text;
+      if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+          return "";
+      }
+      if (dependentData.name === "Rishaan") {
+        return intro_text;
+      } else {
+        return "";
+      }
   }
 
   const returnLikes = () => {
       var intro_text = "Rishaan likes to explore different textures and play with small textured toys." +
       " Rishaan likes to play in water. He likes to be picked up and swirled around.";
-      return intro_text;
+      if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+          return "";
+      }
+      if (dependentData.name === "Rishaan") {
+        return intro_text;
+      } else {
+        return "";
+      }
   }
 
   
   const returnEmergencyContact = () => {
-      return ("408 230 8529, 703 663 0271 shivaji.vichare@gmail.com");
+    if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+          return "";
+      }
+      if (dependentData.name === "Rishaan") {
+        return "408 230 8529, 703 663 0271 shivaji.vichare@gmail.com";
+      } else {
+        return "";
+      }
+  }
+
+  const returnProfilePic = () => {
+    if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+        return profile_pic_round;
+    }
+    if (dependentData.name == "Rishaan") {
+      return rish_photo
+    }
+
+    return profile_pic_round
   }
 
   return (
@@ -139,7 +180,7 @@ export default function PublicProfile() {
       <div className="PublicProfileMain">
         <div className="PublicHomeTopbar">
             <div className="PublicHomeImage">
-              <img src={/*dependentData.image_url*/ rish_photo} alt="profile_photo" />
+              <img src={returnProfilePic()} alt="profile_photo" />
             </div>
             <div className="PublicHomeName">
               <h3> {returnName()} </h3>

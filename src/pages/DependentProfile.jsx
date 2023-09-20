@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import "./DependentProfile.css"
 
 import rish_photo from '../assets/photos/about_rish_crop2.jpg'
-import profile_picture from '../assets/images/profile_picture.jpg'
+import profile_pic_round from '../assets/images/profile_pic_round.png'
 import { ParameterContext } from '../App';
 
 import { API } from '@aws-amplify/api'
@@ -50,7 +50,7 @@ export default function DependentProfile() {
 
   const { dependentStringId } = useContext(ParameterContext);
   const [dependentData, setDependentData] = useState({
-    name: "FirstDefaultUser",
+    name: "Mock Value",
     lastName: "Vic",
     id: "topId",
     age: 4
@@ -68,6 +68,28 @@ export default function DependentProfile() {
   const navigateToPublicProf = () => {
     navigate('/PublicProfile/' + dependentData.public_id );
   };
+  
+  const returnProfilePic = () => {
+    if (dependentData.name == null || typeof dependentData.name === 'undefined') {
+        return profile_pic_round;
+    }
+    if (dependentData.name == "Rishaan") {
+      return rish_photo
+    }
+
+    return profile_pic_round
+  }
+  
+  const returnProfileName = () => {
+    if (dependentData.name === null || typeof dependentData.name === 'undefined') {
+        return  "";
+    }
+    if (dependentData.name == "Mock Value") {
+      return "Loading..";
+    }
+
+    return dependentData.name
+  }
 
   console.log("Showing dependent details for " + dependentStringId);
   return (
@@ -75,10 +97,10 @@ export default function DependentProfile() {
       <div className="DependentProfileMain">
         <div className="DependentHomeTopbar">
             <div className="DependentHomeImage">
-              <img src={/*dependentData.image_url*/ rish_photo} alt="profile_photo" />
+              <img src={returnProfilePic()} alt="profile_photo" />
             </div>
             <div className="DependentHomeName">
-              <h3> {dependentData.name} </h3>
+              <h3> {returnProfileName()} </h3>
             </div>
         </div>
           <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update profile </button>

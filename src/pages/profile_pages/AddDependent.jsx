@@ -72,11 +72,11 @@ export default function AddDependent({}) {
                onChange={handleInputChange}/>
             <p> Verbal </p>
             <input className="AddDependentDetails" type="text"
-               placeholder="Verbal" name="verbal"
+               placeholder="Verbal/Non-verbal" name="verbal"
                onChange={handleInputChange}/>
             <p> Public ID </p>
             <input className="AddDependentDetails" type="text"
-               placeholder="Verbal" name="public_id"
+               placeholder="Unique ID to share" name="public_id"
                onChange={handleInputChange}/>
         </div>
         <div className="AddDependentItem">

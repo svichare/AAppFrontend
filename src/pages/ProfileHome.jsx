@@ -60,7 +60,7 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   const [localUserEmail, setLocalUserEmail] = useState("");
   
   const [userData, setUserData] = useState({
-    Name: "Loading ...",
+    Name: "Mock Value",
     LastName: "Kaavi",
     id: "topId",
     ImageURL: "../assets/images/profile_picture.jpg",
@@ -141,6 +141,10 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
           return "Error connecting to cloud. Try refreshing this page.";
       }
 
+      if ( userData.Name === "Mock Value") {
+          return "Loading..";
+      }
+      
       if (userData.Name == "") {
         return "Welcome new user. Update your profile using options below.";
       }
@@ -156,7 +160,7 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
               <img src={returnProfilePic()} alt="profile_photo" />
             </div>
             <div className="ProfileName">
-              <h4>{returnWelcomeMessage()} ..</h4>
+              <h4>{returnWelcomeMessage()}</h4>
             </div>
           </div>
 
