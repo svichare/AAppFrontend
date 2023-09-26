@@ -27,3 +27,11 @@ export const addDependent = /* GraphQL */ `
     }
   }
 `;
+export const deleteDependent = /* GraphQL */ `
+  mutation DeleteDependent($deleteDependentInput: DeleteDependentInput) {
+    deleteDependent(deleteDependentInput: $deleteDependentInput) {
+      status
+      __typename
+    }
+  }
+`;

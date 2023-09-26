@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
-export default function OAuthCallback({setUserEmail}) {
+export default function OAuthCallback({setUserEmail, setUserToken}) {
   const navigate = useNavigate();
 
   const [localUserEmail, setLocalUserEmail] = useState('');
@@ -18,6 +18,7 @@ export default function OAuthCallback({setUserEmail}) {
     if (typeof accessToken === 'undefined') {
       return;
     }
+    setUserToken(accessToken);
     // Call google to fetch email address.
     const fetchUserEmail = async () => {
       try {

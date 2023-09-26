@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import svichare_photo from '../assets/photos/about_alone.jpg'
 import profile_photo from '../assets/images/profile_picture.jpg'
 import profile_pic_round from '../assets/images/profile_pic_round.png'
+import dependent_add_pic from '../assets/images/dependent_add_pic_png.png'
 
 import { API } from '@aws-amplify/api'
 import { getParentDetails } from '../graphql/queries'
@@ -90,9 +91,6 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
           setUserData(profile_details_from_async);
         });
       }
-
-      
-      
   }, []);
   
   const dependent_list = [];
@@ -114,7 +112,7 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
     <div className="DependentListItem">
       <Link to="/AddDependent">
         <div className="DependentPhoto">
-          <img src={profile_pic_round} alt="profile_pic_round"/>
+          <img src={dependent_add_pic} alt="add dependent"/>
         </div>
       </Link>
       <div className="DependentName"><p>Add one</p></div>

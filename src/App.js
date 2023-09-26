@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavBar, ConfigureApi } from './components';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,13 +17,18 @@ import traitRoutes from './pages/trait_pages/TraitRoutes.js';
 import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
 import {GoogleLogin} from './components';
 import mixpanel from 'mixpanel-browser';
+import { gapi } from 'gapi-script';
+import { UserProvider } from './components/UserContext';
 
 // Create a context for managing the parameter
 export const ParameterContext = React.createContext();
 
+const clientId = '201175894539-gte8nppbkqha8j0o40cqe7opmrsgmofo.apps.googleusercontent.com';
+
 const App = () =>{
   const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
+  const [userToken, setUserToken] = useState("Mock Value");
   const [dependentStringId, setDependentStringId] =  useState("Name loading..");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
 
@@ -38,10 +43,22 @@ const App = () =>{
   };
   console.log("Outer Width : " + window.innerWidth);
 
+ useEffect( () => {
+   function start() {
+     gapi.client.init({
+       client_id: clientId,
+       scope: "email profile"
+     })
+   };
+   
+   gapi.load('client:auth2', start);
+ })
+
   return (
   <BrowserRouter>
+  <UserProvider>
   <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
-  userEmail, dependentStringId, setDependentStringId, mixpanel }}>
+  userEmail, dependentStringId, setDependentStringId, mixpanel, userToken }}>
       <NavBar userLoggedIn={userEmail.length >0 ? true : false}
           resetUserEmail={resetUserEmail}/>
       <Routes>
@@ -49,7 +66,7 @@ const App = () =>{
         <Route path="/Home" Component={Home} />
         <Route path="/About" Component={() => (<About />)} />
         <Route path="/ProfileCreation" Component={ProfileCreation} />
-        <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail}/>)}/>
+        <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail} setUserToken={setUserToken}/>)}/>
         <Route path="/LoginWithGoogle" Component={GoogleLogin} />
         <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
         <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
@@ -72,6 +89,7 @@ const App = () =>{
           ))}
       </Routes>
     </ParameterContext.Provider>
+    </UserProvider>
   </BrowserRouter>
   );
 };

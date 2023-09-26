@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 // import logo from '../../assets/logo/svg_logo.svg';
@@ -7,12 +7,18 @@ import sp_logo from '../../assets/logo/g_y_b.png';
 // import login_g_y_b from '../../assets/images/login_g.png';
 // import about_g_y_b from '../../assets/images/about_g.png';
 import '../../assets/fonts/fonts.css';
+import { ParameterContext } from '../../App';
+
+import {LoginWithGoogle, LogoutWithGoogle} from '../';
+import { useUser } from '../UserContext';
 
 import './NavBar.css';
 
 const Navbar = ({userLoggedIn, resetUserEmail}) => {
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = useState(false);
+
+  const { userToken } = useContext(ParameterContext);
 
 const handleLoginWithGoogle = () => {
     const redirectUrlFromEnv = process.env.REACT_APP_OAUTH_REDIRECT_URL
@@ -28,13 +34,30 @@ const handleLoginWithGoogle = () => {
     window.location.href = authUrl;
   };
   
+  const handleLoginWithGapi = async () => {
+  try {
+    console.log("handling login");
+    const auth = window.gapi.auth2.getAuthInstance();
+    await auth.signIn();
+
+    // User is now authenticated. You can access user details using auth.currentUser.
+    const user = auth.currentUser.get();
+    console.log('User logged in:', user);
+  } catch (error) {
+    console.error('Login error:', error);
+  }
+};
+
   const handleLogout = () => {
     // Reset saved email address
     // Navigate to the Home screen.
-    resetUserEmail();
     navigate('/Home');
   };
   
+  const { user } = useUser();
+  
+  console.log("User according to navbar : ", user);
+
   return (
     <div className="gpt3__navbar">
       <div className="gpt3__navbar-links">
@@ -42,12 +65,12 @@ const handleLoginWithGoogle = () => {
           <Link to="/Home"> <img src={sp_logo} alt="logo" /> </Link>
         </div>
         <div className="gpt3__navbar-button">
-          {userLoggedIn ? <Link to="/ProfileHome"> <button type="button">Home</button> </Link> :
+          {user ? <Link to="/ProfileHome"> <button type="button">Home</button> </Link> :
           <Link to="/Home"> <button type="button">Home</button> </Link>}
         </div>
         <div className="gpt3__navbar-button">
-          {userLoggedIn ? <button type="button" onClick={handleLogout}>Logout</button> :
-          <button type="button" onClick={handleLoginWithGoogle}> Login </button>}
+          {user ? <LogoutWithGoogle /> :
+          <LoginWithGoogle />}
         </div> 
         <div className="gpt3__navbar-button">
           <Link to="/About">

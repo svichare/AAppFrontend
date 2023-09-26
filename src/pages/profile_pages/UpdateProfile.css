@@ -23,6 +23,24 @@
   width: 30rem;
 }
 
+.DeleteDependent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.DeleteDependent button {
+  padding: 10px;
+  background-color: #FAAABD80;
+  border-radius: 5px;
+  width: 10rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
 .ProfileUpdateItem button {
   padding: 10px;
   background-color: #94E5FF80;
@@ -41,6 +59,7 @@
 .ProfileUpdateItem button:disabled {
   background-color: #BEBEBE;
 }
+
 .ProfileUpdateMain {    
   display: flex;
   width: 100%;
@@ -106,9 +125,11 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
-.Bottom {
-  /*width: 100%;*/
-  padding-bottom: 1000px;
+.DependentListItem {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
 }
 
 @media screen and (max-width: 900px) {
