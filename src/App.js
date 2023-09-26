@@ -19,6 +19,8 @@ import {GoogleLogin} from './components';
 import mixpanel from 'mixpanel-browser';
 import { gapi } from 'gapi-script';
 import { UserProvider } from './components/UserContext';
+import { DependentProvider } from './components/DependentContext';
+
 
 // Create a context for managing the parameter
 export const ParameterContext = React.createContext();
@@ -57,6 +59,7 @@ const App = () =>{
   return (
   <BrowserRouter>
   <UserProvider>
+  <DependentProvider>
   <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
   userEmail, dependentStringId, setDependentStringId, mixpanel, userToken }}>
       <NavBar userLoggedIn={userEmail.length >0 ? true : false}
@@ -89,6 +92,7 @@ const App = () =>{
           ))}
       </Routes>
     </ParameterContext.Provider>
+    </DependentProvider>
     </UserProvider>
   </BrowserRouter>
   );

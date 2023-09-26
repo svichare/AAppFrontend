@@ -18,8 +18,6 @@ const Navbar = ({userLoggedIn, resetUserEmail}) => {
   const navigate = useNavigate();
   const [toggleMenu, setToggleMenu] = useState(false);
 
-  const { userToken } = useContext(ParameterContext);
-
 const handleLoginWithGoogle = () => {
     const redirectUrlFromEnv = process.env.REACT_APP_OAUTH_REDIRECT_URL
     // if the environment variable does not work, uncomment one of the 2,
@@ -33,29 +31,9 @@ const handleLoginWithGoogle = () => {
 
     window.location.href = authUrl;
   };
-  
-  const handleLoginWithGapi = async () => {
-  try {
-    console.log("handling login");
-    const auth = window.gapi.auth2.getAuthInstance();
-    await auth.signIn();
 
-    // User is now authenticated. You can access user details using auth.currentUser.
-    const user = auth.currentUser.get();
-    console.log('User logged in:', user);
-  } catch (error) {
-    console.error('Login error:', error);
-  }
-};
-
-  const handleLogout = () => {
-    // Reset saved email address
-    // Navigate to the Home screen.
-    navigate('/Home');
-  };
-  
   const { user } = useUser();
-  
+
   console.log("User according to navbar : ", user);
 
   return (

@@ -8,6 +8,7 @@ import profile_pic_round from '../../assets/images/profile_pic_round.png'
 import dependent_del_pic from '../../assets/images/dependent_del_pic_png.png'
 
 import { getParentDetails } from '../../graphql/queries'
+import { useUser } from '../../components/UserContext';
 
 import './UpdateProfile.css'
 
@@ -95,9 +96,10 @@ async function update_profile(profileDetails) {
 
 export default function UpdateProfile({existingProfile}) {
     const { userEmail } = useContext(ParameterContext);
-    
+    const { user } = useUser();
+
     const [localProfileDetails, setLocalProfileDetails] = useState({
-        email: userEmail
+        email: user.email
       });
     
     const [userData, setUserData] = useState({
@@ -109,8 +111,8 @@ export default function UpdateProfile({existingProfile}) {
     });
   
     useEffect( () => {
-        console.log("Using userEmail ");
-        get_profile_details(userEmail)
+        console.log("Using user email ");
+        get_profile_details(user.email)
         .then((profile_details_from_async) => {
           setUserData(profile_details_from_async);
         });
@@ -160,7 +162,7 @@ export default function UpdateProfile({existingProfile}) {
                 <img src={dependent_del_pic} alt="delete dependent"/>
               </div>
               <div className="DeleteDependent">
-                <button type="button" className="DeleteDependent" onClick={()=>{delete_dependent(dependentData.string_id, userEmail)}}>
+                <button type="button" className="DeleteDependent" onClick={()=>{delete_dependent(dependentData.string_id, user.email)}}>
                 Delete: {dependentData.name}</button>
               </div>
           </div>
@@ -175,8 +177,8 @@ export default function UpdateProfile({existingProfile}) {
         <div className="DependentList">
             {dependent_list}
           </div>
-        <p>(Update all details with every request, yes the tool is still in beta :P)</p>
-        <p>Email : {userEmail}</p>
+        <p>(Update all details with every request .. sorry the tool is still in beta.)</p>
+        <p>Email : {user.email}</p>
         <div className="ProfileUpdateItem">
             <p> Name </p>
             <input className="ProfileUpdateDetails" type="text"

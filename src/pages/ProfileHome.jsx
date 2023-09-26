@@ -75,51 +75,25 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   
   useEffect( () => {
     if (user === null) {
-      console.log("User not set for ProfileHome. Returning.")
-      return;
-    }
-    
-      if (user === null) {
-        console.log("NOT Using user info ");
-        setLocalUserEmail(userEmailParameter);
-        if (userEmailParameter != "") {
-          get_profile_details(userEmailParameter)
-          .then((profile_details_from_async) => {
-            setUserData(profile_details_from_async);
-          });
-        } else {
-          console.log("No user email or userEmailParameter set"); 
-        }
-      } else {
-        console.log("Using user.email ");
-        setLocalUserEmail(user.email);
-        get_profile_details(user.email)
+      console.log("NOT using user info ");
+      setLocalUserEmail(userEmailParameter);
+      if (userEmailParameter != "") {
+        get_profile_details(userEmailParameter)
         .then((profile_details_from_async) => {
           setUserData(profile_details_from_async);
         });
+      } else {
+        console.log("No user email or userEmailParameter set"); 
       }
-    
-      // if (typeof userEmail === 'undefined' || userEmail === "") {
-      //   console.log("NOT Using userEmail ");
-      //   setLocalUserEmail(userEmailParameter);
-      //   if (userEmailParameter != "") {
-      //     get_profile_details(userEmailParameter)
-      //     .then((profile_details_from_async) => {
-      //       setUserData(profile_details_from_async);
-      //     });
-      //   } else {
-      //     console.log("No user email set"); 
-      //     console.log ("userEmail : " + userEmail + "  userEmailParameter : " + userEmailParameter );
-      //   }
-      // } else {
-      //   console.log("Using userEmail ");
-      //   setLocalUserEmail(userEmail);
-      //   get_profile_details(userEmail)
-      //   .then((profile_details_from_async) => {
-      //     setUserData(profile_details_from_async);
-      //   });
-      // }
-  }, []);
+    } else {
+      console.log("Using user.email ");
+      setLocalUserEmail(user.email);
+      get_profile_details(user.email)
+      .then((profile_details_from_async) => {
+        setUserData(profile_details_from_async);
+      });
+    }
+  }, [user]);
   
   const dependent_list = [];
   if (isIterable(userData.DependentList)) {
