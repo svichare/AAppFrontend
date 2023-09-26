@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from 'react';
 
 const DependentContext = createContext();
 
-export const useUser = () => {
+export const useDependent = () => {
   return useContext(DependentContext);
 };
 

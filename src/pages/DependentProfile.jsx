@@ -9,13 +9,13 @@ import { ParameterContext } from '../App';
 
 import { API } from '@aws-amplify/api'
 import { getDependentDetails } from '../graphql/queries'
+import { useDependent } from '../components/DependentContext';
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
 }
 
 async function get_dependent_details(dependent_string_id) {
-  
   try { 
     console.log("Checking request  : " + dependent_string_id);
     const response = await API.graphql({
@@ -49,6 +49,8 @@ async function get_dependent_details(dependent_string_id) {
 export default function DependentProfile() {
 
   const { dependentStringId } = useContext(ParameterContext);
+  const { dependent } = useDependent();
+
   const [dependentData, setDependentData] = useState({
     name: "Mock Value",
     lastName: "Vic",
@@ -57,10 +59,15 @@ export default function DependentProfile() {
   });
 
   useEffect( () => {
-      get_dependent_details(dependentStringId)
+    if (dependent !== null) {
+      get_dependent_details(dependent.string_id)
       .then((profile_details_from_async) => {
         setDependentData(profile_details_from_async);
       });
+    } else {
+      console.log("dependent data null");
+    }
+      
   }, []);
   
   const navigate = useNavigate();

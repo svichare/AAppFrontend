@@ -11,6 +11,7 @@ import { API } from '@aws-amplify/api'
 import { getParentDetails } from '../graphql/queries'
 import { ParameterContext } from '../App';
 import { useUser } from '../components/UserContext';
+import { useDependent } from '../components/DependentContext';
 
 import "./ProfileHome.css"
 
@@ -70,6 +71,7 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   });
 
   const { user } = useUser();
+  const { set_dependent } = useDependent();
 
   const navigate = useNavigate();
   
@@ -101,7 +103,9 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
     dependent_list.push(
       <div className="DependentListItem">
         <Link to="/DependentProfile">
-          <div className="DependentPhoto" onClick={()=>{setDependentStringId(dependentData.string_id)}}>
+          <div className="DependentPhoto" onClick={
+          ()=>{setDependentStringId(dependentData.string_id);
+          set_dependent({string_id: dependentData.string_id})}}>
             <img src={profile_pic_round} alt="profile_pic_round"/>
           </div>
         </Link>
