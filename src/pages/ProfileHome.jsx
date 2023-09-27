@@ -32,11 +32,11 @@ async function get_profile_details(user_email) {
     });
     if (typeof response.data.getParentDetails == 'undefined') {
       return {
-        "DependentList": [
+        "dependents": [
         ],
-        "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "Name": "",
-        "LastName": "",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+        "name": "",
+        "last_name": "",
         "id": null
       };
     }
@@ -45,11 +45,11 @@ async function get_profile_details(user_email) {
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
     return {
-        "DependentList": [
+        "dependents": [
         ],
-        "ImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "Name": "Error",
-        "LastName": "FunLastname",
+        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+        "name": "Error",
+        "last_name": "FunLastname",
         "id": null
       };
   }
@@ -63,11 +63,11 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   const [localUserEmail, setLocalUserEmail] = useState("");
   
   const [userData, setUserData] = useState({
-    Name: "Mock Value",
-    LastName: "Kaavi",
+    name: "Mock Value",
+    last_name: "Kaavi",
     id: "topId",
-    ImageURL: "../assets/images/profile_picture.jpg",
-    DependentList: []
+    image_url: "../assets/images/profile_picture.jpg",
+    dependents: []
   });
 
   const { user } = useUser();
@@ -98,8 +98,8 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   }, [user]);
   
   const dependent_list = [];
-  if (isIterable(userData.DependentList)) {
-    userData.DependentList.forEach((dependentData, index) => {
+  if (isIterable(userData.dependents)) {
+    userData.dependents.forEach((dependentData, index) => {
     dependent_list.push(
       <div className="DependentListItem">
         <Link to="/DependentProfile">
@@ -126,10 +126,10 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
     );
   
   const returnProfilePic = () => {
-      if (userData.Name == null || typeof userData.Name === 'undefined') {
+      if (userData.name == null || typeof userData.name === 'undefined') {
           return profile_photo;
       }
-      if (userData.Name == "Shivaji Prafull") {
+      if (userData.name == "Shivaji Prafull") {
         return svichare_photo
       }
 
@@ -137,23 +137,23 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   }
 
   const returnWelcomeMessage = () => {
-      if (userData.Name == null || typeof userData.Name === 'undefined') {
+      if (userData.name == null || typeof userData.name === 'undefined') {
           return "Welcome new user. Update your profile using options below.";
       }
 
-      if ( userData.Name === "Error") {
+      if ( userData.name === "Error") {
           return "Error connecting to cloud. Try refreshing this page.";
       }
 
-      if ( userData.Name === "Mock Value") {
+      if ( userData.name === "Mock Value") {
           return "Loading..";
       }
       
-      if (userData.Name == "") {
+      if (userData.name == "") {
         return "Welcome new user. Update your profile using options below.";
       }
 
-      return "Welcome back " + userData.Name;
+      return "Welcome back " + userData.name;
   }
   
   return (

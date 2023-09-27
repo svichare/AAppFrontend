@@ -52,10 +52,14 @@ export const getParentDetails = /* GraphQL */ `
   query GetParentDetails($email: String) {
     getParentDetails(email: $email) {
       id
-      Name
-      LastName
-      ImageURL
-      DependentList {
+      name
+      last_name
+      image_url
+      country
+      state
+      city
+      email
+      dependents {
         id
         name
         thumbnail_url

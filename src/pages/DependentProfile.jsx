@@ -67,11 +67,10 @@ export default function DependentProfile() {
     } else {
       console.log("dependent data null");
     }
-      
   }, []);
-  
+
   const navigate = useNavigate();
-  
+
   const navigateToPublicProf = () => {
     navigate('/PublicProfile/' + dependentData.public_id );
   };
