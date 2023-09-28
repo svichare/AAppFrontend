@@ -5,11 +5,19 @@ import { useNavigate } from 'react-router-dom';
 import { ParameterContext } from '../../App';
 
 import { addDependent } from '../../graphql/mutations'
+import { useUser } from '../../components/UserContext';
 
 import './AddDependent.css'
 
 async function add_dependent(dependentDetails) {
   // update actionItem with the response.
+  if (typeof dependentDetails.parent_email === 'undefined' ||
+        dependentDetails.parent_email === null ||
+        dependentDetails.parent_email.length === 0) {
+      console.log("Not adding dependent as Top level user not set");
+      return;
+  }
+ 
   const add_dependent_details = {
     parent_email: dependentDetails.parent_email,
     name: dependentDetails.name,
@@ -30,13 +38,46 @@ async function add_dependent(dependentDetails) {
   }
 }
 
+const diagnosisList = [
+    {name: "Autism"}, {name: "Attention-Deficit/Hyperactivity Disorder"},
+    {name: "Cerebral Palsy"}, {name: "Fragile X syndrome"}, {name: "Epilepsy"}
+    , {name: "Rett syndrome"}, {name: "Tourette syndrome"}, {name: "None"}]
+
+const verbalList = [
+    {name: "Non-verbal (No communcation)"},
+    {name: "Non-verbal(Communicates basic needs with actions)"},
+    {name: "Verbal (Communicates basic needs verbally)"},
+    {name: "Verbal (Basic conversational communication)"},
+    {name: "Fully verbal"}]
+
+function createRadioElements(dataArray, fieldName, handleInputChange) {
+  console.log("Creating radio buttons : ", dataArray.length);
+  const list_html = [];
+    dataArray.forEach((arrayEntry, index) => {
+    list_html.push(
+      <div classname="AddDependentDetailsOptions" key={index}>
+          <label>
+            <input
+              type="radio"
+              name={fieldName}
+              value={arrayEntry.name}
+              onChange={handleInputChange}
+            />
+            {arrayEntry.name}
+          </label>
+         <br />
+      </div>
+      );
+    });
+
+  return list_html;
+}
+
 export default function AddDependent({}) {
     const { userEmail } = useContext(ParameterContext);
-
-    const [localProfileDetails, setLocalProfileDetails] = useState({
-        parent_email: userEmail
-      });
-
+    const { user } = useUser();
+    const [localProfileDetails, setLocalProfileDetails] = useState(
+        {parent_email: user.email});
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         console.log("Setting : ", name , " to value : ", value);
@@ -50,34 +91,61 @@ export default function AddDependent({}) {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        add_dependent(localProfileDetails);
+        add_dependent(localProfileDetails, user);
     };
+
+    const diagnosis_list_html = createRadioElements(diagnosisList, "diagnosis", handleInputChange);
+    const verbal_list_html = createRadioElements(verbalList, "verbal", handleInputChange);
+    // diagnosisList.forEach((arrayEntry, index) => {
+    // diagnosis_list_html.push(
+    //   <div classname="AddDependentDetailsOptions" key={index}>
+    //       <label>
+    //         <input
+    //           type="radio"
+    //           name="diagnosis"
+    //           value={arrayEntry.name}
+    //           onChange={handleInputChange}
+    //         />
+    //         {arrayEntry.name}
+    //       </label>
+    //      <br />
+    //   </div>
+    //   );
+    // });
 
     return (
     <div className="AddDependentContainer">
       <div className="AddDependentMain">
-        <h1>Add details ...</h1>
+        <h1>Add details of your SuperHero...</h1>
         <div className="AddDependentItem">
-            <p> Name </p>
+            <p>First Name </p>
             <input className="AddDependentDetails" type="text"
-               placeholder="Enter name" name="name"
+               placeholder="Enter first name" name="name"
                onChange={handleInputChange}/>
             <p> Diagnosis </p>
+            <div classname="AddDependentDetailsOptions">
+              {diagnosis_list_html}
+              <label>
+                <input
+                  type="radio"
+                  name="diagnosis"
+                  value="Other"
+                  onChange={()=> {}}
+                />
+                Other (Add details in the text box)
+              </label>
+            </div>
             <input className="AddDependentDetails" type="text"
-               placeholder="Diagnosis" name="diagnosis"
+               placeholder="Diagnosis details (Other)" name="diagnosis"
                onChange={handleInputChange}/>
             <p> Age </p>
             <input className="AddDependentDetails" type="text"
                placeholder="Age" name="age"
                onChange={handleInputChange}/>
-            <p> Verbal </p>
-            <input className="AddDependentDetails" type="text"
-               placeholder="Verbal/Non-verbal" name="verbal"
-               onChange={handleInputChange}/>
-            <p> Public ID </p>
-            <input className="AddDependentDetails" type="text"
-               placeholder="Unique ID to share" name="public_id"
-               onChange={handleInputChange}/>
+            <p> Communication level </p>
+            <div classname="AddDependentDetailsOptions">
+                {verbal_list_html}
+            </div>
         </div>
         <div className="AddDependentItem">
             <button type="button" onClick={handleSubmit}>Submit</button>

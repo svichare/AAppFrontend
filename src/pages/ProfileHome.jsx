@@ -59,7 +59,8 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   const { setDependentStringId } = useContext(ParameterContext);
 
   const { userEmail } = useContext(ParameterContext);
-
+  const { user } = useUser();
+  const { set_dependent } = useDependent();
   const [localUserEmail, setLocalUserEmail] = useState("");
   
   const [userData, setUserData] = useState({
@@ -69,9 +70,6 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
     image_url: "../assets/images/profile_picture.jpg",
     dependents: []
   });
-
-  const { user } = useUser();
-  const { set_dependent } = useDependent();
 
   const navigate = useNavigate();
   

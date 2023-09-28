@@ -13,6 +13,11 @@
   align-items: center;
 }
 
+.AddDependentItem p {    
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
 .AddDependentLocationItem {
   display: flex;
   flex-direction: row;
@@ -22,6 +27,7 @@
   width: 30rem;
 }
 
+
 .AddDependentItem button {
   padding: 10px;
   background-color: #94E5FF80;
@@ -30,7 +36,7 @@
   border: none;
   cursor: pointer;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .AddDependentItem button:active {
@@ -59,6 +65,25 @@
 
 .AddDependentMain h2 {    
   font-family: 'Sansation', Consolas, sans-serif;
+}
+
+.AddDependentDetailsOptions {
+  flex-direction: column; /* Arrange items vertically */
+  flex-wrap: wrap; /* Wrap items into multiple columns */
+  max-width: 300px; /* Adjust this width as needed */
+  padding: 10px;
+  background-color: #94E5FF80;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 0.5rem;
+}
+
+.AddDependentDetailsOptions label {
+  display: block;
+  margin-bottom: 10px; /* Add spacing between each radio button */
+  flex-basis: 50%; /* Two columns */
 }
 
 .AddDependentDetails button {
