@@ -65,11 +65,9 @@ function createRadioElements(dataArray, fieldName, handleInputChange) {
             />
             {arrayEntry.name}
           </label>
-         <br />
       </div>
       );
     });
-
   return list_html;
 }
 
@@ -90,28 +88,16 @@ export default function AddDependent({}) {
 
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
-        add_dependent(localProfileDetails, user);
+    const handleSubmit = async () => {
+        // Handle validation here.
+        const response = await add_dependent(localProfileDetails, user);
+        console.log("Add dep response : ", response);
+        // For now just navigate to parent screen. Later on check the status of 
+        navigate('/ProfileHome');
     };
 
     const diagnosis_list_html = createRadioElements(diagnosisList, "diagnosis", handleInputChange);
     const verbal_list_html = createRadioElements(verbalList, "verbal", handleInputChange);
-    // diagnosisList.forEach((arrayEntry, index) => {
-    // diagnosis_list_html.push(
-    //   <div classname="AddDependentDetailsOptions" key={index}>
-    //       <label>
-    //         <input
-    //           type="radio"
-    //           name="diagnosis"
-    //           value={arrayEntry.name}
-    //           onChange={handleInputChange}
-    //         />
-    //         {arrayEntry.name}
-    //       </label>
-    //      <br />
-    //   </div>
-    //   );
-    // });
 
     return (
     <div className="AddDependentContainer">
@@ -123,7 +109,7 @@ export default function AddDependent({}) {
                placeholder="Enter first name" name="name"
                onChange={handleInputChange}/>
             <p> Diagnosis </p>
-            <div classname="AddDependentDetailsOptions">
+            <div className="AddDependentDetailsOptions">
               {diagnosis_list_html}
               <label>
                 <input
@@ -143,7 +129,7 @@ export default function AddDependent({}) {
                placeholder="Age" name="age"
                onChange={handleInputChange}/>
             <p> Communication level </p>
-            <div classname="AddDependentDetailsOptions">
+            <div className="AddDependentDetailsOptions">
                 {verbal_list_html}
             </div>
         </div>
