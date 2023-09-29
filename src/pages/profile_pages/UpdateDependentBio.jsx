@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { ParameterContext } from '../../App';
 
-import { updateProfile, deleteDependent } from '../../graphql/mutations'
+import { UpdateDependentBio } from '../../graphql/mutations'
 import profile_pic_round from '../../assets/images/profile_pic_round.png'
 import dependent_del_pic from '../../assets/images/dependent_del_pic_png.png'
 
@@ -52,29 +52,30 @@ async function get_dependent_details(dependent_string_id) {
   }
 }
 
-async function update_profile(profileDetails) {
+async function update_profile(profileDetails, parent_email_param) {
   // update actionItem with the response.
-  const update_profile_details = {
-    email: profileDetails.email,
+  const update_dependent_details = {
+    parent_email: parent_email_param,
+    string_id: profileDetails.string_id,
     name: profileDetails.name,
-    last_name: profileDetails.last_name,
-    country: profileDetails.country,
-    state: profileDetails.state,
-    city: profileDetails.city
+    verbal: profileDetails.verbal,
+    diagnosis: profileDetails.diagnosis,
+    public_id: profileDetails.public_id,
+    age: profileDetails.age
   };
 
   try {
-    console.log("Updating the response. : ", JSON.stringify(update_profile_details));
+    console.log("Updating the response. with public id: ", JSON.stringify(update_dependent_details));
       const response = await API.graphql(
-        graphqlOperation(updateProfile,
-          {updateProfileInput: update_profile_details}));
+        graphqlOperation(UpdateDependentBio,
+          {updateDependentInput: update_dependent_details}));
       console.log("received response : ", JSON.stringify(response));
   } catch (error) {
       console.error('Cought error in update_action_response function :',  JSON.stringify(error));
   }
 }
 
-export default function UpdateDependentBio({existingProfile}) {
+export default function UpdateDependentBioPage({existingProfile}) {
     const { userEmail } = useContext(ParameterContext);
     const { user } = useUser();
     const { dependent } = useDependent();
@@ -101,7 +102,10 @@ export default function UpdateDependentBio({existingProfile}) {
           console.log("dependent data null. Returning.");
           return;
         }
-
+        if (user === null) {
+          console.log("user data null. Returning.");
+          return;
+        }
         get_dependent_details(dependent.string_id)
           .then((profile_details_from_async) => {
             setDependentData(profile_details_from_async);
@@ -127,12 +131,18 @@ export default function UpdateDependentBio({existingProfile}) {
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
-        const result = await update_profile(localProfileDetails);
-        navigate('/ProfileHome');
+      if (user === null) {
+        console.log("user null. Cannot update dependent");
+        return;
+      }
+      const result = await update_profile(localProfileDetails, user.email);
+      navigate('/DependentProfile');
     };
     
 
     console.log("Latest dependentData ", JSON.stringify(dependentData));
+    console.log("Latest localProfileData ", JSON.stringify(localProfileDetails));
+    
     return (
     <div className="ProfileUpdateContainer">
       <div className="ProfileUpdateMain">
@@ -140,10 +150,11 @@ export default function UpdateDependentBio({existingProfile}) {
         <div className="ProfileUpdateItem">
             <p> First Name </p>
             <input className="ProfileUpdateDetails" type="text"
-               defaultValue={dependentData === null ? "":dependentData.name} 
+               defaultValue={(localProfileDetails === null ||
+                      typeof localProfileDetails.name ==='undefined' ) ? "":localProfileDetails.name} 
                name="name"
-               value={(localProfileDetails === null &&
-                      typeof localProfileDetails.name !=='undefined' ) ?
+               value={(localProfileDetails === null ||
+                      typeof localProfileDetails.name ==='undefined' ) ?
                       "": localProfileDetails.name}
                onChange={handleInputChange}/>
         </div>
@@ -151,10 +162,11 @@ export default function UpdateDependentBio({existingProfile}) {
         <div className="ProfileUpdateItem">
             <p> Diagnosis </p>
             <input className="ProfileUpdateDetails" type="text"
-               defaultValue={dependentData === null ? "":dependentData.diagnosis} 
+               defaultValue={(localProfileDetails === null ||
+                      typeof localProfileDetails.diagnosis ==='undefined' ) ? "":localProfileDetails.diagnosis} 
                name="diagnosis"
-               value={(localProfileDetails === null &&
-                      typeof localProfileDetails.diagnosis !=='undefined' ) ?
+               value={(localProfileDetails === null ||
+                      typeof localProfileDetails.diagnosis ==='undefined' ) ?
                       "": localProfileDetails.diagnosis}
                onChange={handleInputChange}/>
         </div>
@@ -162,10 +174,11 @@ export default function UpdateDependentBio({existingProfile}) {
         <div className="ProfileUpdateItem">
             <p> Communication type </p>
             <input className="ProfileUpdateDetails" type="text"
-               defaultValue={dependentData === null ? "":dependentData.verbal} 
+               defaultValue={(localProfileDetails === null ||
+                      typeof localProfileDetails.verbal ==='undefined' ) ? "":localProfileDetails.verbal} 
                name="verbal"
-               value={(localProfileDetails === null &&
-                      typeof localProfileDetails.verbal !=='undefined' ) ?
+               value={(localProfileDetails === null ||
+                      typeof localProfileDetails.verbal ==='undefined' ) ?
                       "": localProfileDetails.verbal}
                onChange={handleInputChange}/>
         </div>
@@ -173,10 +186,11 @@ export default function UpdateDependentBio({existingProfile}) {
         <div className="ProfileUpdateItem">
             <p> Age </p>
             <input className="ProfileUpdateDetails" type="text"
-               defaultValue={dependentData === null ? "":dependentData.age} 
+               defaultValue={(localProfileDetails === null ||
+                      typeof localProfileDetails.age ==='undefined' ) ? "":localProfileDetails.age} 
                name="age"
-               value={(localProfileDetails === null &&
-                      typeof localProfileDetails.age !=='undefined' ) ?
+               value={(localProfileDetails === null ||
+                      typeof localProfileDetails.age ==='undefined' ) ?
                       "": localProfileDetails.age}
                onChange={handleInputChange}/>
         </div>
@@ -184,10 +198,11 @@ export default function UpdateDependentBio({existingProfile}) {
         <div className="ProfileUpdateItem">
             <p> Public ID </p>
             <input className="ProfileUpdateDetails" type="text"
-               defaultValue={dependentData === null ? "":dependentData.public_id} 
+               defaultValue={(localProfileDetails === null ||
+                      typeof localProfileDetails.public_id ==='undefined' ) ? "":localProfileDetails.public_id} 
                name="public_id"
-               value={(localProfileDetails === null &&
-                      typeof localProfileDetails.public_id !=='undefined' ) ?
+               value={(localProfileDetails === null ||
+                      typeof localProfileDetails.public_id ==='undefined' ) ?
                       "": localProfileDetails.public_id}
                onChange={handleInputChange}/>
         </div>

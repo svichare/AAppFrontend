@@ -119,29 +119,9 @@ export default function UpdateProfile({existingProfile}) {
         .then((profile_details_from_async) => {
           setUserData(profile_details_from_async);
           setLocalProfileDetails(profile_details_from_async);
-        
-          if (profile_details_from_async !== null &&
-          typeof profile_details_from_async !== 'undefined') {
-            original_name = (typeof profile_details_from_async.name ==='undefined' ? "" :
-              profile_details_from_async.name);
-            original_lastname = (typeof profile_details_from_async.last_name ==='undefined' ? "":
-              profile_details_from_async.lastname);
-            original_country = (typeof profile_details_from_async.country ==='undefined' ? "":
-              profile_details_from_async.country);
-            original_state = (typeof profile_details_from_async.state ==='undefined' ? "":
-              profile_details_from_async.state);
-            original_city = (typeof profile_details_from_async.city ==='undefined' ? "":
-              profile_details_from_async.city);
-          }
         });
   }, []);
 
-    var original_name = "";
-    var original_lastname = "";
-    var original_country = "";
-    var original_state = "";
-    var original_city = "";
-    
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         console.log("Setting : ", name , " to value : ", value);
