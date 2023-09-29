@@ -103,7 +103,11 @@ export default function PublicProfile() {
       if (dependentData.diagnosis == null || typeof dependentData.diagnosis === 'undefined') {
           return 0;
       }
-      return dependentData.diagnosis;
+      if (dependentData.diagnosis === "None") {
+        return "";
+      }
+      
+      return dependentData.diagnosis
   }
   
   const returnVerbal = () => {
@@ -184,7 +188,8 @@ export default function PublicProfile() {
             </div>
             <div className="PublicHomeName">
               <h3> {returnName()} </h3>
-              <p> {returnDiagnosis()} {returnDiagnosis().length > 0 &&  returnVerbal().length > 0 ? "," : "" } {returnVerbal()}</p>
+              <p> {returnDiagnosis()}</p>
+              <p> {returnVerbal()} </p>
               <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
               <button type="button" onClick={() => {
                 navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );

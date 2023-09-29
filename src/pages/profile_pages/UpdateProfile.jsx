@@ -1,5 +1,6 @@
 import {React, useEffect, useState, useContext} from "react";
 import { API, graphqlOperation } from '@aws-amplify/api'
+import { useNavigate } from 'react-router-dom';
 
 import { ParameterContext } from '../../App';
 
@@ -101,8 +102,8 @@ export default function UpdateProfile({existingProfile}) {
     const [localProfileDetails, setLocalProfileDetails] = useState({});
     
     const [userData, setUserData] = useState({
-        name: "Mock Value",
-        last_name: "Kaavi",
+        name: "",
+        last_name: "",
         id: "topId",
         image_url: "../assets/images/profile_picture.jpg",
         dependents: []
@@ -140,21 +141,6 @@ export default function UpdateProfile({existingProfile}) {
     var original_country = "";
     var original_state = "";
     var original_city = "";
-    // Change this to whatever was stored previously.
-    // if (typeof existingProfile !== 'undefined') {
-    //     original_name = (typeof existingProfile.name ==='undefined' ? "": existingProfile.name);
-    //     original_lastname = (typeof existingProfile.lastname ==='undefined' ? "": existingProfile.lastname);
-    //     original_country = (typeof existingProfile.country ==='undefined' ? "": existingProfile.country);
-    //     original_state = (typeof existingProfile.state ==='undefined' ? "": existingProfile.state);
-    //     original_city = (typeof existingProfile.city ==='undefined' ? "": existingProfile.city);
-    // }
-    // if (userData.Name !== "Mock Data") {
-    //     original_name = (typeof userData.Name ==='undefined' ? "": userData.Name);
-    //     original_lastname = (typeof userData.lastname ==='undefined' ? "": userData.lastname);
-    //     original_country = (typeof userData.country ==='undefined' ? "": userData.country);
-    //     original_state = (typeof userData.state ==='undefined' ? "": userData.state);
-    //     original_city = (typeof userData.city ==='undefined' ? "": userData.city);
-    // }
     
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -166,8 +152,16 @@ export default function UpdateProfile({existingProfile}) {
         });
     };
 
-    const handleSubmit = () => {
-        update_profile(localProfileDetails);
+    const navigate = useNavigate();
+
+    const handleSubmit = async () => {
+        const result = await update_profile(localProfileDetails);
+        navigate('/ProfileHome');
+    };
+    
+    const deleteDependent = async (dependentName) => {
+        const result = await delete_dependent(dependentName, user.email);
+        window.location.reload();
     };
 
     const dependent_list = [];
@@ -179,7 +173,7 @@ export default function UpdateProfile({existingProfile}) {
                 <img src={dependent_del_pic} alt="delete dependent"/>
               </div>
               <div className="DeleteDependent">
-                <button type="button" className="DeleteDependent" onClick={()=>{delete_dependent(dependentData.string_id, user.email)}}>
+                <button type="button" className="DeleteDependent" onClick={() => {deleteDependent(dependentData.string_id)}}>
                 Delete: {dependentData.name}</button>
               </div>
           </div>
@@ -196,7 +190,6 @@ export default function UpdateProfile({existingProfile}) {
         <div className="DependentList">
             {dependent_list}
           </div>
-        <p>(Update all details with every request .. sorry the tool is still in beta.)</p>
         <p>Email : {user === null ? "":user.email}</p>
         <div className="ProfileUpdateItem">
             <p> Name </p>
