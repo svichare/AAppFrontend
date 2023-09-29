@@ -109,8 +109,9 @@ export default function DependentProfile() {
               <h3> {returnProfileName()} </h3>
             </div>
         </div>
-          <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update profile </button>
-          <button type="button" onClick={navigateToPublicProf}> See Public profile </button>
+          <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
+          <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
+          <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
       </div>
       <div className="Bottom">
         <p>.</p>
