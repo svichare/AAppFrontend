@@ -3,7 +3,6 @@
  import { useNavigate } from 'react-router-dom';
 
  const clientId = '201175894539-gte8nppbkqha8j0o40cqe7opmrsgmofo.apps.googleusercontent.com';
- 
 
  
  function LoginWithGoogle () {
@@ -11,17 +10,16 @@
   const { login } = useUser();
   const navigate = useNavigate();
 
- const onSuccess = (res) => {
-     console.log("Login successful ! Current user : ", res.profileObj);
-     const userData = { name: res.profileObj.givenName, email: res.profileObj.email };
-     login(userData);
-     navigate('/ProfileHome');
- }
- 
- const onFailure = (res) => {
-     console.log("Login failed ! res : ", res);
- }
-
+  const onSuccess = (res) => {
+      console.log("Login successful ! Current user : ", res.profileObj);
+      const userData = { name: res.profileObj.givenName, email: res.profileObj.email };
+      login(userData);
+      navigate('/ProfileHome');
+  }
+  
+  const onFailure = (res) => {
+      console.log("Login failed ! res : ", res);
+  }
      return (
          <div id="signInButton">
            <GoogleLogin
@@ -30,7 +28,7 @@
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
-                isSignedIn={true}
+                isSignedIn={false}
            />
          </div>)
  }

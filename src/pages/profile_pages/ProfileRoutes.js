@@ -8,8 +8,8 @@ const profileRoutes = [
   { path: '/UpdateProfile', Component: UpdateProfile, exact:'false'},
   { path: '/AddDependent', Component: AddDependent, exact:'false'},
   { path: '/UpdateDependentBio', Component: UpdateDependentBioPage, exact:'false'},
-  { path: '/PublicProfile/:dependent_public_id', Component: PublicProfile, exact:'false'},
-  { path: '/PublicProfile/:dependent_public_id/CaregiverProfile', Component: CaregiverProfile, exact:'false'}
+  { path: '/PublicProfile/:dependent_public_id', Component: PublicProfile, exact:'true'},
+  { path: '/PublicProfile/:dependent_public_id/CaregiverProfile', Component: CaregiverProfile, exact:'true'}
 ];
 
 export default profileRoutes;

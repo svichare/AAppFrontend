@@ -1,5 +1,5 @@
 import {React, useState, useContext, useEffect} from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import {useParams } from 'react-router-dom';
 
 import "./CaregiverProfile.css"
 
@@ -238,8 +238,6 @@ export default function CaregiverProfile() {
           }]});
       }
   }, []);
-
-  const navigate = useNavigate();
 
   console.log("Showing dependent details for " + dependentStringId);
   console.log("localCaregiverProfile details :  ", typeof localCaregiverProfile.caregiver_categories);
