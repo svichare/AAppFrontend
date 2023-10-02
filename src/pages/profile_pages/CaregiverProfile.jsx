@@ -98,16 +98,18 @@ async function get_caregiver_profile(dependent_id) {
     console.log("Returning error result");
     console.error(`Cought error in function : ${error}`);
     return {
-          caregiver_categories: [{
-            trait_category_name: "Food error",
-            trait_response_strings: [
-                {
-                    trait_question: "Breakfast time",
-                    trait_responses: ["6am to 7am"],
-                    trait_text_response: "Slow to start the day. Start with juice. Then continue with some hot breakfast. end"
-                }]
+          caregiver_categories: [
+          //   {
+          //   trait_category_name: "Food error",
+          //   trait_response_strings: [
+          //       {
+          //           trait_question: "Breakfast time",
+          //           trait_responses: ["6am to 7am"],
+          //           trait_text_response: "Slow to start the day. Start with juice. Then continue with some hot breakfast. end"
+          //       }]
         
-          }]
+          // }
+          ]
       }
   }
 }
@@ -180,15 +182,21 @@ function GetProfile(props) {
   // return (<h2> Thats whats up</h2>);
   if (typeof props.caregiverCategories.caregiver_categories === 'undefined') {
     console.log("Cannot set div, caregiver_categories undefined");
-    return;
+    return (
+          <div id="ErrorID" className="CaregiverProfile">
+              <p> Error fetching details. Check the URL or retry later. Thanks! </p>
+          </div>);
   }
   if (props.caregiverCategories.caregiver_categories.length === 0) {
         console.log("Cannot set div, caregiver_categories length 0");
-    return;
+        return (
+          <div id="ErrorID" className="CaregiverProfile">
+              <p> Error fetching details. Check the URL or retry later. Thanks! </p>
+          </div>);
   }
 
   console.log("Including div now ", props.caregiverCategories.caregiver_categories.length);
-  
+
   return (<div className="CaregiverProfile">
       {props.caregiverCategories.caregiver_categories.map((category, index) => (
         <div id={category.trait_category_name} className="CaregiverProfile">
@@ -217,6 +225,12 @@ export default function CaregiverProfile() {
         get_public_dependent_details(dependent_public_id)
           .then((dependent_profile_from_async) => {
             // Pass the ID to the next function.
+            if(typeof dependent_profile_from_async.string_id === 'undefined' ||
+            dependent_profile_from_async.string_id === null ||
+            dependent_profile_from_async.string_id.length === 0) {
+              console.log("Public profile not found");
+              return;
+            }
             get_caregiver_profile(dependent_profile_from_async.string_id)
               .then((caregiver_profile_from_async) => {
                 setLocalCaregiverProfile(caregiver_profile_from_async);
