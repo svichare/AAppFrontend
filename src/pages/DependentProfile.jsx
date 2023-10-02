@@ -65,7 +65,8 @@ export default function DependentProfile() {
         setDependentData(profile_details_from_async);
       });
     } else {
-      console.log("dependent data null");
+      console.log("dependent data null. Heading home");
+      navigate('/Home');
     }
   }, []);
 
