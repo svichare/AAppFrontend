@@ -138,18 +138,14 @@ function DisplayOneTraitCategory(props) {
 
 function GetProfile(props) {
   // return (<h2> Thats whats up</h2>);
-  if (typeof props.caregiverCategories.caregiver_categories === 'undefined') {
+  if (typeof props.caregiverCategories.caregiver_categories === 'undefined' ||
+  props.caregiverCategories.caregiver_categories.length === 0) {
     console.log("Cannot set div, caregiver_categories undefined");
     return (
           <div id="ErrorID" className="CaregiverProfile">
-              <p> Error fetching details. Check the URL or retry later. Thanks! </p>
-          </div>);
-  }
-  if (props.caregiverCategories.caregiver_categories.length === 0) {
-        console.log("Cannot set div, caregiver_categories length 0");
-        return (
-          <div id="ErrorID" className="CaregiverProfile">
-              <p> Error fetching details. Check the URL or retry later. Thanks! </p>
+              <p> Loading. If this takes more than 30s, please reload. </p>
+              <p> If multiple reloads dont work, kindly contact admin@onboard.icu. </p>
+              <p> Thanks for your continued support !</p>
           </div>);
   }
 
@@ -208,8 +204,7 @@ export default function CaregiverProfile() {
       <div className="CaregiverProfileMain">
         <div className="CaregiverHomeTopbar">
             <div className="CaregiverHomeName">
-              <h2> Caregiver Profile </h2>
-              <p> Important information required to help with daily needs.</p>
+              <h2> Details for caregivers </h2>
               <GetCategoryButtonList caregiverCategories={localCaregiverProfile} />
             </div>
         </div>

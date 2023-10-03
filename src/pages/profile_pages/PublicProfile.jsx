@@ -53,7 +53,7 @@ export default function PublicProfile() {
 
   const { dependent_public_id } = useParams();
   const [dependentData, setDependentData] = useState({
-    name: "Loading..",
+    name: "",
     lastName: "a",
     id: "a",
     age: 0
@@ -202,6 +202,9 @@ export default function PublicProfile() {
           <p> {returnDaignosisStory()} </p>
           <p> {returnLikes()} </p>
         </div>
+      </div>
+      <div className="Bottom">
+        <p>.</p>
       </div>
     </div>
   );
