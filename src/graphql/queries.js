@@ -149,3 +149,15 @@ export const getCaregiverProfile = /* GraphQL */ `
     }
   }
 `;
+export const getCaregiverProfilePublic = /* GraphQL */ `
+  query GetCaregiverProfilePublic($public_id: String) {
+    getCaregiverProfilePublic(public_id: $public_id) {
+      dependent_id
+      caregiver_categories {
+        trait_category_name
+        __typename
+      }
+      __typename
+    }
+  }
+`;
