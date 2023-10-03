@@ -16,56 +16,6 @@ function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
 }
 
-async function get_public_dependent_details(public_id) {
-
-  try { 
-    console.log("Checking request  : " + public_id);
-    const response = await API.graphql({
-      query: getDependentPublicDetails,
-      variables: {
-        public_id: public_id
-      },
-    });
-    console.log("Checking response  : " + public_id);
-    if (typeof response.data.getDependentPublicDetails == 'undefined') {
-      return {
-        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "name": "Mock User",
-        "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "id": 1505
-      };
-    }
-    console.log("Returning data from lambda for ID : " + public_id);
-    return response.data.getDependentPublicDetails;
-  } catch (error) {
-    console.error(`Cought error in function : ${error}`);
-    return {
-        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "name": "Error User",
-        "last_name": "SomeLastname",
-        "id": 1505
-      };
-  }
-}
-
-const getCaregiverProfileLocal = /* GraphQL */ `
-  query GetCaregiverProfile($dependent_id: String) {
-    getCaregiverProfile(dependent_id: $dependent_id) {
-      dependent_id
-      caregiver_categories {
-        trait_category_name
-        trait_response_strings {
-          trait_question
-          trait_responses
-          trait_text_response
-        }
-        __typename
-      }
-      __typename
-    }
-  }
-`;
-
 export const getCaregiverProfilePublicLocal = /* GraphQL */ `
   query GetCaregiverProfilePublic($public_id: String) {
     getCaregiverProfilePublic(public_id: $public_id) {
@@ -84,53 +34,6 @@ export const getCaregiverProfilePublicLocal = /* GraphQL */ `
   }
 `;
 
-async function get_caregiver_profile(dependent_id) {
-  try {
-    console.log("Trying query now");
-    
-    const response = await API.graphql({
-      query: getCaregiverProfileLocal,
-      variables: {
-        dependent_id: dependent_id
-      }
-    });
-    console.log("Query done");
-    // For local testing.
-    if (typeof response.data.getCaregiverProfile  === 'undefined' ||
-        response.data.getCaregiverProfile === null) {
-          console.log("Returning mock result");
-      return {
-          caregiver_categories: [{
-            trait_category_name: "Something went wrong. Try refresh for a couple of times.",
-            trait_response_strings: [
-                {
-                    trait_question: "Breakfast time",
-                    trait_responses: ["6am to 7am"],
-                    trait_text_response: "Slow to start the day. Start with juice. Then continue with some hot breakfast. end"
-                }]
-          }]
-      };
-    }
-    return response.data.getCaregiverProfile;
-  } catch (error) {
-    console.log("Returning error result");
-    console.error(`Cought error in function : ${error}`);
-    return {
-          caregiver_categories: [
-          //   {
-          //   trait_category_name: "Food error",
-          //   trait_response_strings: [
-          //       {
-          //           trait_question: "Breakfast time",
-          //           trait_responses: ["6am to 7am"],
-          //           trait_text_response: "Slow to start the day. Start with juice. Then continue with some hot breakfast. end"
-          //       }]
-        
-          // }
-          ]
-      }
-  }
-}
 async function get_caregiver_profile_from_public_id(public_id) {
   try {
     console.log("Trying query now using public ID: ", public_id);
@@ -164,16 +67,6 @@ async function get_caregiver_profile_from_public_id(public_id) {
     console.error(`Cought error in function : ${error}`);
     return {
           caregiver_categories: [
-          //   {
-          //   trait_category_name: "Food error",
-          //   trait_response_strings: [
-          //       {
-          //           trait_question: "Breakfast time",
-          //           trait_responses: ["6am to 7am"],
-          //           trait_text_response: "Slow to start the day. Start with juice. Then continue with some hot breakfast. end"
-          //       }]
-        
-          // }
           ]
       }
   }
@@ -285,25 +178,6 @@ export default function CaregiverProfile() {
 
   useEffect( () => {
       if (dependent_public_id.length > 0) {
-        // Get ID from public ID
-        // get_public_dependent_details(dependent_public_id)
-        //   .then((dependent_profile_from_async) => {
-        //     // Pass the ID to the next function.
-        //     if(typeof dependent_profile_from_async.string_id === 'undefined' ||
-        //     dependent_profile_from_async.string_id === null ||
-        //     dependent_profile_from_async.string_id.length === 0) {
-        //       console.log("Public profile not found");
-        //       return;
-        //     }
-        //     get_caregiver_profile(dependent_profile_from_async.string_id)
-        //       .then((caregiver_profile_from_async) => {
-        //         setLocalCaregiverProfile(caregiver_profile_from_async);
-        //         console.log("Setting LocalCaregiverProfile : ", typeof caregiver_profile_from_async.caregiver_categories);
-        //         console.log("Setting LocalCaregiverProfile length  : ", caregiver_profile_from_async.caregiver_categories.length);
-        //     });
-        //   }
-        // );
-        
         get_caregiver_profile_from_public_id(dependent_public_id)
         .then((caregiver_profile_from_async) => {
             setLocalCaregiverProfile(caregiver_profile_from_async);
