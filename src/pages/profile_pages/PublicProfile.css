@@ -37,22 +37,48 @@
 
 .PublicHomeTopbar {
   display: flex;
-  justify-content: center; /* Center horizontally */
+  flex-direction: row;
+  justify-content: space-between; /* Center horizontally */
   align-items: center;
+  /*width: 100%;*/
+}
+
+.PublicSunImage img {
+  margin-top: 0.1rem;
+  width: 10rem;
+  height: auto;
 }
 
 .PublicHomeImage img {
-  margin: 2rem;
-  width: 20rem;
+  /*margin: 2rem;*/
+  width: 14rem;
   height: auto;
 }
 
 .PublicHomeName {
-  margin: 5rem 5rem; 
+  position: relative;
+  margin: 5rem 5rem;
+  
+  background-color: #F0F1FF;
+}
+
+.PublicHomeName::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;  /*Hack! Have to set it to 70% for the buttons to be visible and clickable. */
+  background-image: url('../../assets/images/sun_smilling_figma.png');
+  background-repeat: no-repeat;
+  background-size: cover; /* or any other desired size */
+  background-position: center; /* or any other desired position */
+  opacity: 0.3; /* Adjust this value to control the background image's transparency (0.0 to 1.0) */
 }
 
 .PublicHomeName p {
   font-size: 18px;
+  line-height: .8;
 }
 
 .PublicEmergencyContact {
@@ -67,9 +93,27 @@
   padding-bottom: 1000px;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 768px) {
     .Main {
         margin-top: 0.1rem;
         margin-left: 0.1rem;
     }
+
+    .PublicHomeTopbar {
+      flex-direction: column;
+    }
+
+    .PublicSunImage img {
+      display: none;
+    }
+    
+    .PublicHomeImage img {
+      width:70%;
+      height: auto;
+    }
+    
+    .PublicHomeName {
+      margin: 1rem 1rem; 
+    }
+
 }

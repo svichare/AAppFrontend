@@ -6,6 +6,7 @@ import "./PublicProfile.css"
 import rish_photo from '../../assets/photos/rishaan_profile_pic.jpg'
 import profile_picture from '../../assets/images/profile_picture.jpg'
 import profile_pic_round from '../../assets/images/profile_pic_round.png'
+import sun_smiling from '../../assets/images/sun_smilling_figma.png'
 
 import { ParameterContext } from '../../App';
 
@@ -82,10 +83,6 @@ export default function PublicProfile() {
   
   const navigate = useNavigate();
   
-  const onUpdate = () => {
-    navigate('/TraitCategories');
-  };
-
   const returnName = () => {
       if (dependentData.name == null || typeof dependentData.name === 'undefined') {
           return "";
@@ -192,9 +189,12 @@ export default function PublicProfile() {
               <p> {returnVerbal()} </p>
               <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
               <button type="button" onClick={() => {
-                navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
-              }}> Details for Caregivers </button>
+                  navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
+                }}> Details for Caregivers </button>
+              </div>
             </div>
+            <div className="PublicHomeButtons">
+              
         </div>
         <div className="ProfileIntroduction">
           <h2> Introduction </h2>
