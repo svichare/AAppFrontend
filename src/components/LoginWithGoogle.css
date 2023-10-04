@@ -1,0 +1,14 @@
+@import "../../assets/fonts/fonts.css";
+
+.login_navbar-button button {
+    font-family: 'Sansation', Consolas, sans-serif;
+    font-weight: 250;
+    font-size: 1.5rem;
+    border: none;
+
+    outline: none;
+    cursor: pointer;
+    height: 52px;
+    width: 100px;
+    background-color: rgba(0, 0, 0, 0); 
+}

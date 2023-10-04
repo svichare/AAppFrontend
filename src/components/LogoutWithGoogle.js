@@ -22,6 +22,9 @@ import { useNavigate } from 'react-router-dom';
            <GoogleLogout
                 client_id={clientId}
                 buttonText="Logout"
+                render={renderProps => (
+                 <button onClick={renderProps.onClick} className="login_navbar-button">Logout</button>
+                )}
                 onLogoutSuccess={onLogoutSuccess}
            />
          </div>)

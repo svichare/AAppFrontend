@@ -365,6 +365,13 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
                                    DependentId={DependentId}/>
       </div>
       ))}
+      <div className="TraitOptionItem" key={999} >
+            <button type="button"
+            onClick={() => {
+              window.history.back();
+            }} > Go Back
+            </button>
+          </div>
     </div>
   );
 }

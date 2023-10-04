@@ -25,6 +25,9 @@
            <GoogleLogin
                 client_id={clientId}
                 buttonText="Login using gmail"
+                render={renderProps => (
+                 <button onClick={renderProps.onClick} className="login_navbar-button">Login</button>
+                )}
                 onSuccess={onSuccess}
                 onFailure={onFailure}
                 cookiePolicy={'single_host_origin'}
