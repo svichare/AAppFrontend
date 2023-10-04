@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 // import logo from '../../assets/logo/svg_logo.svg';
 import sp_logo from '../../assets/logo/g_y_b.png';
+import aam_logo from '../../assets/logo/always_around_me.png';
+
 // import home_g_y_b from '../../assets/images/home_g.png';
 // import login_g_y_b from '../../assets/images/login_g.png';
 // import about_g_y_b from '../../assets/images/about_g.png';
@@ -40,7 +42,7 @@ const handleLoginWithGoogle = () => {
     <div className="gpt3__navbar">
       <div className="gpt3__navbar-links">
         <div className="gpt3__navbar-links_logo">
-          <Link to="/Home"> <img src={sp_logo} alt="logo" /> </Link>
+          <Link to="/Home"> <img src={aam_logo} alt="logo" /> </Link>
         </div>
         <div className="gpt3__navbar-button">
           {user ? <Link to="/ProfileHome"> <button type="button">Home</button> </Link> :

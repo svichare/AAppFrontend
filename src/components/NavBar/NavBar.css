@@ -10,7 +10,7 @@
     height: 80px;
     background: #A2A2A0;
     background-color: #94E5FF;
-    background: linear-gradient(to bottom, #94E5FF, #FFF0C3);
+    background: linear-gradient(to bottom, #94E5FF, #F0F1FF);
 }
 
 .gpt3__navbar-links {
@@ -29,7 +29,7 @@
 }
 
 .gpt3__navbar-links_logo img {
-    width: 12rem;
+    width: 14rem;
     height: 3rem;
     left: 10px;
     top: 20px;
