@@ -46,6 +46,7 @@
 
 .DependentList {
   display: flex;
+  flex-direction: row;
 }
 
 .DependentListItem {
@@ -89,5 +90,12 @@
     .ProfileHomeTopbar {
       flex-direction: column;
     }
+    
+    .DependentList {
+    flex-direction: column;
+    }
 
+    .DependentListItem {
+      margin-left: 1rem;
+    }
 }
