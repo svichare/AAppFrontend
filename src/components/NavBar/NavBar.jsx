@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { RiMenu3Line, RiCloseLine } from 'react-icons/ri';
 import sp_logo from '../../assets/logo/g_y_b.png';
@@ -18,6 +18,36 @@ const Navbar = ({userLoggedIn, resetUserEmail}) => {
 
   const { user } = useUser();
 
+// Create a ref for the menu container
+  const menuRef = useRef(null);
+  const bodyRef = useRef(null);
+  // Toggle the menu state when the icon is clicked
+  const handleIconClick = () => {
+    console.log("Menu icon  clicked! "); 
+    setToggleMenu((prevToggle) => !prevToggle);
+  };
+  useEffect(() => {
+    // Function to handle clicks outside the menu
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        console.log("Resetting menu as some outer location was clicked");
+        setToggleMenu(false);
+      }
+    };
+
+    // Attach the event listener when the menu is open
+    if (toggleMenu) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      // Remove the event listener when the menu is closed
+      document.removeEventListener('click', handleClickOutside);
+    }
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [toggleMenu]);
   console.log("User according to navbar : ", user);
 
   return (
@@ -43,10 +73,10 @@ const Navbar = ({userLoggedIn, resetUserEmail}) => {
             </Link>
           </div>
         </div>
-        <div className="gpt3__navbar-menu">
+        <div className="gpt3__navbar-menu" ref={menuRef}>
         {toggleMenu
-          ? <RiCloseLine color="#fff" size={27} onClick={() => setToggleMenu(false)} />
-          : <RiMenu3Line color="#fff" size={27} onClick={() => setToggleMenu(true)} />}
+          ? <RiCloseLine color="#fff" size={27} onClick={() => { setToggleMenu(false); }}/>
+          : <RiMenu3Line color="#fff" size={27} onClick={(e) => { e.stopPropagation(); setToggleMenu(true); }} />}
         {toggleMenu && (
         <div className="gpt3__navbar-menu_container scale-up-center">
           <div className="gpt3__navbar-menu_container-links">

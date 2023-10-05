@@ -89,9 +89,9 @@ export default function TraitCategories({dependentId}) {
           <DisplayTraitCategories TraitCategoryList={localTraitCategoryList}
                                   setSelectedTraitCategory={setSelectedTraitCategory}
                                   navigate={navigate}/>
-      </div>
-      <div className="Bottom">
-        <p>.</p>
+          <div className="TraitCategoryBack">
+                <button type="button" onClick={() => { navigate('/DependentProfile');}}>Back</button>
+          </div>
       </div>
     </div>
   );
