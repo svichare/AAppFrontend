@@ -7,21 +7,24 @@
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
 }
 
-.ProfileUpdateItem {    
+.ProfileUpdateMain {    
   display: flex;
-  flex-direction: row;
+  width: 100%;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
+
+  text-align: flex-start;
+  border: none;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
 }
 
-.ProfileUpdateLocationItem {
-  display: flex;
-  flex-direction: row;
-  width:70%;
-  align-items: center;
-  gap: 1rem;
+.ProfileUpdateMain h1 {
+  font-family: 'Sansation', Consolas, sans-serif;
+}
 
-  width: 30rem;
+.ProfileUpdateMain h2 {
+  font-family: 'Sansation', Consolas, sans-serif;
 }
 
 .DeleteDependent {
@@ -42,6 +45,13 @@
   font-size: 1.1rem;
 }
 
+.ProfileUpdateItem {    
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
 .ProfileUpdateItem button {
   padding: 10px;
   background-color: #94E5FF80;
@@ -59,26 +69,6 @@
 
 .ProfileUpdateItem button:disabled {
   background-color: #BEBEBE;
-}
-
-.ProfileUpdateMain {    
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-
-  text-align: flex-start;
-  border: none;
-  font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
-}
-
-.ProfileUpdateMain h1 {    
-  font-family: 'Sansation', Consolas, sans-serif;
-}
-
-.ProfileUpdateMain h2 {    
-  font-family: 'Sansation', Consolas, sans-serif;
 }
 
 .ProfileUpdateDetails button {
@@ -111,10 +101,8 @@
 
 .ProfileUpdateDetails {
   width: 100%;
-  padding: 1rem;
   border: none;
   border-radius: 10px;
-  /*background-color: #FFF0C3;*/
 
   font-size: 16px;
   color: #333;

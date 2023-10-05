@@ -172,55 +172,64 @@ export default function UpdateProfile({existingProfile}) {
           </div>
         <p>Email : {user === null ? "":user.email}</p>
         <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> Name </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                defaultValue={userData === null ? "":userData.name} 
                name="name"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.name !=='undefined' ) ?
                       "": localProfileDetails.name}
                onChange={handleInputChange}/>
+          </div>
         </div>
         <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p>Last Name </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.last_name !=='undefined' ) ?
                       "": localProfileDetails.last_name} name="last_name"
                onChange={handleInputChange}/>
+          </div>
         </div>
         <h2> Location </h2>
-        <div className="ProfileUpdateLocationItem">
+        <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> Country </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.country !=='undefined' ) ?
                       "": localProfileDetails.country}  name="country"
                onChange={handleInputChange}/>
+          </div>
         </div>
-        <div className="ProfileUpdateLocationItem">
+        <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> State </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.state !=='undefined' ) ?
                       "": localProfileDetails.state}  name="state"
                onChange={handleInputChange}/>
+          </div>
         </div>
-        <div className="ProfileUpdateLocationItem">
+        <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> City </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.city !=='undefined' ) ?
                       "": localProfileDetails.city}  name="city"
                onChange={handleInputChange}/>
+          </div>
         </div>
         <div className="ProfileUpdateItem">
             <button type="button" onClick={handleSubmit}>Submit</button>
         </div>
-      </div>
-
-      <div className="Bottom">
-        <p>.</p>
+        <div className="ProfileUpdateItem">
+            <button type="button" onClick={() => { navigate('/ProfileHome');}}>Back</button>
+        </div>
       </div>
     </div>
         );
