@@ -17,6 +17,7 @@
 .ProfileUpdateLocationItem {
   display: flex;
   flex-direction: row;
+  width:70%;
   align-items: center;
   gap: 1rem;
 
@@ -109,13 +110,12 @@
 }
 
 .ProfileUpdateDetails {
-  width: 30rem;
-  gap: 1rem;
+  width: 100%;
   padding: 1rem;
   border: none;
   border-radius: 10px;
   /*background-color: #FFF0C3;*/
-  
+
   font-size: 16px;
   color: #333;
 }
@@ -137,4 +137,9 @@
         margin-top: 0.1rem;
         margin-left: 0.1rem;
     }
+    
+    .DependentListItem {
+      flex-direction: row;
+    }
+
 }

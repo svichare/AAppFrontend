@@ -20,6 +20,7 @@
     justify-content: flex-start;
     align-items: center;
     gap: 4rem;
+    width: 80%;
 }
 
 .gpt3__navbar-links_buttons {
@@ -150,7 +151,7 @@
     }
 
     .gpt3__navbar-links {
-    gap: 1rem;
+    /*gap: 1rem;*/
 }
 
 .gpt3__navbar-links_logo {
@@ -162,7 +163,7 @@
 
 @media screen and (max-width: 550px) {
     .gpt3__navbar {
-        padding: 1rem;
+        /*padding: 1rem;*/
     }
 
     .gpt3__navbar-sign {
