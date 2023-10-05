@@ -21,6 +21,8 @@
 }
 .ProfileHomeTopbar {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Center horizontally */
   align-items: center;
 }
 .ProfileImage img {
@@ -29,7 +31,7 @@
   height: auto;
 }
 .ProfileName {
-  margin: 5rem 5rem; 
+  /*margin: 5rem 5rem; */
 }
 
 .ProfileIntroduction {
@@ -77,9 +79,15 @@
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
   font-size: 1.1rem;
 }
+
 @media screen and (max-width: 900px) {
     .ProfileHomeMain {
         margin-top: 0.1rem;
         margin-left: 0.1rem;
     }
+    
+    .ProfileHomeTopbar {
+      flex-direction: column;
+    }
+
 }
