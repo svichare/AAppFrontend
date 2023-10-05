@@ -9,36 +9,11 @@
 
 .ProfileUpdateItem {    
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
 }
 
-.ProfileUpdateLocationItem {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-
-  width: 30rem;
-}
-
-.DeleteDependent {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 1rem;
-}
-
-.DeleteDependent button {
-  padding: 10px;
-  background-color: #FAAABD80;
-  border-radius: 5px;
-  width: 10rem;
-  border: none;
-  cursor: pointer;
-  font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
+.ProfileUpdateItem p {
 }
 
 .ProfileUpdateItem button {
@@ -50,6 +25,7 @@
   cursor: pointer;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
   font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
 .ProfileUpdateItem button:active {
@@ -80,46 +56,28 @@
   font-family: 'Sansation', Consolas, sans-serif;
 }
 
-.ProfileUpdateDetails button {
-  padding: 10px;
-  background-color: #94E5FF80;
-  border-radius: 5px;
-  width: 20rem;
-  border: none;
-  cursor: pointer;
-  font-family: 'SawarabiGothic', Helvetica, sans-serif;
-  font-size: 1.1rem;
-}
-
-.ProfileUpdateDetails button:active {
-  background-color: white;
-}
-
-.ProfileUpdateDetails button:disabled {
-  background-color: #BEBEBE;
-}
-
 .ProfileUpdateDetails p {
   /*color: white;*/
   width: 30rem;
-  text-align: left;
+  text-align: center;
   border: none;
   font-family: 'SawarabiGothic', Helvetica, sans-serif;
   font-size: 1.1rem;
 }
 
 .ProfileUpdateDetails {
-  width: 30rem;
-  gap: 1rem;
-  padding: 1rem;
+  margin-bottom: 1px;
+}
+.ProfileUpdateDetails input {
+  width: 70%;
+  margin-left: 10%;
+  flex-align: center;
+  padding: .6rem;
   border: none;
   border-radius: 10px;
-  /*background-color: #FFF0C3;*/
-  
   font-size: 16px;
   color: #333;
 }
-
 .ProfileUpdateDetails:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);

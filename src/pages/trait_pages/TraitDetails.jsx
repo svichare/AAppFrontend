@@ -329,7 +329,8 @@ function PopulateDescriptionOption({TextResponse, TraitCategoryId,
   };
     
   return (
-    <input className="TraitOptionDetails" type="text"
+    <textarea className="TraitOptionDetails" type="text"
+    rows="2"
            placeholder={placeholder_text} defaultValue={TextResponse}
            onChange={(e) => {
             handleTextResponseChange(e.target.value);

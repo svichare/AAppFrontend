@@ -148,8 +148,9 @@ export default function UpdateDependentBioPage({existingProfile}) {
       <div className="ProfileUpdateMain">
         <h1>Details ...</h1>
         <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> First Name </p>
-            <input className="ProfileUpdateDetails" type="text"
+            <input type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.name ==='undefined' ) ? "":localProfileDetails.name} 
                name="name"
@@ -157,9 +158,11 @@ export default function UpdateDependentBioPage({existingProfile}) {
                       typeof localProfileDetails.name ==='undefined' ) ?
                       "": localProfileDetails.name}
                onChange={handleInputChange}/>
+          </div>
         </div>
 
         <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> Diagnosis </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
@@ -169,10 +172,12 @@ export default function UpdateDependentBioPage({existingProfile}) {
                       typeof localProfileDetails.diagnosis ==='undefined' ) ?
                       "": localProfileDetails.diagnosis}
                onChange={handleInputChange}/>
+          </div>
         </div>
 
         <div className="ProfileUpdateItem">
-            <p> Communication type </p>
+          <div className="ProfileUpdateDetails">
+            <p> Communication type (eg. verbal/non-verbal) </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.verbal ==='undefined' ) ? "":localProfileDetails.verbal} 
@@ -181,9 +186,11 @@ export default function UpdateDependentBioPage({existingProfile}) {
                       typeof localProfileDetails.verbal ==='undefined' ) ?
                       "": localProfileDetails.verbal}
                onChange={handleInputChange}/>
+          </div>
         </div>
 
         <div className="ProfileUpdateItem">
+          <div className="ProfileUpdateDetails">
             <p> Age </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
@@ -193,10 +200,12 @@ export default function UpdateDependentBioPage({existingProfile}) {
                       typeof localProfileDetails.age ==='undefined' ) ?
                       "": localProfileDetails.age}
                onChange={handleInputChange}/>
+          </div>
         </div>
 
         <div className="ProfileUpdateItem">
-            <p> Public ID </p>
+          <div className="ProfileUpdateDetails">
+            <p> Public ID (to share the profile link with others)</p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.public_id ==='undefined' ) ? "":localProfileDetails.public_id} 
@@ -205,9 +214,13 @@ export default function UpdateDependentBioPage({existingProfile}) {
                       typeof localProfileDetails.public_id ==='undefined' ) ?
                       "": localProfileDetails.public_id}
                onChange={handleInputChange}/>
+          </div>
         </div>
         <div className="ProfileUpdateItem">
             <button type="button" onClick={handleSubmit}>Submit</button>
+        </div>
+        <div className="ProfileUpdateItem">
+            <button type="button" onClick={() => { navigate('/DependentProfile');}}>Back</button>
         </div>
       </div>
 
