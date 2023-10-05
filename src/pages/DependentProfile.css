@@ -37,6 +37,7 @@
 
 .DependentHomeTopbar {
   display: flex;
+  flex-direction:row;
   justify-content: center; /* Center horizontally */
   align-items: center;
 }
@@ -61,4 +62,19 @@
         margin-top: 0.1rem;
         margin-left: 0.1rem;
     }
+    
+    .DependentHomeTopbar {
+      flex-direction:column;
+    }
+
+    .DependentHomeImage img {
+      margin:2rem 2rem;
+      width: 70%;
+      height: auto;
+    }
+
+    .DependentHomeName {
+      margin: 1rem 1rem; 
+    }
+
 }
