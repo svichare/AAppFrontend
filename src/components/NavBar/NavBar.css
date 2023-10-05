@@ -22,6 +22,10 @@
     gap: 4rem;
 }
 
+.gpt3__navbar-links_buttons {
+    display: flex;
+}
+
 .gpt3__navbar-links_logo {
     margin-right: 2rem;
     margin-left: 12rem;
@@ -84,9 +88,10 @@
 
 .gpt3__navbar-menu {
     margin-left: 1rem;
-
+    /*margin-right: 1rem;*/
+    align-items: right;
     display: none;
-    position: relative;
+    /*position: relative;*/
 }
 
 .gpt3__navbar-menu svg {
@@ -113,6 +118,16 @@
 
 .gpt3__navbar-menu_container p {
     margin: 1rem 0;
+}
+
+.gpt3__navbar-menu_container-links p {
+    /*margin: 1rem 0;*/
+    color: #FFFFFF;
+}
+
+.gpt3__navbar-menu_container-links button {
+    /*margin: 1rem 0;*/
+    color: #262323;
 }
 
 .gpt3__navbar-menu_container-links-sign {
@@ -151,6 +166,10 @@
     }
 
     .gpt3__navbar-sign {
+        display: none;
+    }
+
+    .gpt3__navbar-links_buttons {
         display: none;
     }
 
