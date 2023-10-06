@@ -25,6 +25,32 @@
   font-size: 1.1rem;
 }
 
+.GoBackButton {
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.GoBackButton button {
+  padding: 10px;
+  background-color: #94E5FF80;
+
+  border-radius: 5px;
+  width: 10rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.TraitQuestionDetails button:active {
+  background-color: white;
+}
+
+.TraitQuestionDetails button:disabled {
+  background-color: #BEBEBE;
+}
+
 .TraitQuestionDetails button {
   padding: 10px;
   background-color: #94E5FF80;

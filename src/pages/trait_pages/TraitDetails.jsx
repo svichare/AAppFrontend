@@ -360,19 +360,13 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
                          setCounter={setCounter}
                          counter={counter}
                          setSelectedIdChanged={setSelectedIdChanged}/>
+        <p>Additional details if any ..</p>
         <PopulateDescriptionOption TextResponse={value.text_response}
                                    TraitCategoryId={TraitCategoryId}
                                    TraitId={value.id}
                                    DependentId={DependentId}/>
       </div>
       ))}
-      <div className="TraitOptionItem" key={999} >
-            <button type="button"
-            onClick={() => {
-              window.history.back();
-            }} > Go Back
-            </button>
-          </div>
     </div>
   );
 }
@@ -489,6 +483,13 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
           counter={counter}
           setSelectedIdChanged={setSelectedIdChanged}
           />
+      </div>
+      <div className="GoBackButton" key={999} >
+            <button type="button"
+            onClick={() => {
+              window.history.back();
+            }} > Go Back
+            </button>
       </div>
       <div className="Bottom">
         <p>.</p>
