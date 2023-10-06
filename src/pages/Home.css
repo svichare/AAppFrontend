@@ -13,15 +13,30 @@
 }
 
 .HomeTopImage img {
+  display: flex; /* Enable flex layout 
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (optional) */
+  padding-left: 10rem;
+
   width: 100%;
   max-width: 50rem;
-  height: auto;
-  align: center;
 }
 
 .Bottom {
   width: 100%;
-  padding-bottom: 1000px;
+  padding-bottom: 100px;
+}
+
+@media screen and (max-width: 1050px) {
+    .HomeTopImage img {
+        padding-left: 4rem;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .HomeTopImage img {
+        padding-left: 2rem;
+    }
 }
 
 @media screen and (max-width: 768px) {
@@ -30,6 +45,7 @@
         /*margin-left: 0.1rem;*/
     }
     
-    .HomeTopImage {
+    .HomeTopImage img {
+        padding-left: 0rem;
     }
 }
