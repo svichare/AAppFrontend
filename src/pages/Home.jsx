@@ -2,16 +2,26 @@ import React from "react";
 
 
 import './Home.css';
+import homepage_laptop from '../assets/images/homepage_2_30am.png';
+import homepage_mobile from '../assets/images/homepage_2_30am_mobile.png';
 
 
 export default function Home() {
+  
+    const returnHomePic = () => {
+    if (window.innerWidth > 768) {
+        return homepage_laptop;
+    }
+
+    return homepage_mobile;
+  }
+
   return (
     <div className="HomeContainer">
       <div className="HomeMain">
-          <p> This is a space for parents for non/semi-verbal kids.</p>
-          <p> We create ChatGPT like model with all the information of your special one. </p>
-          <p> It will stay like a companion with your kid .. and voice their unvoiced opinions</p>
-          <p><i> Login to get started! </i></p>
+        <div className="HomeTopImage">
+          <img src={returnHomePic()} alt="home_photo" />
+        </div>
       </div>
       <div className="Bottom" />
     </div>
