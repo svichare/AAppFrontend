@@ -73,10 +73,10 @@ async function get_profile_details(user_email) {
   }
 }
 
-async function update_profile(profileDetails) {
+async function update_profile(profileDetails, user_email) {
   // update actionItem with the response.
   const update_profile_details = {
-    email: profileDetails.email,
+    email: user_email,
     name: profileDetails.name,
     last_name: profileDetails.last_name,
     country: profileDetails.country,
@@ -135,7 +135,7 @@ export default function UpdateProfile({existingProfile}) {
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
-        const result = await update_profile(localProfileDetails);
+        const result = await update_profile(localProfileDetails, user.email);
         navigate('/ProfileHome');
     };
     
