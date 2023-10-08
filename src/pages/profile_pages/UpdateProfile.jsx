@@ -147,6 +147,7 @@ export default function UpdateProfile({existingProfile}) {
     const dependent_list = [];
       if (isIterable(userData.dependents)) {
         userData.dependents.forEach((dependentData, index) => {
+        dependent_list.push(<p> Dependent list  </p>);
         dependent_list.push(
           <div className="DependentListItem">
               <div className="DependentPhoto" >
@@ -165,15 +166,15 @@ export default function UpdateProfile({existingProfile}) {
     return (
     <div className="ProfileUpdateContainer">
       <div className="ProfileUpdateMain">
-        <h1>My details ...</h1>
-        <p> Update dependent list</p>
+        <h1>Update personal details ...</h1>
+        <p>(* fields required to get started.)</p>
         <div className="DependentList">
             {dependent_list}
-          </div>
+        </div>
         <p>Email : {user === null ? "":user.email}</p>
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> Name </p>
+            <p> Name* </p>
             <input type="text"
                defaultValue={userData === null ? "":userData.name} 
                name="name"
@@ -185,7 +186,7 @@ export default function UpdateProfile({existingProfile}) {
         </div>
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p>Last Name </p>
+            <p>Last Name* </p>
             <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.last_name !=='undefined' ) ?
@@ -200,7 +201,7 @@ export default function UpdateProfile({existingProfile}) {
             <input type="text"
                value={(localProfileDetails === null &&
                       typeof localProfileDetails.country !=='undefined' ) ?
-                      "": localProfileDetails.country}  name="country"
+                      "NA": localProfileDetails.country}  name="country"
                onChange={handleInputChange}/>
           </div>
         </div>
@@ -209,7 +210,7 @@ export default function UpdateProfile({existingProfile}) {
             <p> State </p>
             <input type="text"
                value={(localProfileDetails === null &&
-                      typeof localProfileDetails.state !=='undefined' ) ?
+                      typeof localProfileDetails.state !=='undefined') ?
                       "": localProfileDetails.state}  name="state"
                onChange={handleInputChange}/>
           </div>
@@ -219,7 +220,7 @@ export default function UpdateProfile({existingProfile}) {
             <p> City </p>
             <input type="text"
                value={(localProfileDetails === null &&
-                      typeof localProfileDetails.city !=='undefined' ) ?
+                      typeof localProfileDetails.city !=='undefined') ?
                       "": localProfileDetails.city}  name="city"
                onChange={handleInputChange}/>
           </div>

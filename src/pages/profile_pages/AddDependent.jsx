@@ -102,13 +102,14 @@ export default function AddDependent({}) {
     return (
     <div className="AddDependentContainer">
       <div className="AddDependentMain">
-        <h1>Add details of your SuperHero...</h1>
+        <h1>Add details of your kid...</h1>
+        <p>(* required fields)</p>
         <div className="AddDependentItem">
-            <p>First Name </p>
+            <p>First Name* </p>
             <input className="AddDependentDetails" type="text"
                placeholder="Enter first name" name="name"
                onChange={handleInputChange}/>
-            <p> Diagnosis </p>
+            <p> Diagnosis* </p>
             <div className="AddDependentDetailsOptions">
               {diagnosis_list_html}
               <label>
@@ -124,11 +125,11 @@ export default function AddDependent({}) {
             <input className="AddDependentDetails" type="text"
                placeholder="Diagnosis details (Other)" name="diagnosis"
                onChange={handleInputChange}/>
-            <p> Age </p>
+            <p> Age* </p>
             <input className="AddDependentDetails" type="text"
                placeholder="Age" name="age"
                onChange={handleInputChange}/>
-            <p> Communication level </p>
+            <p> Communication level* </p>
             <div className="AddDependentDetailsOptions">
                 {verbal_list_html}
             </div>
