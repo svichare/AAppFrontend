@@ -83,6 +83,10 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
       get_profile_details(user.email)
       .then((profile_details_from_async) => {
         setUserData(profile_details_from_async);
+        if (profile_details_from_async.name == null ||
+            typeof profile_details_from_async.name === 'undefined') {
+          navigate('/UpdateProfile');
+        }
       });
     }
   }, [user]);
