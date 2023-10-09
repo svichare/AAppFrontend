@@ -102,7 +102,7 @@ export default function AddDependent({}) {
     return (
     <div className="AddDependentContainer">
       <div className="AddDependentMain">
-        <h1>Add details of your kid...</h1>
+        <h1>Add details of your dependent...</h1>
         <p>(* required fields)</p>
         <div className="AddDependentItem">
             <p>First Name* </p>

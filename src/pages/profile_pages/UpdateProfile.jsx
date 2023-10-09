@@ -155,8 +155,8 @@ export default function UpdateProfile({existingProfile}) {
 
     const dependent_list = [];
     if (isIterable(userData.dependents)) {
+      dependent_list.push(<p> Dependent list: </p>);
       userData.dependents.forEach((dependentData, index) => {
-      dependent_list.push(<p> Dependent list  </p>);
       dependent_list.push(
         <div className="DependentListItem">
             <div className="DependentPhoto" >
