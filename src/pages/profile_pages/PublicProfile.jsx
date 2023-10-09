@@ -58,6 +58,7 @@ export default function PublicProfile() {
     id: "a",
     age: 0
   });
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -70,6 +71,7 @@ export default function PublicProfile() {
           get_dependent_details(dependent_public_id)
           .then((profile_details_from_async) => {
             setDependentData(profile_details_from_async);
+            setLoading(false);
           });
       } else {
         console.log("No public profileID. Heading home");
@@ -172,34 +174,40 @@ export default function PublicProfile() {
 
   return (
     <div className="PublicProfileContainer">
-    
-      <div className="PublicProfileMain">
-        <div className="PublicHomeTopbar">
-            <div className="PublicHomeImage">
-              <img src={returnProfilePic()} alt="profile_photo" />
+    {loading ? (
+        // Show a loading screen when loading is true
+        <div className="LoadingPage"> <h2>Loading...</h2> </div>
+        ) : (
+        <div>
+          <div className="PublicProfileMain">
+            <div className="PublicHomeTopbar">
+                <div className="PublicHomeImage">
+                  <img src={returnProfilePic()} alt="profile_photo" />
+                </div>
+                <div className="PublicHomeName">
+                  <h3> {returnName()} </h3>
+                  <p> {returnDiagnosis()}</p>
+                  <p> {returnVerbal()} </p>
+                  <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
+                  <button type="button" onClick={() => {
+                      navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
+                    }}> Details for Caregivers </button>
+                  </div>
+                </div>
+                <div className="PublicHomeButtons">
             </div>
-            <div className="PublicHomeName">
-              <h3> {returnName()} </h3>
-              <p> {returnDiagnosis()}</p>
-              <p> {returnVerbal()} </p>
-              <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
-              <button type="button" onClick={() => {
-                  navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
-                }}> Details for Caregivers </button>
-              </div>
+            <div className="ProfileIntroduction">
+              <h2> Introduction </h2>
+              <p> {returnIntroLine()} </p>
+              <p> {returnDaignosisStory()} </p>
+              <p> {returnLikes()} </p>
             </div>
-            <div className="PublicHomeButtons">
-        </div>
-        <div className="ProfileIntroduction">
-          <h2> Introduction </h2>
-          <p> {returnIntroLine()} </p>
-          <p> {returnDaignosisStory()} </p>
-          <p> {returnLikes()} </p>
-        </div>
-      </div>
-      <div className="Bottom">
-        <p>.</p>
-      </div>
+          </div>
+          <div className="Bottom">
+            <p>.</p>
+          </div>
+          </div>
+        )}
     </div>
   );
 }
