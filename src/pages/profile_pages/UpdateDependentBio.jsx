@@ -147,9 +147,10 @@ export default function UpdateDependentBioPage({existingProfile}) {
     <div className="ProfileUpdateContainer">
       <div className="ProfileUpdateMain">
         <h1>Details ...</h1>
+        <p>(* required fields)</p>
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> First Name </p>
+            <p> First Name* </p>
             <input type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.name ==='undefined' ) ? "":localProfileDetails.name} 
@@ -163,7 +164,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
 
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> Diagnosis </p>
+            <p> Diagnosis* </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.diagnosis ==='undefined' ) ? "":localProfileDetails.diagnosis} 
@@ -177,7 +178,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
 
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> Communication type (eg. verbal/non-verbal) </p>
+            <p> Communication type (eg. verbal/non-verbal)* </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.verbal ==='undefined' ) ? "":localProfileDetails.verbal} 
@@ -191,7 +192,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
 
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> Age </p>
+            <p> Age* </p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.age ==='undefined' ) ? "":localProfileDetails.age} 
@@ -205,7 +206,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
 
         <div className="ProfileUpdateItem">
           <div className="ProfileUpdateDetails">
-            <p> Public ID (to share the profile link with others)</p>
+            <p> Public ID (to share the profile link with others)*</p>
             <input className="ProfileUpdateDetails" type="text"
                defaultValue={(localProfileDetails === null ||
                       typeof localProfileDetails.public_id ==='undefined' ) ? "":localProfileDetails.public_id} 

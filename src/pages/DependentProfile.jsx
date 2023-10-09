@@ -98,6 +98,22 @@ export default function DependentProfile() {
     return dependentData.name
   }
 
+  const navButtons = [];
+  if (dependentData.name === null ||
+      typeof dependentData.name === 'undefined' ||
+      dependentData.name == "Mock Value" ||
+      dependentData.name == "") {
+    // Dont populate the navbuttons here.
+  } else {
+    navButtons.push(
+      <div className="DependentNavButtons">
+        <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
+        <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
+        <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
+      </div>
+    );
+  }
+  
   console.log("Showing dependent details for " + dependentStringId);
   return (
     <div className="DependentProfileContainer">
@@ -110,9 +126,7 @@ export default function DependentProfile() {
               <h3> {returnProfileName()} </h3>
             </div>
         </div>
-          <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
-          <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
-          <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
+        {navButtons}
       </div>
       <div className="Bottom">
         <p>.</p>
