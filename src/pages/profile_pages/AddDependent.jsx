@@ -55,7 +55,7 @@ function createRadioElements(dataArray, fieldName, handleInputChange) {
   const list_html = [];
     dataArray.forEach((arrayEntry, index) => {
     list_html.push(
-      <div classname="AddDependentDetailsOptions" key={index}>
+      <div className="AddDependentDetailsOptions" key={index}>
           <label>
             <input
               type="radio"
@@ -76,6 +76,10 @@ export default function AddDependent({}) {
     const { user } = useUser();
     const [localProfileDetails, setLocalProfileDetails] = useState(
         {parent_email: user.email});
+    // These is nothing to process here. So false by default. Only set when 
+    // Submit is pressed to disable the page after submit.
+    const [loading, setLoading] = useState(false);
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         console.log("Setting : ", name , " to value : ", value);
@@ -90,6 +94,7 @@ export default function AddDependent({}) {
 
     const handleSubmit = async () => {
         // Handle validation here.
+        setLoading(true);
         const response = await add_dependent(localProfileDetails, user);
         console.log("Add dep response : ", response);
         // For now just navigate to parent screen. Later on check the status of 
@@ -101,47 +106,54 @@ export default function AddDependent({}) {
 
     return (
     <div className="AddDependentContainer">
-      <div className="AddDependentMain">
-        <h1>Add details of your dependent...</h1>
-        <p>(* required fields)</p>
-        <div className="AddDependentItem">
-            <p>First Name* </p>
-            <input className="AddDependentDetails" type="text"
-               placeholder="Enter first name" name="name"
-               onChange={handleInputChange}/>
-            <p> Diagnosis* </p>
-            <div className="AddDependentDetailsOptions">
-              {diagnosis_list_html}
-              <label>
-                <input
-                  type="radio"
-                  name="diagnosis"
-                  value="Other"
-                  onChange={()=> {}}
-                />
-                Other (Add details in the text box)
-              </label>
-            </div>
-            <input className="AddDependentDetails" type="text"
-               placeholder="Diagnosis details (Other)" name="diagnosis"
-               onChange={handleInputChange}/>
-            <p> Age* </p>
-            <input className="AddDependentDetails" type="text"
-               placeholder="Age" name="age"
-               onChange={handleInputChange}/>
-            <p> Communication level* </p>
-            <div className="AddDependentDetailsOptions">
-                {verbal_list_html}
-            </div>
+    {loading ? (
+        // Show a loading screen when loading is true
+        <div className="LoadingPage"> <h2>Processing...</h2> </div>
+        ) : (
+        <div>
+        <div className="AddDependentMain">
+          <h1>Add details of your dependent...</h1>
+          <p>(* required fields)</p>
+          <div className="AddDependentItem">
+              <p>First Name* </p>
+              <input className="AddDependentDetails" type="text"
+                 placeholder="Enter first name" name="name"
+                 onChange={handleInputChange}/>
+              <p> Diagnosis* </p>
+              <div className="AddDependentDetailsOptions">
+                {diagnosis_list_html}
+                <label>
+                  <input
+                    type="radio"
+                    name="diagnosis"
+                    value="Other"
+                    onChange={()=> {}}
+                  />
+                  Other (Add details in the text box)
+                </label>
+              </div>
+              <input className="AddDependentDetails" type="text"
+                 placeholder="Diagnosis details (Other)" name="diagnosis"
+                 onChange={handleInputChange}/>
+              <p> Age* </p>
+              <input className="AddDependentDetails" type="text"
+                 placeholder="Age" name="age"
+                 onChange={handleInputChange}/>
+              <p> Communication level* </p>
+              <div className="AddDependentDetailsOptions">
+                  {verbal_list_html}
+              </div>
+          </div>
+          <div className="AddDependentItem">
+              <button type="button" onClick={handleSubmit}>Submit</button>
+          </div>
         </div>
-        <div className="AddDependentItem">
-            <button type="button" onClick={handleSubmit}>Submit</button>
+  
+        <div className="Bottom">
+          <p>.</p>
         </div>
       </div>
-
-      <div className="Bottom">
-        <p>.</p>
-      </div>
+      )}
     </div>
         );
 }

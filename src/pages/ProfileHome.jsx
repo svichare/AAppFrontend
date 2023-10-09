@@ -62,7 +62,8 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   const { user } = useUser();
   const { set_dependent } = useDependent();
   const [localUserEmail, setLocalUserEmail] = useState("");
-  
+  const [loading, setLoading] = useState(true);
+
   const [userData, setUserData] = useState({
     name: "Mock Value",
     last_name: "Kaavi",
@@ -87,6 +88,8 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
             typeof profile_details_from_async.name === 'undefined') {
           navigate('/UpdateProfile');
         }
+        
+        setLoading(false);
       });
     }
   }, [user]);
@@ -152,31 +155,37 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   
   return (
       <div className="ProfileHomeContainer">
-        <div className="ProfileHomeMain">
-          <div className="ProfileHomeTopbar">
-            <div className="ProfileImage">
-              <img src={returnProfilePic()} alt="profile_photo" />
+      {loading ? (
+        // Show a loading screen when loading is true
+        <div className="LoadingPage"> <h2>Loading...</h2> </div>
+        ) : (
+        <div>
+          <div className="ProfileHomeMain">
+            <div className="ProfileHomeTopbar">
+              <div className="ProfileImage">
+                <img src={returnProfilePic()} alt="profile_photo" />
+              </div>
+              <div className="ProfileName">
+                <h4>{returnWelcomeMessage()}</h4>
+              </div>
             </div>
-            <div className="ProfileName">
-              <h4>{returnWelcomeMessage()}</h4>
+  
+            <p>Email : {localUserEmail}</p>
+            <h4>Your dependent list .. </h4>
+            <div className="DependentList">
+              {dependent_list}
             </div>
+            <Link to="/UpdateProfile">
+              <div className="UpdateProfileButton" onClick={()=>{}}>
+                <button type="button">Update Profile</button> 
+              </div>
+            </Link>
           </div>
-
-          <p>Email : {localUserEmail}</p>
-          <h4>Your dependent list .. </h4>
-          <div className="DependentList">
-            {dependent_list}
+          <div className="ProfileHomeBottom">
+            <p>.</p>
           </div>
-          <Link to="/UpdateProfile">
-            <div className="UpdateProfileButton" onClick={()=>{}}>
-              <button type="button">Update Profile</button> 
-            </div>
-          </Link>
         </div>
-
-        <div className="ProfileHomeBottom">
-          <p>.</p>
-        </div>
-      </div>
+      )}
+    </div>
   );
 }
