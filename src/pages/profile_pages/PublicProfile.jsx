@@ -51,7 +51,6 @@ async function get_dependent_details(dependent_string_id) {
 }
 
 export default function PublicProfile() {
-
   const { dependent_public_id } = useParams();
   const [dependentData, setDependentData] = useState({
     name: "",
@@ -60,29 +59,24 @@ export default function PublicProfile() {
     age: 0
   });
 
+  const navigate = useNavigate();
+
   mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
   mixpanel.track('PublicProfile opened', {
       'Dependent Name': dependent_public_id
     });
   useEffect( () => {
-      
       if (dependent_public_id.length > 0) {
           get_dependent_details(dependent_public_id)
           .then((profile_details_from_async) => {
             setDependentData(profile_details_from_async);
           });
       } else {
-          setDependentData({
-              name: "Please refresh page ... sign",
-              lastName: "a",
-              id: "a",
-              age: 0
-          })
+        console.log("No public profileID. Heading home");
+        navigate('/Home');
       }
   }, []);
-  
-  const navigate = useNavigate();
-  
+
   const returnName = () => {
       if (dependentData.name == null || typeof dependentData.name === 'undefined') {
           return "";
@@ -178,6 +172,7 @@ export default function PublicProfile() {
 
   return (
     <div className="PublicProfileContainer">
+    
       <div className="PublicProfileMain">
         <div className="PublicHomeTopbar">
             <div className="PublicHomeImage">
@@ -194,7 +189,6 @@ export default function PublicProfile() {
               </div>
             </div>
             <div className="PublicHomeButtons">
-              
         </div>
         <div className="ProfileIntroduction">
           <h2> Introduction </h2>

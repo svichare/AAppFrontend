@@ -96,6 +96,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
         image_url: "../assets/images/profile_picture.jpg",
         dependents: []
     });
+    const [loading, setLoading] = useState(true);
 
     useEffect( () => {
         if (dependent === null) {
@@ -110,12 +111,8 @@ export default function UpdateDependentBioPage({existingProfile}) {
           .then((profile_details_from_async) => {
             setDependentData(profile_details_from_async);
             setLocalProfileDetails(profile_details_from_async);
+            setLoading(false);
         });
-
-        if (user === null) {
-          console.log("user data null. Returning.");
-          return;
-        }
   }, []);
 
     const handleInputChange = (event) => {
@@ -145,6 +142,7 @@ export default function UpdateDependentBioPage({existingProfile}) {
     
     return (
     <div className="ProfileUpdateContainer">
+    
       <div className="ProfileUpdateMain">
         <h1>Details ...</h1>
         <p>(* required fields)</p>
