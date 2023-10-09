@@ -163,7 +163,7 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
           </div>
 
           <p>Email : {localUserEmail}</p>
-          <h4>Your super-heros .. </h4>
+          <h4>Your dependent list .. </h4>
           <div className="DependentList">
             {dependent_list}
           </div>

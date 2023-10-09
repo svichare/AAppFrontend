@@ -108,9 +108,8 @@ export default function UpdateProfile({existingProfile}) {
         image_url: "../assets/images/profile_picture.jpg",
         dependents: []
     });
-  
-    useEffect( () => {
-        console.log("Using user email ");
+
+    const updateProfileDetails = async () => {
         if (user === null) {
           console.log("user data null. Returning.");
           return;
@@ -120,6 +119,14 @@ export default function UpdateProfile({existingProfile}) {
           setUserData(profile_details_from_async);
           setLocalProfileDetails(profile_details_from_async);
         });
+    };
+    useEffect( () => {
+        console.log("Using user email ");
+        if (user === null) {
+          console.log("user data null. Returning.");
+          return;
+        }
+        updateProfileDetails();
   }, []);
 
     const handleInputChange = (event) => {
@@ -139,29 +146,31 @@ export default function UpdateProfile({existingProfile}) {
         navigate('/ProfileHome');
     };
     
+  
     const deleteDependent = async (dependentName) => {
         const result = await delete_dependent(dependentName, user.email);
-        window.location.reload();
+        updateProfileDetails();
+        navigate('/UpdateProfile');
     };
 
     const dependent_list = [];
-      if (isIterable(userData.dependents)) {
-        userData.dependents.forEach((dependentData, index) => {
-        dependent_list.push(<p> Dependent list  </p>);
-        dependent_list.push(
-          <div className="DependentListItem">
-              <div className="DependentPhoto" >
-                <img src={dependent_del_pic} alt="delete dependent"/>
-              </div>
-              <div className="DeleteDependent">
-                <button type="button" className="DeleteDependent" onClick={() => {deleteDependent(dependentData.string_id)}}>
-                Delete: {dependentData.name}</button>
-              </div>
-          </div>
-          );
-        });
-      }
-      
+    if (isIterable(userData.dependents)) {
+      userData.dependents.forEach((dependentData, index) => {
+      dependent_list.push(<p> Dependent list  </p>);
+      dependent_list.push(
+        <div className="DependentListItem">
+            <div className="DependentPhoto" >
+              <img src={dependent_del_pic} alt="delete dependent"/>
+            </div>
+            <div className="DeleteDependent">
+              <button type="button" className="DeleteDependent" onClick={() => {deleteDependent(dependentData.string_id)}}>
+              Delete: {dependentData.name}</button>
+            </div>
+        </div>
+        );
+      });
+    }
+  
     console.log("Latest userdata ", JSON.stringify(userData));
     return (
     <div className="ProfileUpdateContainer">
