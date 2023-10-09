@@ -491,9 +491,6 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
             }} > Go Back
             </button>
       </div>
-      <div className="Bottom">
-        <p>.</p>
-      </div>
     </div>
   );
 }
