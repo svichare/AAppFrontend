@@ -14,5 +14,5 @@ export const Main = styled.div`
 
 export const Bottom = styled.div`
   width: 100%;
-  padding-bottom: 1000px;
+  padding-bottom: 100px;
 `;
