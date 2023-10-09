@@ -360,7 +360,7 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
                          setCounter={setCounter}
                          counter={counter}
                          setSelectedIdChanged={setSelectedIdChanged}/>
-        <p>Additional details if any ..</p>
+        <p>Additional specific details on this topic.(More details you add here, better the AI model will get.)</p>
         <PopulateDescriptionOption TextResponse={value.text_response}
                                    TraitCategoryId={TraitCategoryId}
                                    TraitId={value.id}
