@@ -48,7 +48,7 @@ export default function CaregiverGPT() {
         const response = await setTimeout(() => {
           const response = GetGPTResponse(query);
           setGPTresponse(response);
-        }, 2000);
+        }, 3000);
         console.log("Add dep response : ", response);
         // setTimeout(setGPTresponse(response), 2000);
         

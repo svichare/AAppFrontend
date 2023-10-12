@@ -74,6 +74,7 @@
   background-size: cover; /* or any other desired size */
   background-position: center; /* or any other desired position */
   opacity: 0.3; /* Adjust this value to control the background image's transparency (0.0 to 1.0) */
+  z-index: 0;
 }
 
 .PublicHomeName p {
@@ -85,6 +86,11 @@
   display: flex;
   flex-direction:column;
   gap:.2rem;
+  z-index: 1;
+}
+
+.PublicHomeButtons button {
+  z-index: 1;
 }
 
 .PublicEmergencyContact {

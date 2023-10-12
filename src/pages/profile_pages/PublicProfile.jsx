@@ -195,7 +195,10 @@ export default function PublicProfile() {
                       }}> Details for Caregivers </button>
                     <button type="button" onClick={() => {
                       navigate('/OpenAICaregiver' );
-                    }}> Talk to virtual assistant </button>
+                    }}> Talk to my virtual assistant </button>
+                    <button type="button" onClick={() => {
+                      navigate('/PublicProfile/' + dependent_public_id + '/JourneyList' );
+                    }}> Follow my journeys </button>
                   </div>
                   </div>
                 </div>

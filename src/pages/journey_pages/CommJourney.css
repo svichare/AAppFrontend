@@ -1,0 +1,52 @@
+@import "../../assets/fonts/fonts.css";
+
+.CommJourneyContainer {
+  width: 100%;
+  background-color: #F0F1FF;
+  height: 100%;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+}
+
+.CommJourneyMain {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /*margin-left: 15rem;*/
+  justify-content: center; /* Center horizontally */
+  align-items: center;
+  gap: .5rem;
+}
+
+
+.CommJourneyMain button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  background-color: #94E5FF80;
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.JourneyIntroduction {
+    width: 70%;
+}
+
+.JourneyIntroduction h2 {
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+
+    .PublicHomeTopbar {
+      flex-direction: column;
+    }
+
+}

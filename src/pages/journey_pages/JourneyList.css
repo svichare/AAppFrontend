@@ -1,0 +1,80 @@
+@import "../../assets/fonts/fonts.css";
+
+.JourneyListContainer {
+  width: 100%;
+  background-color: #F0F1FF;
+  height: 100%;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+}
+
+.JourneyListMain {
+  width: 100%;
+  /*margin-left: 15rem;*/
+  align-items: center;
+}
+
+.JourneyListTopbar {
+  display: flex;
+  align-items: center;
+}
+
+.JourneyListName {
+  /*margin: 5rem 5rem; */
+  width: 100%;
+  text-align: center;
+}
+
+.JourneyList {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.JourneyList button {
+  /*margin: 5rem 5rem; */
+  /*text-align: center;*/
+  padding: 10px;
+  background-color: #94E5FF80;
+  /*color: white;*/
+  width: 20rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.JourneyListBack {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+    align-items: center;
+
+}
+.JourneyListBack button {
+  /*margin: 5rem 5rem; */
+  /*text-align: center;*/
+  margin-top: .4rem;
+
+  padding: 10px;
+  background-color: #94E5FF80;
+  /*color: white;*/
+  width: 10rem;
+  border: none;
+  cursor: pointer;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
+}
+
+.Bottom {
+  width: 100%;
+  padding-bottom: 1000px;
+}
+
+@media screen and (max-width: 900px) {
+    .Main {
+        margin-top: 0.1rem;
+        margin-left: 0.1rem;
+    }
+}
