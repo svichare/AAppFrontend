@@ -8,13 +8,21 @@
 }
 
 .CommJourneyMain {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
+  /*display: flex;*/
+  /*flex-direction: column;*/
+  /*width: 100%;*/
   /*margin-left: 15rem;*/
-  justify-content: center; /* Center horizontally */
+  /*justify-content: center;*/
+  /*align-items: center;*/
+  /*gap: .5rem;*/
+  display: flex;
+  width: 60%;
+  justify-content: center;
   align-items: center;
-  gap: .5rem;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-family: 'SawarabiGothic', Helvetica, sans-serif;
+  font-size: 1.1rem;
 }
 
 
@@ -31,7 +39,12 @@
 }
 
 .JourneyIntroduction {
+    display: flex;
+    flex-direction: column;
     width: 70%;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .JourneyIntroduction h2 {
