@@ -76,6 +76,10 @@ export default function DependentProfile() {
     navigate('/PublicProfile/' + dependentData.public_id );
   };
   
+  const navigateToVirtualAssistant = () => {
+    navigate('/OpenAICaregiver');
+  };
+  
   const returnProfilePic = () => {
     if (dependentData.name == null || typeof dependentData.name === 'undefined') {
         return profile_pic_round;
@@ -110,6 +114,7 @@ export default function DependentProfile() {
         <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
         <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
         <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
+        <button type="button" onClick={navigateToVirtualAssistant}> Chat with Virtual assistant </button>
       </div>
     );
   }

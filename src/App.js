@@ -15,6 +15,7 @@ import DependentProfile from './pages/DependentProfile';
 
 import traitRoutes from './pages/trait_pages/TraitRoutes.js';
 import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
+import openAIRoutes from './pages/openai_pages/OpenAIRoutes.js';
 import {GoogleLogin} from './components';
 import mixpanel from 'mixpanel-browser';
 import { gapi } from 'gapi-script';
@@ -83,6 +84,14 @@ const App = () =>{
             />
           ))}
         {profileRoutes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              Component={route.Component}
+              exact={route.exact}
+            />
+          ))}
+        {openAIRoutes.map(route => (
             <Route
               key={route.path}
               path={route.path}
