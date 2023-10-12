@@ -81,6 +81,12 @@
   line-height: .8;
 }
 
+.PublicHomeButtons {
+  display: flex;
+  flex-direction:column;
+  gap:.2rem;
+}
+
 .PublicEmergencyContact {
     background-color: #FAAABD80;
     width: 20rem;

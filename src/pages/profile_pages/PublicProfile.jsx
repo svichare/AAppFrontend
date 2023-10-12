@@ -189,9 +189,14 @@ export default function PublicProfile() {
                   <p> {returnDiagnosis()}</p>
                   <p> {returnVerbal()} </p>
                   <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
-                  <button type="button" onClick={() => {
-                      navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
-                    }}> Details for Caregivers </button>
+                  <div className="PublicHomeButtons">
+                    <button type="button" onClick={() => {
+                        navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
+                      }}> Details for Caregivers </button>
+                    <button type="button" onClick={() => {
+                      navigate('/OpenAICaregiver' );
+                    }}> Talk to virtual assistant </button>
+                  </div>
                   </div>
                 </div>
                 <div className="PublicHomeButtons">
