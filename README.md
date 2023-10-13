@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with Always-around.me
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project implements the frontend for Always-around.me
 
 ## Available Scripts
 
