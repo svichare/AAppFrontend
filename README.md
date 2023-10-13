@@ -1,6 +1,6 @@
-# Getting Started with Always-around.me
+# Getting Started with Always-Around.me
 
-This project implements the frontend for Always-around.me
+This project implements the frontend for Always-Around.me
 
 ## Available Scripts
 
