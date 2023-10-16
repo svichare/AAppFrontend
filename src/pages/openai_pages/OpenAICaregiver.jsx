@@ -1,4 +1,5 @@
 import {useState, useEffect} from "react";
+import { useParams } from 'react-router-dom';
 
 import "./OpenAICaregiver.css"
 
@@ -20,17 +21,13 @@ async function GetAppSyncResponse(query_str, dependent_string_id) {
     });
     console.log("Checking response  : " + dependent_string_id);
     if (typeof response.data.getGPTResponse == 'undefined') {
-      return {
-        "response": "Mock response. "
-      };
+      return "Mock response. ";
     }
     console.log("Returning data from lambda for ID : " + dependent_string_id);
     return response.data.getGPTResponse;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
-    return {
-        "response": "Error calling the GPT endpoint"
-      };
+    return "Error calling the GPT endpoint";
   }
 }
 
@@ -63,6 +60,7 @@ function GetGPTResponse(query_str) {
 }
 
 export default function CaregiverGPT() {
+  const { dependent_public_id } = useParams();
 
   const [gPTresponse, setGPTresponse] = useState("");
   const [query, setQuery] = useState("");
@@ -75,7 +73,7 @@ export default function CaregiverGPT() {
         console.log("Sending query : ", query);
         setGPTresponse("processing ...");
 
-        const response = await GetAppSyncResponse(query, );
+        const response = await GetAppSyncResponse(query, dependent_public_id);
         console.log("Response from GPT : ", response);
         setGPTresponse(response);
 
@@ -84,10 +82,10 @@ export default function CaregiverGPT() {
     };
 
   const handleQueryUpdate = (event) => {
-        // Handle validation here.
-        setQuery(event.target.value);
-        console.log("Setting Query to  : ", event.target.value);
-    };
+      // Handle validation here.
+      setQuery(event.target.value);
+      console.log("Setting Query to  : ", event.target.value);
+  };
 
     return (
     <div className="CaregiverGPTContainer">
