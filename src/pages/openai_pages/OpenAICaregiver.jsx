@@ -2,6 +2,38 @@ import {useState, useEffect} from "react";
 
 import "./OpenAICaregiver.css"
 
+import { API } from '@aws-amplify/api'
+import { getGPTResponse } from '../../graphql/queries'
+
+async function GetAppSyncResponse(query_str, dependent_string_id) {
+  // const response = await fetch(req_url);
+  // const data = await response.json();
+  // return data;
+  try { 
+    console.log("Checking request  : " + dependent_string_id);
+    const response = await API.graphql({
+      query: getGPTResponse,
+      variables: {
+        query: query_str,
+        public_id: dependent_string_id
+      },
+    });
+    console.log("Checking response  : " + dependent_string_id);
+    if (typeof response.data.getGPTResponse == 'undefined') {
+      return {
+        "response": "Mock response. "
+      };
+    }
+    console.log("Returning data from lambda for ID : " + dependent_string_id);
+    return response.data.getGPTResponse;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return {
+        "response": "Error calling the GPT endpoint"
+      };
+  }
+}
+
 function GetGPTResponse(query_str) {
     var result_str;
     var regex = /dentist/;
@@ -43,15 +75,10 @@ export default function CaregiverGPT() {
         console.log("Sending query : ", query);
         setGPTresponse("processing ...");
 
-        // const response = GetGPTResponse(query);
-        // const response = await setTimeout(GetGPTResponse(query), 2000);
-        const response = await setTimeout(() => {
-          const response = GetGPTResponse(query);
-          setGPTresponse(response);
-        }, 3000);
-        console.log("Add dep response : ", response);
-        // setTimeout(setGPTresponse(response), 2000);
-        
+        const response = await GetAppSyncResponse(query, );
+        console.log("Response from GPT : ", response);
+        setGPTresponse(response);
+
         setProcessing(false);
         // For now just navigate to parent screen. Later on check the status of 
     };

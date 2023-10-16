@@ -1,7 +1,7 @@
 import OpenAICaregiver from './OpenAICaregiver.jsx'
 
 const openAIRoutes = [
-  { path: '/OpenAICaregiver', Component: OpenAICaregiver, exact:'true'}
+  { path: '/PublicProfile/:dependent_public_id/OpenAICaregiver', Component: OpenAICaregiver, exact:'true'}
 ];
 
 export default openAIRoutes;

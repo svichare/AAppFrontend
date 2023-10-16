@@ -161,3 +161,8 @@ export const getCaregiverProfilePublic = /* GraphQL */ `
     }
   }
 `;
+export const getGPTResponse = /* GraphQL */ `
+  query GetGPTResponse($query: String, $public_id: String) {
+    getGPTResponse(query: $query, public_id: $public_id)
+  }
+`;

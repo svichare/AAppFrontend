@@ -77,7 +77,7 @@ export default function DependentProfile() {
   };
   
   const navigateToVirtualAssistant = () => {
-    navigate('/OpenAICaregiver');
+    navigate('/PublicProfile/' + dependentData.public_id + '/OpenAICaregiver');
   };
   
   const returnProfilePic = () => {
