@@ -7,9 +7,6 @@ import { API } from '@aws-amplify/api'
 import { getGPTResponse } from '../../graphql/queries'
 
 async function GetAppSyncResponse(query_str, dependent_string_id) {
-  // const response = await fetch(req_url);
-  // const data = await response.json();
-  // return data;
   try { 
     console.log("Checking request  : " + dependent_string_id);
     const response = await API.graphql({
@@ -31,7 +28,7 @@ async function GetAppSyncResponse(query_str, dependent_string_id) {
   }
 }
 
-function GetGPTResponse(query_str) {
+function GetGPTResponseHardcoded(query_str) {
     var result_str;
     var regex = /dentist/;
     var index = query_str.search(regex);

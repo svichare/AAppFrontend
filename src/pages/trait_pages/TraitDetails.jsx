@@ -350,7 +350,7 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
     <div className="TraitQuestionsList" key={TraitQuestionsList.length}>
       {TraitQuestionsList.map((value, index) => (
       <div className="TraitQuestionDetails" key={index}>
-        <p> {index+1}/{TraitQuestionsList.length}: {value.Description} </p>
+        <h3> {index+1}/{TraitQuestionsList.length}: {value.Description} </h3>
         <PopulateOptions TraitOptions={value.Options}
                          SelectedResponseIds={value.selected_response_ids}
                          key={value.id}
@@ -360,7 +360,7 @@ function DisplayTraitQuestions({TraitQuestionsList, TraitCategoryId, DependentId
                          setCounter={setCounter}
                          counter={counter}
                          setSelectedIdChanged={setSelectedIdChanged}/>
-        <p>Additional specific details on this topic.(More details you add here, better the AI model will get.)</p>
+        <p>Detailed answer.(More details you add here, better the AI model will get.)</p>
         <PopulateDescriptionOption TextResponse={value.text_response}
                                    TraitCategoryId={TraitCategoryId}
                                    TraitId={value.id}
