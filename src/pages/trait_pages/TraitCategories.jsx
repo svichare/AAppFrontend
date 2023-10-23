@@ -93,6 +93,9 @@ export default function TraitCategories({dependentId}) {
                 <button type="button" onClick={() => { navigate('/DependentProfile');}}>Back</button>
           </div>
       </div>
+      <div className="Bottom">
+        <p>.</p>
+      </div>
     </div>
   );
 }

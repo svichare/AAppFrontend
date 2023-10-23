@@ -111,8 +111,8 @@ export default function DependentProfile() {
   } else {
     navButtons.push(
       <div className="DependentNavButtons">
-        <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
-        <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
+        <button type="button" onClick={() => {navigate('/TraitCategories')}}> Edit Care details </button>
+        <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Edit Bio </button>
         <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
         <button type="button" onClick={navigateToVirtualAssistant}> Chat with Virtual assistant </button>
       </div>
