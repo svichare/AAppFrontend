@@ -39,16 +39,17 @@ async function add_dependent(dependentDetails) {
 }
 
 const diagnosisList = [
-    {name: "Autism"}, {name: "Attention-Deficit/Hyperactivity Disorder"},
-    {name: "Cerebral Palsy"}, {name: "Fragile X syndrome"}, {name: "Epilepsy"}
-    , {name: "Rett syndrome"}, {name: "Tourette syndrome"}, {name: "None"}]
+    {name: "None"}, {name: "Autism"},
+    {name: "Attention-Deficit/Hyperactivity Disorder"},
+    {name: "Cerebral Palsy"}, {name: "Fragile X syndrome"}, {name: "Epilepsy"},
+    {name: "Rett syndrome"}, {name: "Tourette syndrome"}]
 
 const verbalList = [
+    {name: "Fully verbal"},
     {name: "Non-verbal (No communcation)"},
     {name: "Non-verbal(Communicates basic needs with actions)"},
     {name: "Verbal (Communicates basic needs verbally)"},
-    {name: "Verbal (Basic conversational communication)"},
-    {name: "Fully verbal"}]
+    {name: "Verbal (Basic conversational communication)"}]
 
 function createRadioElements(dataArray, fieldName, handleInputChange) {
   console.log("Creating radio buttons : ", dataArray.length);
