@@ -150,7 +150,6 @@ export default function DependentProfile() {
             <div className="DependentHomeName">
               <h3> {returnProfileName()} </h3>
             </div>
-          
         </div>
         <div className="DependentProfileDescription">
         <p> Welcome to the Profile page of your dear one.
