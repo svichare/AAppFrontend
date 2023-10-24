@@ -19,6 +19,21 @@
   /*margin-left: 15rem;*/
   align-items: center;
 }
+
+.NextSteps {
+  background-color: #F2E2F3; /* Background color */
+  color: #333; /* Text color */
+  /*padding: 10px; *//* Padding around the text */
+  /*border: 1px solid #ccc; *//* Border for the message box */
+  border-radius: 5px; /* Rounded corners for a box-like appearance */
+  margin: 10px 0; /* Margin to separate it from other content */
+  font-size: 20px; /* Font size for the message text */
+}
+
+.NextSteps:empty {
+  display: none;
+}
+
 .ProfileHomeTopbar {
   display: flex;
   flex-direction: row;
