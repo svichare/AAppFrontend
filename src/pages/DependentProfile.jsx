@@ -91,6 +91,26 @@ export default function DependentProfile() {
     return profile_pic_round
   }
   
+  const [message, setMessage] = useState('Hover on the button to know more');
+
+  const handleMouseEnter = (button) => {
+    console.log("Button details : " , button.target.textContent);
+    switch (button.target.textContent) {
+      case 'Edit Care details':
+        setMessage("Update details of how you take care of them. This information will always stay with them. ");
+        break;
+      default:
+        setMessage("Default case");
+        break;
+    }
+    
+  };
+
+  const handleMouseLeave = () => {
+    setMessage('Hover on the button to know more');
+  };
+
+
   const returnProfileName = () => {
     if (dependentData.name === null || typeof dependentData.name === 'undefined') {
         return  "";
@@ -111,10 +131,10 @@ export default function DependentProfile() {
   } else {
     navButtons.push(
       <div className="DependentNavButtons">
-        <button type="button" onClick={() => {navigate('/TraitCategories')}}> Update Special Traits </button>
-        <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}> Update Bio </button>
-        <button type="button" onClick={navigateToPublicProf}> See Public Profile </button>
-        <button type="button" onClick={navigateToVirtualAssistant}> Chat with Virtual assistant </button>
+        <button type="button" onClick={() => {navigate('/TraitCategories')}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Edit Care details</button>
+        <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}>Edit Bio</button>
+        <button type="button" onClick={navigateToPublicProf}>See Public Profile</button> 
+        <button type="button" onClick={navigateToVirtualAssistant}>Chat with Virtual assistant</button>
       </div>
     );
   }
@@ -130,6 +150,12 @@ export default function DependentProfile() {
             <div className="DependentHomeName">
               <h3> {returnProfileName()} </h3>
             </div>
+        </div>
+        <div className="DependentProfileDescription">
+        <p> Welcome to the Profile page of your dear one.
+        Use the <b>edit buttons</b> below to store the information you have about them. Also check the created public profile.
+        View the <b>Public Profile</b> and share it with everyone important in their life. It is the page which has 
+         all the information needed to take care of them.</p>
         </div>
         {navButtons}
       </div>

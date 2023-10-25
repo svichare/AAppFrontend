@@ -48,6 +48,35 @@
   height: auto;
 }
 
+.NextStepsDependent {
+  background-color: #F2E2F3; /* Background color */
+  color: #333; /* Text color */
+  padding: 10px; /* Padding around the text */
+  border: 1px solid #ccc; /* Border for the message box */
+  border-radius: 5px; /* Rounded corners for a box-like appearance */
+  margin: 10px 0; /* Margin to separate it from other content */
+  font-size: 20px; /* Font size for the message text */
+}
+
+.DependentProfileDescription {
+  width: 70%;
+}
+.Tooltip {
+  display: none;
+  position: relative;
+  top: -1.5em; /* Adjust the position as needed */
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  position: absolute;
+  left: 100%; /* Position to the right of the button */
+}
+
+button:hover + .Tooltip {
+  display: block;
+}
+
 .DependentHomeName {
   margin: 5rem 5rem; 
 }

@@ -152,11 +152,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
       return "Loading..";
     }
 
-    if (userData.name == "") {
-      return "Welcome new user. Update your profile using options below.";
-    }
-
-    return "Welcome back " + userData.name;
+    return userData.name;
   }
 
   return (
@@ -177,6 +173,11 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             </div>
 
             <p>Email : {localUserEmail}</p>
+            <h3> Welcome to your homepage.</h3>
+
+            <div className="NextSteps">
+              <p>{dependent_list.length <= 1 ? "Next steps: Add dependents to your profile" : "To update or view profiles of your dependents, click on the list below"}</p>
+            </div>
             <h4>Your dependent list .. </h4>
             <div className="DependentList">
               {dependent_list}
