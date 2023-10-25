@@ -71,11 +71,22 @@ function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, na
     setSelectedTraitCategory(categoryId);
     navigate("/TraitDetails");
   };
+  
+  const getButtonClass = (percent_complete) => {
+    if (percent_complete === 100) {
+      return "TraitCategoryComplete";
+    } else if (percent_complete < 5) {
+      return "TraitCategoryNotStarted";
+    } else {
+      return "TraitCategoryInProgress";
+    }
+  };
+
   return (
     <div className="TraitCategoriesList">
       {
         TraitCategoryList.map((value, index) => (
-          <div className="TraitCategory"  key={value.id}>
+          <div className={getButtonClass(value.percent_complete)}  key={value.id}>
             <button type="button" onClick={() => onCategoryClick(value.id)} key={value.id}> {value.Name}
             </button>
           </div>
