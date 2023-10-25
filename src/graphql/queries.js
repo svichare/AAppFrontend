@@ -7,6 +7,7 @@ export const getTraitCategory = /* GraphQL */ `
       id
       Name
       Description
+      TraitCount
       __typename
     }
   }
@@ -17,6 +18,16 @@ export const allTraitCategories = /* GraphQL */ `
       id
       Name
       Description
+      TraitCount
+      __typename
+    }
+  }
+`;
+export const getTraitCategoryResponseCounts = /* GraphQL */ `
+  query GetTraitCategoryResponseCounts($dependent_id: String) {
+    getTraitCategoryResponseCounts(dependent_id: $dependent_id) {
+      trait_category_id
+      response_counts
       __typename
     }
   }

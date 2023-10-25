@@ -1,7 +1,7 @@
 import {React, useState, useEffect, useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '@aws-amplify/api'
-import { allTraitCategories } from '../../graphql/queries'
+import { allTraitCategories, getTraitCategoryResponseCounts } from '../../graphql/queries'
 import { ParameterContext } from '../../App';
 
 
@@ -36,6 +36,27 @@ async function list_trait_categories() {
                id:103}];
   }
 }
+
+async function get_trait_response_counts() {
+  try {
+    console.log("Getting response count");
+    const response = await API.graphql({
+      query: getTraitCategoryResponseCounts,
+      variables: {
+        dependent_id: "Rishaan_shivaxemail@gmail.com"
+      },
+    });
+    // For local testing.
+    if (response.data.getTraitCategoryResponseCounts.length === 0) {
+      return [];
+    }
+    return response.data.getTraitCategoryResponseCounts;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return [];
+  }
+}
+
 
 function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, navigate}) {
   if (typeof TraitCategoryList === "undefined" ||
@@ -74,7 +95,25 @@ export default function TraitCategories({dependentId}) {
   useEffect( () => {
     list_trait_categories()
     .then((trait_categories_from_async) => {
-      setLocalTraitCategoryList(trait_categories_from_async);
+      get_trait_response_counts().then((response_counts_from_async) =>  {
+        for(var trait_category_index in trait_categories_from_async) {
+          var question_count = trait_categories_from_async[trait_category_index].TraitCount;
+          var response_count = 0;
+          const matchingEntry = response_counts_from_async.find(entry =>
+            entry.trait_category_id == trait_categories_from_async[trait_category_index].id
+          );
+          if (matchingEntry) {
+            if (typeof matchingEntry.response_counts !== 'undefined') {
+              response_count =  matchingEntry.response_counts;
+            }
+          }
+          var complete_percentage = response_count < question_count ? (response_count*100) / question_count  : 100;
+          console.log("Setting percent complete : ", complete_percentage,
+          " ", question_count, " ", response_count);
+          trait_categories_from_async[trait_category_index].percent_complete = complete_percentage;
+        }
+        setLocalTraitCategoryList(trait_categories_from_async);  
+      });
     });
   }, []);
 

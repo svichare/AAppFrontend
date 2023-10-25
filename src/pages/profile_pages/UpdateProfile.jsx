@@ -20,7 +20,6 @@ function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
 }
 
-
 async function delete_dependent(dependentId, parent_email_id) {
   // update actionItem with the response.
   console.log("Deleting dependent ",dependentId);

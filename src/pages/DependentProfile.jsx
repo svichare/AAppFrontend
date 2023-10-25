@@ -152,11 +152,12 @@ export default function DependentProfile() {
             </div>
         </div>
         <div className="DependentProfileDescription">
-        <p> Welcome to the Profile page of your dear one.
-        Use the <b>edit buttons</b> below to store the information you have about them. Also check the created public profile.
-        View the <b>Public Profile</b> and share it with everyone important in their life. It is the page which has 
-         all the information needed to take care of them.</p>
+        
         </div>
+        <p> Welcome to the Profile page of your dear one.</p>
+        <p> Use the <b>Edit buttons</b> below to store the information you have about them.</p>
+        <p> View the <b>Public Profile</b> and share it with everyone important in their life. It is the page which has 
+         all the information needed to take care of them.</p>
         {navButtons}
       </div>
       <div className="Bottom">

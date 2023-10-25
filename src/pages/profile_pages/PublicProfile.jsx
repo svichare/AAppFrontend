@@ -1,5 +1,6 @@
 import {React, useState, useContext, useEffect} from "react";
 import { useNavigate, useParams } from 'react-router-dom';
+import CaregiverGPT from '../openai_pages/OpenAICaregiver.jsx'
 
 import "./PublicProfile.css"
 
@@ -204,6 +205,8 @@ export default function PublicProfile() {
                 </div>
                 <div className="PublicHomeButtons">
             </div>
+            <CaregiverGPT />
+
             <div className="ProfileIntroduction">
               <h2> Introduction </h2>
               <p> {returnIntroLine()} </p>
