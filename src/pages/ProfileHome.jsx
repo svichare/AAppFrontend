@@ -1,4 +1,4 @@
-import {React, useEffect, useState, useContext} from "react";
+import { React, useEffect, useState, useContext } from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,17 +45,17 @@ async function get_profile_details(user_email) {
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
     return {
-        "dependents": [
-        ],
-        "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
-        "name": "Error",
-        "last_name": "FunLastname",
-        "id": null
-      };
+      "dependents": [
+      ],
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Google_2011_logo.png/320px-Google_2011_logo.png",
+      "name": "Error",
+      "last_name": "FunLastname",
+      "id": null
+    };
   }
 }
 
-export default function ProfileHome({userEmailParameter, resetUserEmail}) {
+export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
   const { setDependentStringId } = useContext(ParameterContext);
 
   const { userEmail } = useContext(ParameterContext);
@@ -73,8 +73,8 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
   });
 
   const navigate = useNavigate();
-  
-  useEffect( () => {
+
+  useEffect(() => {
     if (user === null) {
       console.log("NOT using user info ");
       navigate('/Home');
@@ -82,31 +82,33 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
       console.log("Using user.email ");
       setLocalUserEmail(user.email);
       get_profile_details(user.email)
-      .then((profile_details_from_async) => {
-        setUserData(profile_details_from_async);
-        if (profile_details_from_async.name == null ||
+        .then((profile_details_from_async) => {
+          setUserData(profile_details_from_async);
+          if (profile_details_from_async.name == null ||
             typeof profile_details_from_async.name === 'undefined') {
-          navigate('/UpdateProfile');
-        }
-        
-        setLoading(false);
-      });
+            navigate('/UpdateProfile');
+          }
+
+          setLoading(false);
+        });
     }
   }, [user]);
-  
+
   const dependent_list = [];
   if (isIterable(userData.dependents)) {
     userData.dependents.forEach((dependentData, index) => {
-    dependent_list.push(
-      <div className="DependentListItem">
-        <Link to="/DependentProfile">
-          <div className="DependentPhoto" onClick={
-          ()=>{setDependentStringId(dependentData.string_id);
-          set_dependent({string_id: dependentData.string_id})}}>
-            <img src={profile_pic_round} alt="profile_pic_round"/>
-          </div>
-        </Link>
-        <div className="DependentName"><p>{dependentData.name}</p></div>
+      dependent_list.push(
+        <div className="DependentListItem">
+          <Link to="/DependentProfile">
+            <div className="DependentPhoto" onClick={
+              () => {
+                setDependentStringId(dependentData.string_id);
+                set_dependent({ string_id: dependentData.string_id })
+              }}>
+              <img src={profile_pic_round} alt="profile_pic_round" />
+            </div>
+          </Link>
+          <div className="DependentName"><p>{dependentData.name}</p></div>
         </div>
       );
     });
@@ -115,69 +117,73 @@ export default function ProfileHome({userEmailParameter, resetUserEmail}) {
     <div className="DependentListItem">
       <Link to="/AddDependent">
         <div className="DependentPhoto">
-          <img src={dependent_add_pic} alt="add dependent"/>
+          <img src={dependent_add_pic} alt="add dependent" />
         </div>
       </Link>
       <div className="DependentName"><p>Add one</p></div>
-      </div>
-    );
-  
-  const returnProfilePic = () => {
-      if (userData.name == null || typeof userData.name === 'undefined') {
-          return profile_photo;
-      }
-      if (userData.name == "Shivaji Prafull") {
-        return svichare_photo
-      }
+    </div>
+  );
 
-      return profile_photo
+  const returnProfilePic = () => {
+    if (userData.name == null || typeof userData.name === 'undefined') {
+      return profile_photo;
+    }
+    if (userData.name == "Shivaji Prafull") {
+      return svichare_photo
+    }
+
+    if (user.image_url == null || typeof user.image_url === 'undefined') {
+      return profile_photo;
+    }
+
+    return user.image_url;
   }
 
   const returnWelcomeMessage = () => {
-      if (userData.name == null || typeof userData.name === 'undefined') {
-          return "Welcome new user. Update your profile using options below.";
-      }
+    if (userData.name == null || typeof userData.name === 'undefined') {
+      return "Welcome new user. Update your profile using options below.";
+    }
 
-      if ( userData.name === "Error") {
-          return "Error connecting to cloud. Try refreshing this page.";
-      }
+    if (userData.name === "Error") {
+      return "Error connecting to cloud. Try refreshing this page.";
+    }
 
-      if ( userData.name === "Mock Value") {
-          return "Loading..";
-      }
-      
-      if (userData.name == "") {
-        return "Welcome new user. Update your profile using options below.";
-      }
+    if (userData.name === "Mock Value") {
+      return "Loading..";
+    }
 
-      return "Welcome back " + userData.name;
+    if (userData.name == "") {
+      return "Welcome new user. Update your profile using options below.";
+    }
+
+    return "Welcome back " + userData.name;
   }
-  
+
   return (
-      <div className="ProfileHomeContainer">
+    <div className="ProfileHomeContainer">
       {loading ? (
         // Show a loading screen when loading is true
         <div className="LoadingPage"> <h2>Loading...</h2> </div>
-        ) : (
+      ) : (
         <div>
           <div className="ProfileHomeMain">
             <div className="ProfileHomeTopbar">
               <div className="ProfileImage">
-                <img src={returnProfilePic()} alt="profile_photo" />
+                <img src={returnProfilePic()} style={{ width: '100px', height: '100px' }} alt="profile_photo" />
               </div>
               <div className="ProfileName">
                 <h4>{returnWelcomeMessage()}</h4>
               </div>
             </div>
-  
+
             <p>Email : {localUserEmail}</p>
             <h4>Your dependent list .. </h4>
             <div className="DependentList">
               {dependent_list}
             </div>
             <Link to="/UpdateProfile">
-              <div className="UpdateProfileButton" onClick={()=>{}}>
-                <button type="button">Update Profile</button> 
+              <div className="UpdateProfileButton" onClick={() => { }}>
+                <button type="button">Update Profile</button>
               </div>
             </Link>
           </div>
