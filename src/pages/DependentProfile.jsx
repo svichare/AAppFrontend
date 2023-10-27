@@ -21,7 +21,7 @@ async function get_dependent_details(dependent_string_id) {
     const response = await API.graphql({
       query: getDependentDetails,
       variables: {
-        string_id: dependent_string_id
+        dependent_id: dependent_string_id
       },
     });
     console.log("Checking response  : " + dependent_string_id);

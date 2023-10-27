@@ -79,7 +79,6 @@ export const getParentDetails = /* GraphQL */ `
         public_id
         diagnosis
         verbal
-        percent_complete
         age
         __typename
       }
@@ -98,7 +97,6 @@ export const getDependentDetails = /* GraphQL */ `
       public_id
       diagnosis
       verbal
-      percent_complete
       age
       __typename
     }
@@ -120,7 +118,6 @@ export const getDependentPublicDetails = /* GraphQL */ `
       public_id
       diagnosis
       verbal
-      percent_complete
       age
       __typename
     }
