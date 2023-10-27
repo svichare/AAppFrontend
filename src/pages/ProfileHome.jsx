@@ -218,13 +218,12 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             <div className="DependentList">
               {dependent_list}
             </div>
-            <Button variant="text" className="UpdateProfileButton" >
-              <Link to="/UpdateProfile">
-                <button type="button">Update Profile</button>
-              </Link>
+            <Button size="large" variant="contained" component={Link} to="/UpdateProfile">
+              Update Profile
             </Button>
+
           </div>
-          <div className="ProfileHomeBottom">
+          <div size="large" variant="contained" className="ProfileHomeBottom">
             <p>.</p>
           </div>
         </div>

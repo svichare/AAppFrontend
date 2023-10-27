@@ -54,7 +54,6 @@
 
 .ProfileUpdateItem button {
   padding: 10px;
-  background-color: #94E5FF80;
   border-radius: 5px;
   width: 10rem;
   border: none;
@@ -63,13 +62,6 @@
   font-size: 1.1rem;
 }
 
-.ProfileUpdateItem button:active {
-  background-color: white;
-}
-
-.ProfileUpdateItem button:disabled {
-  background-color: #BEBEBE;
-}
 
 .ProfileUpdateDetails button {
   padding: 10px;
