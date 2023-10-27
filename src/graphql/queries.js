@@ -79,6 +79,7 @@ export const getParentDetails = /* GraphQL */ `
         public_id
         diagnosis
         verbal
+        percent_complete
         age
         __typename
       }
@@ -87,8 +88,8 @@ export const getParentDetails = /* GraphQL */ `
   }
 `;
 export const getDependentDetails = /* GraphQL */ `
-  query GetDependentDetails($string_id: String) {
-    getDependentDetails(string_id: $string_id) {
+  query GetDependentDetails($dependent_id: String) {
+    getDependentDetails(dependent_id: $dependent_id) {
       id
       name
       thumbnail_url
@@ -97,9 +98,15 @@ export const getDependentDetails = /* GraphQL */ `
       public_id
       diagnosis
       verbal
+      percent_complete
       age
       __typename
     }
+  }
+`;
+export const getDependentProfileComplete = /* GraphQL */ `
+  query GetDependentProfileComplete($dependent_id: String) {
+    getDependentProfileComplete(dependent_id: $dependent_id)
   }
 `;
 export const getDependentPublicDetails = /* GraphQL */ `
@@ -113,6 +120,7 @@ export const getDependentPublicDetails = /* GraphQL */ `
       public_id
       diagnosis
       verbal
+      percent_complete
       age
       __typename
     }

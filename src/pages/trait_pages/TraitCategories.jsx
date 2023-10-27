@@ -7,7 +7,6 @@ import { ParameterContext } from '../../App';
 
 import "./TraitCategories.css"
 
-import profile_picture from '../../assets/images/profile_picture.jpg'
 
 async function list_trait_categories() {
   try {
