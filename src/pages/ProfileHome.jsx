@@ -8,7 +8,7 @@ import profile_pic_round from '../assets/images/profile_pic_round.png'
 import dependent_add_pic from '../assets/images/dependent_add_pic_png.png'
 
 import { API } from '@aws-amplify/api'
-import { getParentDetails } from '../graphql/queries'
+import { getParentDetails, getDependentProfileComplete } from '../graphql/queries'
 import { ParameterContext } from '../App';
 import { useUser } from '../components/UserContext';
 import { useDependent } from '../components/DependentContext';
@@ -55,6 +55,27 @@ async function get_profile_details(user_email) {
   }
 }
 
+async function get_profile_completeness(cur_dependent_id) {
+  try {
+    console.log("Getting response count");
+    const response = await API.graphql({
+      query: getDependentProfileComplete,
+      variables: {
+        dependent_id: cur_dependent_id
+      },
+    });
+    // For local testing.
+    if (typeof response.data.getDependentProfileComplete === 'undefined') {
+      return 0;
+    }
+    return response.data.getDependentProfileComplete;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return [];
+  }
+}
+
+
 export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
   const { setDependentStringId } = useContext(ParameterContext);
 
@@ -63,6 +84,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
   const { set_dependent } = useDependent();
   const [localUserEmail, setLocalUserEmail] = useState("");
   const [loading, setLoading] = useState(true);
+  const [dependentCompletenessMap, setDependentCompletenessMap] = useState(new Map());
 
   const [userData, setUserData] = useState({
     name: "Mock Value",
@@ -88,8 +110,18 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             typeof profile_details_from_async.name === 'undefined') {
             navigate('/UpdateProfile');
           }
-
           setLoading(false);
+
+          profile_details_from_async.dependents.forEach((dependentData, index) => {
+            console.log("fetching data from : ", dependentData.string_id);
+            get_profile_completeness(dependentData.string_id).then((completeness_score_from_async) => {
+              dependentCompletenessMap.set(dependentData.string_id, completeness_score_from_async);
+              const newMap = new Map(dependentCompletenessMap);
+              newMap.set(dependentData.string_id, completeness_score_from_async);
+              setDependentCompletenessMap(newMap);
+              console.log("Profile of ", dependentData.string_id, " ", completeness_score_from_async, "% complete.");
+            });
+          });
         });
     }
   }, [navigate, user]);
@@ -110,6 +142,9 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             </div>
           </Link>
           <div className="DependentName"><p>{dependentData.name}</p></div>
+          {dependentCompletenessMap.has(dependentData.string_id) ?
+            <div className="NextSteps"><p>Profile {dependentCompletenessMap.get(dependentData.string_id)}% Complete</p></div> :
+            <div className="NextSteps"><p>Loading profile status</p></div>}
         </div>
       );
     });

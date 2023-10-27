@@ -1,13 +1,12 @@
 import {React, useState, useEffect, useContext} from "react";
 import { useNavigate } from 'react-router-dom';
 import { API } from '@aws-amplify/api'
-import { allTraitCategories } from '../../graphql/queries'
+import { allTraitCategories, getTraitCategoryResponseCounts } from '../../graphql/queries'
 import { ParameterContext } from '../../App';
 
 
 import "./TraitCategories.css"
 
-import profile_picture from '../../assets/images/profile_picture.jpg'
 
 async function list_trait_categories() {
   try {
@@ -37,6 +36,27 @@ async function list_trait_categories() {
   }
 }
 
+async function get_trait_response_counts() {
+  try {
+    console.log("Getting response count");
+    const response = await API.graphql({
+      query: getTraitCategoryResponseCounts,
+      variables: {
+        dependent_id: "Rishaan_shivaxemail@gmail.com"
+      },
+    });
+    // For local testing.
+    if (response.data.getTraitCategoryResponseCounts.length === 0) {
+      return [];
+    }
+    return response.data.getTraitCategoryResponseCounts;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return [];
+  }
+}
+
+
 function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, navigate}) {
   if (typeof TraitCategoryList === "undefined" ||
   TraitCategoryList.length === 0 ) {
@@ -50,11 +70,22 @@ function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, na
     setSelectedTraitCategory(categoryId);
     navigate("/TraitDetails");
   };
+  
+  const getButtonClass = (percent_complete) => {
+    if (percent_complete === 100) {
+      return "TraitCategoryComplete";
+    } else if (percent_complete < 5) {
+      return "TraitCategoryNotStarted";
+    } else {
+      return "TraitCategoryInProgress";
+    }
+  };
+
   return (
     <div className="TraitCategoriesList">
       {
         TraitCategoryList.map((value, index) => (
-          <div className="TraitCategory"  key={value.id}>
+          <div className={getButtonClass(value.percent_complete)}  key={value.id}>
             <button type="button" onClick={() => onCategoryClick(value.id)} key={value.id}> {value.Name}
             </button>
           </div>
@@ -74,7 +105,25 @@ export default function TraitCategories({dependentId}) {
   useEffect( () => {
     list_trait_categories()
     .then((trait_categories_from_async) => {
-      setLocalTraitCategoryList(trait_categories_from_async);
+      get_trait_response_counts().then((response_counts_from_async) =>  {
+        for(var trait_category_index in trait_categories_from_async) {
+          var question_count = trait_categories_from_async[trait_category_index].TraitCount;
+          var response_count = 0;
+          const matchingEntry = response_counts_from_async.find(entry =>
+            entry.trait_category_id == trait_categories_from_async[trait_category_index].id
+          );
+          if (matchingEntry) {
+            if (typeof matchingEntry.response_counts !== 'undefined') {
+              response_count =  matchingEntry.response_counts;
+            }
+          }
+          var complete_percentage = response_count < question_count ? (response_count*100) / question_count  : 100;
+          console.log("Setting percent complete : ", complete_percentage,
+          " ", question_count, " ", response_count);
+          trait_categories_from_async[trait_category_index].percent_complete = complete_percentage;
+        }
+        setLocalTraitCategoryList(trait_categories_from_async);  
+      });
     });
   }, []);
 

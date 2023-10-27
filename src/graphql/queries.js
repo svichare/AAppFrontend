@@ -7,6 +7,7 @@ export const getTraitCategory = /* GraphQL */ `
       id
       Name
       Description
+      TraitCount
       __typename
     }
   }
@@ -17,6 +18,16 @@ export const allTraitCategories = /* GraphQL */ `
       id
       Name
       Description
+      TraitCount
+      __typename
+    }
+  }
+`;
+export const getTraitCategoryResponseCounts = /* GraphQL */ `
+  query GetTraitCategoryResponseCounts($dependent_id: String) {
+    getTraitCategoryResponseCounts(dependent_id: $dependent_id) {
+      trait_category_id
+      response_counts
       __typename
     }
   }
@@ -76,8 +87,8 @@ export const getParentDetails = /* GraphQL */ `
   }
 `;
 export const getDependentDetails = /* GraphQL */ `
-  query GetDependentDetails($string_id: String) {
-    getDependentDetails(string_id: $string_id) {
+  query GetDependentDetails($dependent_id: String) {
+    getDependentDetails(dependent_id: $dependent_id) {
       id
       name
       thumbnail_url
@@ -89,6 +100,11 @@ export const getDependentDetails = /* GraphQL */ `
       age
       __typename
     }
+  }
+`;
+export const getDependentProfileComplete = /* GraphQL */ `
+  query GetDependentProfileComplete($dependent_id: String) {
+    getDependentProfileComplete(dependent_id: $dependent_id)
   }
 `;
 export const getDependentPublicDetails = /* GraphQL */ `
