@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { API } from '@aws-amplify/api'
 import { allTraitCategories, getTraitCategoryResponseCounts } from '../../graphql/queries'
 import { ParameterContext } from '../../App';
+import category_index from '../../assets/images/category_index.png'
 
 
 import "./TraitCategories.css"
@@ -36,13 +37,13 @@ async function list_trait_categories() {
   }
 }
 
-async function get_trait_response_counts() {
+async function get_trait_response_counts(cur_dependent_id) {
   try {
     console.log("Getting response count");
     const response = await API.graphql({
       query: getTraitCategoryResponseCounts,
       variables: {
-        dependent_id: "Rishaan_shivaxemail@gmail.com"
+        dependent_id: cur_dependent_id
       },
     });
     // For local testing.
@@ -99,13 +100,13 @@ export default function TraitCategories({dependentId}) {
   let [localTraitCategoryList, setLocalTraitCategoryList] = useState([]);
   // let [localSelectedTraitCategory, setLocalSelectedTraitCategory] = useState([]);
   const { setSelectedTraitCategory } = useContext(ParameterContext);
-
+  const { dependentStringId } = useContext(ParameterContext);
   const navigate = useNavigate();
 
   useEffect( () => {
     list_trait_categories()
     .then((trait_categories_from_async) => {
-      get_trait_response_counts().then((response_counts_from_async) =>  {
+      get_trait_response_counts(dependentStringId).then((response_counts_from_async) =>  {
         for(var trait_category_index in trait_categories_from_async) {
           var question_count = trait_categories_from_async[trait_category_index].TraitCount;
           var response_count = 0;
@@ -134,6 +135,9 @@ export default function TraitCategories({dependentId}) {
             <div className="TraitCategoriesName">
               <h3>Select a category to view/update</h3>
             </div>
+        </div>
+        <div className="CategoryIndexImage">
+              <img src={category_index} alt="category_index" />
         </div>
           <DisplayTraitCategories TraitCategoryList={localTraitCategoryList}
                                   setSelectedTraitCategory={setSelectedTraitCategory}
