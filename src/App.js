@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavBar, ConfigureApi } from './components';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import './assets/fonts/fonts.css';
@@ -18,7 +19,7 @@ import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
 import openAIRoutes from './pages/openai_pages/OpenAIRoutes.js';
 import journeyRoutes from './pages/journey_pages/JourneyRoutes.js';
 
-import {GoogleLogin} from './components';
+import { GoogleLogin } from './components';
 import mixpanel from 'mixpanel-browser';
 import { gapi } from 'gapi-script';
 import { UserProvider } from './components/UserContext';
@@ -30,11 +31,11 @@ export const ParameterContext = React.createContext();
 
 const clientId = '201175894539-gte8nppbkqha8j0o40cqe7opmrsgmofo.apps.googleusercontent.com';
 
-const App = () =>{
+const App = () => {
   const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
   const [userToken, setUserToken] = useState("Mock Value");
-  const [dependentStringId, setDependentStringId] =  useState("Name loading..");
+  const [dependentStringId, setDependentStringId] = useState("Name loading..");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
 
   mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
@@ -48,72 +49,86 @@ const App = () =>{
   };
   console.log("Outer Width : " + window.innerWidth);
 
- useEffect( () => {
-   function start() {
-     gapi.client.init({
-       client_id: clientId,
-       scope: "email profile"
-     })
-   };
-   
-   gapi.load('client:auth2', start);
- })
+  useEffect(() => {
+    function start() {
+      gapi.client.init({
+        client_id: clientId,
+        scope: "email profile"
+      })
+    };
+
+    gapi.load('client:auth2', start);
+  })
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#94E5FF80',
+      },
+    },
+  });
 
   return (
-  <BrowserRouter>
-  <UserProvider>
-  <DependentProvider>
-  <ParameterContext.Provider value={{ selectedTraitCategory, setSelectedTraitCategory,
-  userEmail, dependentStringId, setDependentStringId, mixpanel, userToken }}>
-      <NavBar userLoggedIn={userEmail.length >0 ? true : false}
-          resetUserEmail={resetUserEmail}/>
-      <Routes>
-        <Route exact='true' path="/" Component={Home} />
-        <Route path="/Home" Component={Home} />
-        <Route path="/About" Component={() => (<About />)} />
-        <Route path="/ProfileCreation" Component={ProfileCreation} />
-        <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail} setUserToken={setUserToken}/>)}/>
-        <Route path="/LoginWithGoogle" Component={GoogleLogin} />
-        <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail}/>)} />
-        <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
-        <Route path="/ErrorPage" Component={ErrorPage} />
-        {traitRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              Component={route.Component}
-              exact={route.exact}
-            />
-          ))}
-        {profileRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              Component={route.Component}
-              exact={route.exact}
-            />
-          ))}
-        {openAIRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              Component={route.Component}
-              exact={route.exact}
-            />
-          ))}
-        {journeyRoutes.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              Component={route.Component}
-              exact={route.exact}
-            />
-          ))}
-      </Routes>
-    </ParameterContext.Provider>
-    </DependentProvider>
-    </UserProvider>
-  </BrowserRouter>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+
+        <UserProvider>
+          <DependentProvider>
+            <ParameterContext.Provider value={{
+              selectedTraitCategory, setSelectedTraitCategory,
+              userEmail, dependentStringId, setDependentStringId, mixpanel, userToken
+            }}>
+              <NavBar userLoggedIn={userEmail.length > 0 ? true : false}
+                resetUserEmail={resetUserEmail} />
+              <Routes>
+                <Route exact='true' path="/" Component={Home} />
+                <Route path="/Home" Component={Home} />
+                <Route path="/About" Component={() => (<About />)} />
+                <Route path="/ProfileCreation" Component={ProfileCreation} />
+                <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail} setUserToken={setUserToken} />)} />
+                <Route path="/LoginWithGoogle" Component={GoogleLogin} />
+                <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail} />)} />
+                <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
+                <Route path="/ErrorPage" Component={ErrorPage} />
+                {traitRoutes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    Component={route.Component}
+                    exact={route.exact}
+                  />
+                ))}
+                {profileRoutes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    Component={route.Component}
+                    exact={route.exact}
+                  />
+                ))}
+                {openAIRoutes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    Component={route.Component}
+                    exact={route.exact}
+                  />
+                ))}
+                {journeyRoutes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    Component={route.Component}
+                    exact={route.exact}
+                  />
+                ))}
+              </Routes>
+            </ParameterContext.Provider>
+          </DependentProvider>
+        </UserProvider>
+
+      </ThemeProvider>
+    </BrowserRouter>
   );
 };
 
