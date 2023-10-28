@@ -229,8 +229,6 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             </div>
 
             <p>Email : {localUserEmail}</p>
-            <h3> Welcome to your homepage.</h3>
-
             <div className="NextSteps">
               <p>{dependent_list.length <= 1 ? "Next steps: Add dependents to your profile" : "To update or view profiles of your dependents, click on the list below"}</p>
             </div>
@@ -240,7 +238,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             </div>
             <Link to="/UpdateProfile">
               <div className="UpdateProfileButton" onClick={() => { }}>
-                <button type="button">Update Profile</button>
+                <button type="button">Update Bio</button>
               </div>
             </Link>
           </div>
