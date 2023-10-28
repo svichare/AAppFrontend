@@ -16,7 +16,7 @@ import { useDependent } from '../components/DependentContext';
 import "./ProfileHome.css"
 
 function isIterable(item) {
-  if (item === null) {
+  if (item === null) { 
     return false;
   }
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';

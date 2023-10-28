@@ -8,7 +8,7 @@ import profile_pic_round from '../assets/images/profile_pic_round.png'
 import { ParameterContext } from '../App';
 
 import { API } from '@aws-amplify/api'
-import { getDependentDetails } from '../graphql/queries'
+import { getDependentDetails, getDependentProfileComplete } from '../graphql/queries'
 import { useDependent } from '../components/DependentContext';
 
 function isIterable(item) {
@@ -46,6 +46,26 @@ async function get_dependent_details(dependent_string_id) {
   }
 }
 
+async function get_profile_completeness(cur_dependent_id) {
+  try {
+    console.log("Getting response count");
+    const response = await API.graphql({
+      query: getDependentProfileComplete,
+      variables: {
+        dependent_id: cur_dependent_id
+      },
+    });
+    // For local testing.
+    if (typeof response.data.getDependentProfileComplete === 'undefined') {
+      return 0;
+    }
+    return response.data.getDependentProfileComplete;
+  } catch (error) {
+    console.error(`Cought error in function : ${error}`);
+    return [];
+  }
+}
+
 export default function DependentProfile() {
 
   const { dependentStringId } = useContext(ParameterContext);
@@ -58,11 +78,17 @@ export default function DependentProfile() {
     age: 4
   });
 
+  // Initializing to something more than 100. Used to check if value is populated or not.
+  const [completeness, setCompleteness] = useState(500); 
   useEffect( () => {
     if (dependent !== null) {
       get_dependent_details(dependent.string_id)
       .then((profile_details_from_async) => {
         setDependentData(profile_details_from_async);
+        get_profile_completeness(dependent.string_id).then(
+          (profile_completeness_from_async) => {
+            setCompleteness(profile_completeness_from_async);
+          });
       });
     } else {
       console.log("dependent data null. Heading home");
@@ -129,9 +155,13 @@ export default function DependentProfile() {
       dependentData.name == "") {
     // Dont populate the navbuttons here.
   } else {
+    var completeness_string = completeness < 101 ? "(" + completeness + "% complete)" : "";
+    
     navButtons.push(
       <div className="DependentNavButtons">
-        <button type="button" onClick={() => {navigate('/TraitCategories')}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Edit Care details</button>
+        <button type="button" onClick={() => {navigate('/TraitCategories')}}
+         onMouseEnter={handleMouseEnter}
+         onMouseLeave={handleMouseLeave}>Edit Care details {completeness_string}</button>
         <button type="button" onClick={() => {navigate('/UpdateDependentBio')}}>Edit Bio</button>
         <button type="button" onClick={navigateToPublicProf}>See Public Profile</button> 
         <button type="button" onClick={navigateToVirtualAssistant}>Chat with Virtual assistant</button>
