@@ -80,7 +80,7 @@ async function get_profile_completeness(cur_dependent_id) {
 export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
   const { setDependentStringId } = useContext(ParameterContext);
 
-  const { userEmail } = useContext(ParameterContext);
+  useContext(ParameterContext);
   const { user } = useUser();
   const { set_dependent } = useDependent();
   const [localUserEmail, setLocalUserEmail] = useState("");
@@ -125,7 +125,8 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
           });
         });
     }
-  }, [user]);
+  }, [navigate, user]);
+
 
   const dependent_list = [];
   if (isIterable(userData.dependents)) {
@@ -168,8 +169,32 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
       return svichare_photo
     }
 
-    return profile_photo
+    if (user.image_url == null || typeof user.image_url === 'undefined') {
+      return profile_photo;
+    }
+
+    return resizeImage(user.image_url);
   }
+
+  const resizeImage = (url) => {
+    // Check if the url has the size attribute
+    if (url.includes("=s")) {
+      // Split the url by the equal sign
+      let parts = url.split("=");
+      // Get the last part, which is the size attribute
+      let size = parts[parts.length - 1];
+      // Replace the size value with a higher number, such as 500
+      let newSize = size.replace(/\d+/, "500");
+      // Join the parts back with the new size
+      let newUrl = parts.slice(0, -1).join("=") + "=" + newSize;
+      // Return the new url
+      return newUrl;
+    } else {
+      // If the url does not have the size attribute, return the original url
+      return url;
+    }
+  }
+
 
   const returnWelcomeMessage = () => {
     if (userData.name == null || typeof userData.name === 'undefined') {
@@ -182,10 +207,6 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
 
     if (userData.name === "Mock Value") {
       return "Loading..";
-    }
-
-    if (userData.name == "") {
-      return "Welcome new user. Update your profile using options below.";
     }
 
     return userData.name;
@@ -201,7 +222,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
           <div className="ProfileHomeMain">
             <div className="ProfileHomeTopbar">
               <div className="ProfileImage">
-                <img src={returnProfilePic()} alt="profile_photo" />
+                <img id="profileImage" src={returnProfilePic()} alt="profile_photo" />
               </div>
               <div className="ProfileName">
                 <h4>{returnWelcomeMessage()}</h4>
