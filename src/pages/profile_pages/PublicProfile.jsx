@@ -193,7 +193,7 @@ export default function PublicProfile() {
                   <div className="PublicHomeButtons">
                     <button type="button" onClick={() => {
                         navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
-                      }}> Details for Caregivers </button>
+                      }}> List of Details for Caregivers </button>
                   </div>
                   </div>
                 </div>

@@ -93,14 +93,14 @@ export default function CaregiverGPT() {
         <div>
           <div className="CaregiverGPTMain">
             <div className="CaregiverGPTTopbar">
-              <h3>Ask the virtual assistant ..</h3>
+              <h3>Ask me any specific detail directly ..</h3>
               <textarea className="CaregiverGPTInputText" value={query}
                 onChange={(e) => {setQuery(e.target.value);}} type="text" rows="2" />
               <div className="GoBackButton" key={999} >
                 <button type="button" disabled={processing} onClick={handleSubmit} > Submit
               </button>
               </div>
-              <h3> Response from Assistant :  </h3>
+              <h3> Response :  </h3>
               {processing ? (
                   <div className="LoadingPage"> <h2>Loading...</h2> </div>
                 ) : (
