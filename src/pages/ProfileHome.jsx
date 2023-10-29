@@ -17,7 +17,7 @@ import "./ProfileHome.css"
 import { Button } from "@mui/material";
 
 function isIterable(item) {
-  if (item === null) {
+  if (item === null) { 
     return false;
   }
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
@@ -198,9 +198,8 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
 
   const returnWelcomeMessage = () => {
     if (userData.name == null || typeof userData.name === 'undefined') {
-      return "Welcome new user. Update your profile using options below.";
+      return "Welcome new user. Update your Bio using options below.";
     }
-
     if (userData.name === "Error") {
       return "Error connecting to cloud. Try refreshing this page.";
     }

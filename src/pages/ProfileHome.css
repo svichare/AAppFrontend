@@ -41,6 +41,7 @@
   justify-content: space-between; /* Center horizontally */
   align-items: center;
 }
+
 .ProfileImage img {
   margin: 2rem;
   width: 15rem;
@@ -48,10 +49,6 @@
   border-radius: 50%;
   box-shadow: 5px 5px 10px black;
   transform: perspective(500px) rotateX(2deg) rotateY(-1deg); /* Add this line */
-}
-
-.ProfileName {
-  /*margin: 5rem 5rem; */
 }
 
 .ProfileIntroduction {
