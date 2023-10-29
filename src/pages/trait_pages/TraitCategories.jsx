@@ -164,9 +164,6 @@ export default function TraitCategories({dependentId}) {
           </Link>
           </div>
       </div>
-      <div className="Bottom">
-        <p>.</p>
-      </div>
     </div>
   );
 }
