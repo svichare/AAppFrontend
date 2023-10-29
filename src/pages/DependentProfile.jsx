@@ -164,8 +164,8 @@ export default function DependentProfile() {
       <div className="DependentNavButtons">
         <Button variant="contained" startIcon={<Edit />} component={Link} to="/TraitCategories" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Edit Care details{completeness_string}</Button>
         <Button variant="contained" startIcon={<Edit />} component={Link} to="/UpdateDependentBio">Edit Bio</Button>
-        <Button variant="contained" startIcon={<Person />} component={Link} to="/PublicProfile">See Public Profile</Button>
-        <Button variant="contained" startIcon={<Chat />} component={Link} to="/VirtualAssistant">Chat with Virtual assistant</Button>
+        <Button variant="contained" startIcon={<Person />} component={Link} to={'/PublicProfile/' + dependentData.public_id}>See Public Profile</Button>
+        <Button variant="contained" startIcon={<Chat />} component={Link} to={'/PublicProfile/' + dependentData.public_id + '/OpenAICaregiver'}>Chat with Virtual assistant</Button>
       </div>
 
     );

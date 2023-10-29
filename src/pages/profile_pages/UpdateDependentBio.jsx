@@ -27,7 +27,7 @@ async function get_dependent_details(dependent_string_id) {
     const response = await API.graphql({
       query: getDependentDetails,
       variables: {
-        string_id: dependent_string_id
+        dependent_id: dependent_string_id
       },
     });
     console.log("Checking response  : " + dependent_string_id);
@@ -40,6 +40,7 @@ async function get_dependent_details(dependent_string_id) {
       };
     }
     console.log("Returning data from lambda for ID : " + dependent_string_id);
+    console.log("Dependent Data : ", JSON.stringify(response.data.getDependentDetails));
     return response.data.getDependentDetails;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);

@@ -92,8 +92,8 @@
 }
 
 .CategoryIndexImage img {
-  width: 12rem;
-  height: 10rem; /* Make sure the width and height are equal */
+  width: 10rem;
+  height: 8rem; /* Make sure the width and height are equal */
 }
 
 .TraitCategoryBack {
