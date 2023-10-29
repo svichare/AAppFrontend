@@ -14,6 +14,7 @@ return (
           <p> and we got this.</p>
           <br></br>
           <p>- Contact me @ Shivaji.Vichare@gmail.com </p>
+          
           <div className="AboutTopImage">
             <img src={about_photo} alt="about_photo" />
           </div>

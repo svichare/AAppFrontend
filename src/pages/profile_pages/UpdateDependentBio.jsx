@@ -40,7 +40,6 @@ async function get_dependent_details(dependent_string_id) {
       };
     }
     console.log("Returning data from lambda for ID : " + dependent_string_id);
-    console.log("Dependent Data : ", JSON.stringify(response.data.getDependentDetails));
     return response.data.getDependentDetails;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
