@@ -16,10 +16,10 @@
   display: flex; /* Enable flex layout 
   justify-content: center; /* Horizontally center the content */
   align-items: center; /* Vertically center the content (optional) */
-  padding-left: 10rem;
+  padding-left: 5rem;
 
-  width: 100%;
-  max-width: 50rem;
+  width: 80%;
+  height: auto;
 }
 
 .Bottom {

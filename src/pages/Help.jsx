@@ -23,7 +23,6 @@ export default function Help() {
           <img src={returnHomePic()} alt="home_photo" />
         </div>
       </div>
-      <div className="Bottom" />
     </div>
   );
 }
