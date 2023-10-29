@@ -161,12 +161,21 @@ export default function DependentProfile() {
     var completeness_string = completeness < 101 ? "(" + completeness + "% complete)" : "";
     
     navButtons.push(
-      <div className="DependentNavButtons">
-        <Button variant="contained" startIcon={<Edit />} component={Link} to="/TraitCategories" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Edit Care details{completeness_string}</Button>
-        <Button variant="contained" startIcon={<Edit />} component={Link} to="/UpdateDependentBio">Edit Bio</Button>
-        <Button variant="contained" startIcon={<Person />} component={Link} to={'/PublicProfile/' + dependentData.public_id}>See Public Profile</Button>
-        <Button variant="contained" startIcon={<Chat />} component={Link} to={'/PublicProfile/' + dependentData.public_id + '/OpenAICaregiver'}>Chat with Virtual assistant</Button>
+      <div className="DependentNavButtons">  
+        <Link to="/TraitCategories">
+          <Button variant="contained" startIcon={<Edit />}>Edit Care details{completeness_string}</Button>
+        </Link>
+        <Link to="/UpdateDependentBio">
+          <Button variant="contained" startIcon={<Edit />}>Edit Bio</Button>
+        </Link>
+        <Link to={'/PublicProfile/' + dependentData.public_id}>
+          <Button variant="contained" startIcon={<Person />}>See Public Profile</Button>
+        </Link>
+        <Link to={'/PublicProfile/' + dependentData.public_id + '/OpenAICaregiver'}>
+          <Button variant="contained" startIcon={<Chat />}>Chat with Virtual assistant</Button>
+        </Link>
       </div>
+
 
     );
   }
