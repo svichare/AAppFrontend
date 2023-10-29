@@ -131,6 +131,9 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
   const dependent_list = [];
   if (isIterable(userData.dependents)) {
     userData.dependents.forEach((dependentData, index) => {
+      var completeness_string = dependentCompletenessMap.has(dependentData.string_id) ? 
+        " (Profile " + dependentCompletenessMap.get(dependentData.string_id) + "% Complete)" : "";
+
       dependent_list.push(
         <div className="DependentListItem">
           <Link to="/DependentProfile">
@@ -142,10 +145,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
               <img src={profile_pic_round} alt="profile_pic_round" />
             </div>
           </Link>
-          <div className="DependentName"><p>{dependentData.name}</p></div>
-          {dependentCompletenessMap.has(dependentData.string_id) ?
-            <div className="NextSteps"><p>Profile {dependentCompletenessMap.get(dependentData.string_id)}% Complete</p></div> :
-            <div className="NextSteps"><p>Loading profile status</p></div>}
+          <div className="DependentName"><p>{dependentData.name + completeness_string}</p></div>
         </div>
       );
     });
@@ -237,7 +237,7 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
               {dependent_list}
             </div>
             <Button size="large" variant="contained" component={Link} to="/UpdateProfile">
-              Update Bio
+              Update Parent Bio
             </Button>
 
           </div>
