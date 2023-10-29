@@ -1,5 +1,5 @@
 import {React, useState, useContext, useEffect} from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import CaregiverGPT from '../openai_pages/OpenAICaregiver.jsx'
 
 import "./PublicProfile.css"
@@ -14,6 +14,7 @@ import { ParameterContext } from '../../App';
 import { API } from '@aws-amplify/api'
 import { getDependentPublicDetails } from '../../graphql/queries'
 import mixpanel from 'mixpanel-browser';
+import { Button } from "@mui/material";
 
 function isIterable(item) {
   return typeof item !== 'undefined' && typeof item[Symbol.iterator] === 'function';
@@ -170,9 +171,9 @@ export default function PublicProfile() {
       return rish_photo
     }
 
-    return profile_pic_round
+    return profile_pic_round;
   }
-
+  var caregiver_profile_link = '/PublicProfile/' + dependent_public_id + '/CaregiverProfile';
   return (
     <div className="PublicProfileContainer">
     {loading ? (
@@ -191,9 +192,11 @@ export default function PublicProfile() {
                   <p> {returnVerbal()} </p>
                   <p> {returnAge() > 0 ? "Age: " + returnAge() : ""} </p>
                   <div className="PublicHomeButtons">
-                    <button type="button" onClick={() => {
-                        navigate('/PublicProfile/' + dependent_public_id + '/CaregiverProfile' );
-                      }}> List of Details for Caregivers </button>
+                    <Link to={caregiver_profile_link}>
+                      <Button variant="contained" size="large" color="primary" >
+                        List of Details for Caregivers
+                      </Button>
+                    </Link>
                   </div>
                   </div>
                 </div>
