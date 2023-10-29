@@ -67,6 +67,13 @@ const Navbar = ({ userLoggedIn, resetUserEmail }) => {
               <LoginWithGoogle />}
           </Button>
           <Button variant="contained" startIcon={<Info />} s className="gpt3__navbar-button">
+            <Link to="/Help">
+              <button type="button">
+                Help
+              </button>
+            </Link>
+          </Button>
+          <Button variant="contained" startIcon={<Info />} s className="gpt3__navbar-button">
             <Link to="/About">
               <button type="button">
                 Contact US
@@ -90,6 +97,11 @@ const Navbar = ({ userLoggedIn, resetUserEmail }) => {
                     <LoginWithGoogle />}</p>
                 </div>
                 <div className="gpt3__navbar-button">
+                <p><Link to="/Help">
+                    <button type="button" onClick={() => setToggleMenu(false)}>
+                      Help
+                    </button>
+                  </Link></p>
                   <p><Link to="/About">
                     <button type="button" onClick={() => setToggleMenu(false)}>
                       Contact US

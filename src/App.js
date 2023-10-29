@@ -9,6 +9,7 @@ import './App.css'
 import About from './pages/About';
 import ProfileCreation from './pages/ProfileCreation';
 import Home from './pages/Home';
+import Help from './pages/Help';
 import OAuthCallback from './pages/OAuthCallback';
 import ErrorPage from './pages/ErrorPage';
 import ProfileHome from './pages/ProfileHome';
@@ -93,6 +94,7 @@ const App = () => {
               <Routes>
                 <Route exact='true' path="/" Component={Home} />
                 <Route path="/Home" Component={Home} />
+                <Route path="/Help" Component={Help} />
                 <Route path="/About" Component={() => (<About />)} />
                 <Route path="/ProfileCreation" Component={ProfileCreation} />
                 <Route path="/OAuthCallback" Component={() => (<OAuthCallback setUserEmail={setUserEmail} setUserToken={setUserToken} />)} />
