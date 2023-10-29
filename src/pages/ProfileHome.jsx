@@ -14,6 +14,7 @@ import { useUser } from '../components/UserContext';
 import { useDependent } from '../components/DependentContext';
 
 import "./ProfileHome.css"
+import { Button } from "@mui/material";
 
 function isIterable(item) {
   if (item === null) { 
@@ -235,13 +236,12 @@ export default function ProfileHome({ userEmailParameter, resetUserEmail }) {
             <div className="DependentList">
               {dependent_list}
             </div>
-            <Link to="/UpdateProfile">
-              <div className="UpdateProfileButton" onClick={() => { }}>
-                <button type="button">Update Bio</button>
-              </div>
-            </Link>
+            <Button size="large" variant="contained" component={Link} to="/UpdateProfile">
+              Update Bio
+            </Button>
+
           </div>
-          <div className="ProfileHomeBottom">
+          <div size="large" variant="contained" className="ProfileHomeBottom">
             <p>.</p>
           </div>
         </div>

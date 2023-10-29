@@ -13,12 +13,9 @@
   align-items: center;
 }
 
-.ProfileUpdateItem p {
-}
 
 .ProfileUpdateItem button {
   padding: 10px;
-  background-color: #94E5FF80;
   border-radius: 5px;
   width: 10rem;
   border: none;
