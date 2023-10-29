@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useContext} from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { API } from '@aws-amplify/api'
 import { allTraitCategories, getTraitCategoryResponseCounts } from '../../graphql/queries'
 import { ParameterContext } from '../../App';
@@ -7,6 +7,7 @@ import category_index from '../../assets/images/category_index.png'
 
 
 import "./TraitCategories.css"
+import { Button, styled } from "@mui/material";
 
 
 async function list_trait_categories() {
@@ -71,27 +72,40 @@ function DisplayTraitCategories({TraitCategoryList, setSelectedTraitCategory, na
     setSelectedTraitCategory(categoryId);
     navigate("/TraitDetails");
   };
-  
-  const getButtonClass = (percent_complete) => {
+
+  // Your function to get the color name based on the percent complete
+  const getButtonColor = (percent_complete) => {
     if (percent_complete === 100) {
-      return "TraitCategoryComplete";
+      return "complete";
     } else if (percent_complete < 5) {
-      return "TraitCategoryNotStarted";
+      return "notStarted";
     } else {
-      return "TraitCategoryInProgress";
+      return "inProgress";
     }
   };
 
+  const TraitCategoriesButton = styled(Button)({
+    padding: '10px',
+    width: '20rem',
+    border: 'none',
+    cursor: 'pointer',
+    fontFamily: ['SawarabiGothic', 'Helvetica', 'sans-serif'],
+    fontSize: '1.1rem',
+  });
+
   return (
     <div className="TraitCategoriesList">
-      {
-        TraitCategoryList.map((value, index) => (
-          <div className={getButtonClass(value.percent_complete)}  key={value.id}>
-            <button type="button" onClick={() => onCategoryClick(value.id)} key={value.id}> {value.Name}
-            </button>
-          </div>
-        ))
-      }
+      {TraitCategoryList.map((value, index) => (
+        // Remove the div element and use the color prop of the Button component
+        <TraitCategoriesButton
+          variant="contained"
+          color={getButtonColor(value.percent_complete)}
+          onClick={() => onCategoryClick(value.id)}
+          key={value.id}
+        >
+          {value.Name}
+        </TraitCategoriesButton>
+      ))}
     </div>
   );
 }
@@ -142,8 +156,12 @@ export default function TraitCategories({dependentId}) {
           <DisplayTraitCategories TraitCategoryList={localTraitCategoryList}
                                   setSelectedTraitCategory={setSelectedTraitCategory}
                                   navigate={navigate}/>
-          <div className="TraitCategoryBack">
-                <button type="button" onClick={() => { navigate('/DependentProfile');}}>Back</button>
+        <div className="TraitCategoryBack">
+          <Link to="/DependentProfile">
+            <Button size="large" variant="contained">
+              Back
+            </Button>
+          </Link>
           </div>
       </div>
       <div className="Bottom">

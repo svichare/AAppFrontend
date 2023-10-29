@@ -60,6 +60,12 @@ const App = () => {
     gapi.load('client:auth2', start);
   })
 
+  // Define your custom colors
+  const complete = '#B5EFBB';
+  const inProgress = '#FDFAB5';
+  const notStarted = '#FFDBDB';
+
+  // Create a theme with your custom colors
   const theme = createTheme({
     palette: {
       primary: {
@@ -68,10 +74,14 @@ const App = () => {
     },
   });
 
+  // Use the palette.augmentColor method to generate the color tokens for each custom color
+  theme.palette.complete = theme.palette.augmentColor({ color: { main: complete } });
+  theme.palette.inProgress = theme.palette.augmentColor({ color: { main: inProgress } });
+  theme.palette.notStarted = theme.palette.augmentColor({ color: { main: notStarted } });
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-
         <UserProvider>
           <DependentProvider>
             <ParameterContext.Provider value={{
@@ -126,7 +136,6 @@ const App = () => {
             </ParameterContext.Provider>
           </DependentProvider>
         </UserProvider>
-
       </ThemeProvider>
     </BrowserRouter>
   );
