@@ -113,11 +113,6 @@
   background-color: grey
 }
 
-.Bottom {
-  /*width: 100%;*/
-  padding-bottom: 1000px;
-}
-
 @media screen and (max-width: 900px) {
     .Main {
         margin-top: 0.1rem;

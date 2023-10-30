@@ -76,7 +76,7 @@ const Navbar = ({ userLoggedIn, resetUserEmail }) => {
           <Button variant="contained" startIcon={<Info />} s className="gpt3__navbar-button">
             <Link to="/About">
               <button type="button">
-                Contact US
+                Contact
               </button>
             </Link>
           </Button>
@@ -104,7 +104,7 @@ const Navbar = ({ userLoggedIn, resetUserEmail }) => {
                   </Link></p>
                   <p><Link to="/About">
                     <button type="button" onClick={() => setToggleMenu(false)}>
-                      Contact US
+                      Contact
                     </button>
                   </Link></p>
                 </div>

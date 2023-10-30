@@ -6,18 +6,25 @@
 }
 
 .HomeMain {
+  /*width: 100%;*/
+  /*margin-left: 15rem;*/
   align-items: center;
+  align-text: center;
 }
 
-.HomeDemo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+.HomeTopImage img {
+  display: flex; /* Enable flex layout 
+  justify-content: center; /* Horizontally center the content */
+  align-items: center; /* Vertically center the content (optional) */
+  padding-left: 5rem;
 
-.HomeDemo img {
-  width: 50%;
+  width: 80%;
   height: auto;
+}
+
+.Bottom {
+  width: 100%;
+  padding-bottom: 100px;
 }
 
 @media screen and (max-width: 1050px) {
@@ -41,10 +48,4 @@
     .HomeTopImage img {
         padding-left: 0rem;
     }
-    
-    .HomeDemo img {
-      width: 80%;
-      height: auto;
-    }
-
 }

@@ -81,11 +81,6 @@ button:hover + .Tooltip {
   margin: 5rem 5rem; 
 }
 
-.Bottom {
-  width: 100%;
-  padding-bottom: 1000px;
-}
-
 .DependentNavButtons {
   display:flex;
   flex-direction: column;
