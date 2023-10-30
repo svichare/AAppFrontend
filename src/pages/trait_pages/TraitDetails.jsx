@@ -484,7 +484,7 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
           setSelectedIdChanged={setSelectedIdChanged}
           />
       </div>
-      <div className="GoBackButton" key={999} >
+      <div className="GoBackButton" key={978} >
             <button type="button"> Save
             </button>
       </div>
