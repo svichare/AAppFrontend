@@ -25,6 +25,12 @@
   padding-bottom: 200px;
 }
 
+.LoginButtonClass {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media screen and (max-width: 1050px) {
     .HomeTopImage img {
         padding-left: 4rem;

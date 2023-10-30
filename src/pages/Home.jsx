@@ -1,5 +1,8 @@
 import React from "react";
 
+import { LoginWithGoogle, LogoutWithGoogle } from '../components';
+import { Login, Logout } from '@mui/icons-material';
+import Button from '@mui/material/Button';
 
 import './Home.css';
 import virtual_assistant_banner from '../assets/images/virtual_assistant_banner.png';
@@ -66,6 +69,11 @@ export default function Home() {
           <img src={returnInfoUsefulPic()} alt="info_useful" />
           <img src={returnLoginPic()} alt="login_banner" />
         </div>
+      </div>
+      <div className="LoginButtonClass">
+        <Button variant="contained" startIcon={<Login />} className="gpt3__navbar-button">
+          <LoginWithGoogle buttonText="Login to get started" />
+        </Button>
       </div>
       <div className="HomeBottom">
       <p>.</p>
