@@ -485,6 +485,10 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
           />
       </div>
       <div className="GoBackButton" key={999} >
+            <button type="button"> Save
+            </button>
+      </div>
+      <div className="GoBackButton" key={999} >
             <button type="button"
             onClick={() => {
               window.history.back();
