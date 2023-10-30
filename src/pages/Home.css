@@ -20,6 +20,11 @@
   height: auto;
 }
 
+.HomeBottom {
+  width: 100%;
+  padding-bottom: 200px;
+}
+
 @media screen and (max-width: 1050px) {
     .HomeTopImage img {
         padding-left: 4rem;

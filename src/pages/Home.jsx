@@ -67,6 +67,9 @@ export default function Home() {
           <img src={returnLoginPic()} alt="login_banner" />
         </div>
       </div>
+      <div className="HomeBottom">
+      <p>.</p>
+      </div>
     </div>
   );
 }
