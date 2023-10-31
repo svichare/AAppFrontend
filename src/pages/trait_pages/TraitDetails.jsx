@@ -1,6 +1,8 @@
 import {React, useState, useEffect, useContext} from "react";
 import { API, graphqlOperation } from '@aws-amplify/api'
 import { ParameterContext } from '../../App';
+import { Button } from "@mui/material";
+import { Save, ArrowBack } from "@mui/icons-material";
 
 
 import "./TraitDetails.css"
@@ -485,15 +487,13 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
           />
       </div>
       <div className="GoBackButton" key={978} >
-            <button type="button"> Save
-            </button>
+        <Button variant="contained" startIcon={<Save />}>Save</Button>
       </div>
       <div className="GoBackButton" key={999} >
-            <button type="button"
-            onClick={() => {
+        <Button variant="contained" onClick={() => {
               window.history.back();
-            }} > Go Back
-            </button>
+            }} startIcon={<ArrowBack />}>Go Back
+        </Button>
       </div>
     </div>
   );
