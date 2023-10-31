@@ -301,19 +301,22 @@ function PopulateOptions({TraitOptions, SelectedResponseIds,
     }
   };
   
+  const buttonStyle = {
+    textTransform: 'none', // Prevent text transformation
+  };
+
   // Check selected options here.
   return (
     <div className="TraitOptionsList">
     {
         TraitOptions.map((value, index) => (
           <div className="TraitOptionItem" key={value.id + counter} value={value.is_selected ? "selected" : "not-selected"}>
-            <button type="button"
-            onClick={() => {
+            <Button variant="contained" onClick={() => {
               value.is_selected = !value.is_selected;
               handleSelectedIdChange(value.id, value.option_text, value.is_selected);
             }}
-            key={value.id} > {value.option_text}
-            </button>
+            key={value.id} style={buttonStyle} >{value.option_text}</Button>
+
           </div>
         ))
     }
