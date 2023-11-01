@@ -54,16 +54,7 @@ async function get_category_responses(dependent_name, trait_category) {
       "compound_id": "Beta_1",
       "dependent_id": "101",
       "trait_category_id": "1",
-      "trait_responses": [
-        {
-          "text_response": "This is mocky response1.",
-          "trait_id": "1"
-        },
-        {
-          "text_response": "This is mocky response2.",
-          "trait_id": "2"
-        }
-      ]
+      "trait_responses": []
     };
     }
     console.log("Returning data from lambda for ID : " + dependent_name);
@@ -74,16 +65,7 @@ async function get_category_responses(dependent_name, trait_category) {
       "compound_id": "Beta_1",
       "dependent_id": "101",
       "trait_category_id": "1",
-      "trait_responses": [
-        {
-          "text_response": "This is errory response1.",
-          "trait_id": "1"
-        },
-        {
-          "text_response": "This is errory response2.",
-          "trait_id": "2"
-        }
-      ]
+      "trait_responses": []
     };
   }
 }
@@ -132,40 +114,9 @@ async function list_trait_questions(id) {
       return [{name: "SleepTiming",
                description: "How many hours of sleep do they usually have?.",
                type: "single",
-               Options: [{
-                   id: 1,
-                   text: "4-5 hours.",
-               }, {
-                   id: 2,
-                   text: "6-7 hours.",
-               }, {
-                   id: 3,
-                   text: "8-10 hours.",
-               }],
-               default_selection: 2,
-               id:101},
-          {name: "SleepRoutines",
-               description: "Typical things to do before bedtime?.",
-               type: "details",
                Options: [],
-               default_selection: "Brushing followed by change in clothes.",
-               id:104},
-          {name: "SleepBReakers",
-               description: "What will cause the sleep to break?.",
-               type: "multiple",
-               Options: [{
-                   id: 1,
-                   text: "Lights."
-               }, {
-                   id: 2,
-                   text: "Sounds."
-               }, {
-                   id: 3,
-                   text: "Smells."
-               }
-               ],
-               default_selection: [1, 4],
-               id:105}
+               default_selection: 2,
+               id:101}
           ];
     }
 
@@ -180,23 +131,7 @@ async function list_trait_questions(id) {
                    text: "4-5 hours",
                }],
                default_selection: 2,
-               id:101},
-          {name: "SleepRoutines",
-               description: "Typical things to do before bedtime?.",
-               type: "details",
-               Options: [],
-               default_selection: "Brushing followed by change in clothes.",
-               id:104},
-          {name: "SleepBReakers",
-               description: "What will cause the sleep to break?.",
-               type: "multiple",
-               Options: [{
-                   id: 4,
-                   text: "Touch"
-               }
-               ],
-               default_selection: [1, 4],
-               id:105}
+               id:101}
           ];
   }
 }
@@ -394,7 +329,9 @@ export default function TraitDetails({UserId, DependentId, SelectedTrait}) {
 
   const { selectedTraitCategory, dependentStringId } = useContext(ParameterContext);
   console.log("Showing trait details for :  " + selectedTraitCategory);
-
+  if (typeof selectedTraitCategory === 'undefined' || selectedTraitCategory ==="") {
+    window.history.back();
+  }
   useEffect( () => {
     if (localTraitQuestionsList.length > 0 ) {
       console.log("Already have question list, so skipping the query.");
