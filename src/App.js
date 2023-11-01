@@ -36,8 +36,8 @@ const clientId = '201175894539-gte8nppbkqha8j0o40cqe7opmrsgmofo.apps.googleuserc
 const App = () => {
   const [currentUrl, setCurrentUrl] = useState("/home");
   const [userEmail, setUserEmail] = useState("");
-  const [userToken, setUserToken] = useState("Mock Value");
-  const [dependentStringId, setDependentStringId] = useState("Name loading..");
+  const [userToken, setUserToken] = useState("");
+  const [dependentStringId, setDependentStringId] = useState("");
   const [selectedTraitCategory, setSelectedTraitCategory] = useState("");
 
   mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });

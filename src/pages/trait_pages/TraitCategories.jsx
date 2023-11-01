@@ -118,6 +118,12 @@ export default function TraitCategories({dependentId}) {
   const navigate = useNavigate();
 
   useEffect( () => {
+    if (typeof dependentStringId === 'undefined' || dependentStringId.length===0) {
+      console.log("Dependent ID not set");
+      navigate("/Home");
+    } else {
+      console.log("Dependent ID set: ", dependentStringId);
+    }
     list_trait_categories()
     .then((trait_categories_from_async) => {
       get_trait_response_counts(dependentStringId).then((response_counts_from_async) =>  {
