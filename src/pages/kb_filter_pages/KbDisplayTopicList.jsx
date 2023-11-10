@@ -47,7 +47,25 @@ async function update_thread_validity(cur_collection_name, cur_thread_id, cur_ne
           new_validity: cur_new_validity}));
       console.log("received response : ", JSON.stringify(response));
   } catch (error) {
-      console.error('Cought error in update_action_response function :',  JSON.stringify(error));
+      console.error('Cought error in update_thread_validity function :',  JSON.stringify(error));
+  }
+}
+
+async function update_message_validity(cur_collection_name, cur_thread_id, cur_new_validity, cur_message_text) {
+
+  try {
+    console.log("Updating the response. : ", cur_collection_name,
+    " ", cur_thread_id, " ", cur_new_validity, " ", cur_message_text);
+      const response = await API.graphql(
+        graphqlOperation(markMessageValidity,
+          {collection_name: cur_collection_name,
+          thread_id: cur_thread_id,
+          new_validity: cur_new_validity,
+          message_text: cur_message_text
+          }));
+      console.log("received response : ", JSON.stringify(response));
+  } catch (error) {
+      console.error('Cought error in update_message_validity function :',  JSON.stringify(error));
   }
 }
 
@@ -57,11 +75,20 @@ function ThreadHierarchy({ threads }) {
   const handleIsValidChange = async (thread_id, validity) => {
       // Toggle the isValid state
       console.log("Clicked for thread : ", thread_id, "  new validity : ", validity);
-      // Call your custom function here
-      // e.g., yourCustomFunction(isValid);
       setUpdating(true);
       await update_thread_validity(
         "thread_details_telegram_first_file_complete", thread_id, validity);
+      setUpdating(false);
+  };
+
+  const handleMessageIsValidChange = async (thread_id, message_text, validity) => {
+      // Toggle the isValid state
+      console.log("Clicked for thread : ", thread_id, " message text: ",
+      message_text,  "  new validity : ", validity);
+      setUpdating(true);
+      await update_message_validity(
+        "thread_details_telegram_first_file_complete",
+        thread_id, validity, message_text);
       setUpdating(false);
   };
 
@@ -73,7 +100,7 @@ function ThreadHierarchy({ threads }) {
   return (
     <div>
       {threads.map((thread) => (
-        <div key={thread.title}>
+        <div key={Math.random()}>
           <h3>{thread.title}</h3>
           <strong>IsValid:</strong> {thread.isValid ? "Yes" : "No"}
           <button
@@ -96,12 +123,20 @@ function ThreadHierarchy({ threads }) {
                 Messages:
                 <ul>
                   {thread.messages.map((message) => (
-                    <li key={message.text}>
+                    <li key={Math.random()}>
                       <strong>Text:</strong> {message.text}
                       <br />
                       <strong>Message Type:</strong> {message.messageType}
                       <br />
                       <strong>IsValid:</strong> {message.isValid ? "Yes" : "No"}
+                      <button
+                        type="button"
+                        disabled={updating}
+                        onClick={() => {handleMessageIsValidChange(thread._id, message.text, !message.isValid)}}
+                        style={{ background: message.isValid ? 'green' : 'red', color: 'white' }}
+                      >
+                        {message.isValid ? '✓ Valid' : '✗ Invalid'}
+                      </button>
                       <br />
                       <strong>Sender:</strong> {message.sender}
                     </li>
