@@ -43,3 +43,37 @@ export const deleteDependent = /* GraphQL */ `
     }
   }
 `;
+export const markThreadValidity = /* GraphQL */ `
+  mutation MarkThreadValidity(
+    $collection_name: String
+    $thread_id: String
+    $new_validity: Boolean
+  ) {
+    markThreadValidity(
+      collection_name: $collection_name
+      thread_id: $thread_id
+      new_validity: $new_validity
+    ) {
+      status
+      __typename
+    }
+  }
+`;
+export const markMessageValidity = /* GraphQL */ `
+  mutation MarkMessageValidity(
+    $collection_name: String
+    $thread_id: String
+    $new_validity: Boolean
+    $message_text: String
+  ) {
+    markMessageValidity(
+      collection_name: $collection_name
+      thread_id: $thread_id
+      new_validity: $new_validity
+      message_text: $message_text
+    ) {
+      status
+      __typename
+    }
+  }
+`;

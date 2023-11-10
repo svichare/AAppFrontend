@@ -1,7 +1,9 @@
 import {React, useState, useEffect, useContext} from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { API } from '@aws-amplify/api'
+import { API, graphqlOperation } from '@aws-amplify/api'
 import { allTraitCategories, getTraitCategoryResponseCounts, getThreadsAndMessages } from '../../graphql/queries'
+import { markThreadValidity, markMessageValidity } from '../../graphql/mutations'
+
 import { ParameterContext } from '../../App';
 import category_index from '../../assets/images/category_index.png'
 
@@ -33,7 +35,35 @@ async function fetch_topics_and_messages(threadStartRank, threadEndRank) {
   }
 }
 
+async function update_thread_validity(cur_collection_name, cur_thread_id, cur_new_validity) {
+
+  try {
+    console.log("Updating the response. : ", cur_collection_name,
+    " ", cur_thread_id, " ", cur_new_validity);
+      const response = await API.graphql(
+        graphqlOperation(markThreadValidity,
+          {collection_name: cur_collection_name,
+          thread_id: cur_thread_id,
+          new_validity: cur_new_validity}));
+      console.log("received response : ", JSON.stringify(response));
+  } catch (error) {
+      console.error('Cought error in update_action_response function :',  JSON.stringify(error));
+  }
+}
+
 function ThreadHierarchy({ threads }) {
+  let [updating, setUpdating] = useState(false);
+
+  const handleIsValidChange = async (thread_id, validity) => {
+      // Toggle the isValid state
+      console.log("Clicked for thread : ", thread_id, "  new validity : ", validity);
+      // Call your custom function here
+      // e.g., yourCustomFunction(isValid);
+      setUpdating(true);
+      await update_thread_validity(
+        "thread_details_telegram_first_file_complete", thread_id, validity);
+      setUpdating(false);
+  };
 
   if (typeof threads === 'undefined' || typeof threads.length === 'undefined' || threads.length === 0) {
     console.log("Threads empty");
@@ -46,6 +76,15 @@ function ThreadHierarchy({ threads }) {
         <div key={thread.title}>
           <h3>{thread.title}</h3>
           <strong>IsValid:</strong> {thread.isValid ? "Yes" : "No"}
+          <button
+            type="button"
+            disabled={updating}
+            onClick={() => {handleIsValidChange(thread._id, !thread.isValid)}}
+            style={{ background: thread.isValid ? 'green' : 'red', color: 'white' }}
+          >
+            {thread.isValid ? '✓ Valid' : '✗ Invalid'}
+          </button>
+
           <ul>
             {thread.tags && (
               <li>

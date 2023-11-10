@@ -793,7 +793,7 @@
       }, {
         "kind" : "OBJECT",
         "name" : "DependentDetails",
-        "description" : "   -------User defined data APIs--\n###################################### -- This is the data to be displayed on the Parent profile.",
+        "description" : "   -------User defined data APIs--\n######################################## -- This is the data to be displayed on the Parent profile.",
         "fields" : [ {
           "name" : "id",
           "description" : null,
@@ -1127,7 +1127,7 @@
       }, {
         "kind" : "OBJECT",
         "name" : "ProfileCategory",
-        "description" : "  -------User defined data APIs end--\n################################## type Mutation {\n###########################################     # Put a single value of type 'Post'.\n###########################################     # If an item exists it's updated. If it does not it's created.\n###########################################     putPost(id: ID!, title: String!): Post\n########################################### }",
+        "description" : "  -------User defined data APIs end--\n#################################### type Mutation {\n#############################################     # Put a single value of type 'Post'.\n#############################################     # If an item exists it's updated. If it does not it's created.\n#############################################     putPost(id: ID!, title: String!): Post\n############################################# }",
         "fields" : [ {
           "name" : "trait_category_name",
           "description" : null,
@@ -1432,6 +1432,91 @@
             "type" : {
               "kind" : "INPUT_OBJECT",
               "name" : "DeleteDependentInput",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          } ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "StatusOutput",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "markThreadValidity",
+          "description" : null,
+          "args" : [ {
+            "name" : "collection_name",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "thread_id",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "new_validity",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "Boolean",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          } ],
+          "type" : {
+            "kind" : "OBJECT",
+            "name" : "StatusOutput",
+            "ofType" : null
+          },
+          "isDeprecated" : false,
+          "deprecationReason" : null
+        }, {
+          "name" : "markMessageValidity",
+          "description" : null,
+          "args" : [ {
+            "name" : "collection_name",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "thread_id",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "new_validity",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "Boolean",
+              "ofType" : null
+            },
+            "defaultValue" : null
+          }, {
+            "name" : "message_text",
+            "description" : null,
+            "type" : {
+              "kind" : "SCALAR",
+              "name" : "String",
               "ofType" : null
             },
             "defaultValue" : null
