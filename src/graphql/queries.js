@@ -182,3 +182,47 @@ export const getGPTResponse = /* GraphQL */ `
     getGPTResponse(query: $query, public_id: $public_id)
   }
 `;
+export const getThreadsAndMessages = /* GraphQL */ `
+  query GetThreadsAndMessages(
+    $threads_to_read: Int
+    $threads_to_skip: Int
+    $collection_name: String
+  ) {
+    getThreadsAndMessages(
+      threads_to_read: $threads_to_read
+      threads_to_skip: $threads_to_skip
+      collection_name: $collection_name
+    ) {
+      title
+      _id
+      tags
+      messages {
+        sender
+        text
+        messageType
+        isValid
+        __typename
+      }
+      isValid
+      __typename
+    }
+  }
+`;
+export const getThreads = /* GraphQL */ `
+  query GetThreads($collection_name: String, $key: String, $value: String) {
+    getThreads(collection_name: $collection_name, key: $key, value: $value) {
+      title
+      _id
+      tags
+      messages {
+        sender
+        text
+        messageType
+        isValid
+        __typename
+      }
+      isValid
+      __typename
+    }
+  }
+`;
