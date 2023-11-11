@@ -168,6 +168,20 @@ export default function TopicList({dependentId}) {
     });
   };
   
+  const showNextRecords = () => {
+    // Call the onFetchThreads function to fetch and display threads
+   
+    
+    fetch_topics_and_messages (parseInt(threadEndRank) + 1, parseInt(threadEndRank) + 20)
+    .then((threads_returned) => {
+      setThreads(threads_returned);
+      console.log("Updated local threads. Setting ranks to :", parseInt(threadEndRank) + 1, " ", parseInt(threadEndRank) + 20);
+      setThreadStartRank(parseInt(threadEndRank) + 1);
+      setThreadEndRank(parseInt(threadEndRank) + 20);
+    
+    });
+  };
+  
   return (
     <div className="TraitCategoriesContainer">
       <div className="TraitCategoriesMain">
@@ -191,8 +205,8 @@ export default function TopicList({dependentId}) {
         </div>
           {threads && <ThreadHierarchy threads={threads} /> }
         <div className="TraitCategoryBack">
-          <Button size="large" variant="contained">
-            Back
+          <Button size="large" variant="contained" onClick={showNextRecords} >
+            Next 20 threads
           </Button>
         </div>
       </div>
