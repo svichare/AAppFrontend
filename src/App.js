@@ -27,6 +27,7 @@ import mixpanel from 'mixpanel-browser';
 import { gapi } from 'gapi-script';
 import { UserProvider } from './components/UserContext';
 import { DependentProvider } from './components/DependentContext';
+import Conversation from './pages/conversations_pages/Conversation.jsx';
 
 
 // Create a context for managing the parameter
@@ -105,6 +106,7 @@ const App = () => {
                 <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail} />)} />
                 <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
                 <Route path="/ErrorPage" Component={ErrorPage} />
+                <Route path='/Conversations' Component={Conversation}></Route>
                 {traitRoutes.map(route => (
                   <Route
                     key={route.path}
