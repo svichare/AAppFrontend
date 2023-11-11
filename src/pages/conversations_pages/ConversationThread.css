@@ -25,10 +25,12 @@ body,
     .thread-title {
         margin-left: 10px;
         margin-right: 10px;
-        padding: 0 15px;
     }
 }
 
+.thread-title {
+    padding: 0 10px;
+}
 .gradient-paper {
     background: #d1d1d1;
 }
