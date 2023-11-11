@@ -1,13 +1,12 @@
 .container {
     max-width: 1200px;
-    /* or any other value */
     margin: 0 auto;
-    /* centers the container */
+    box-sizing: border-box;
+        padding: 0 15px;
+        overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
-
-    /* or any other value */
     .container {
         width: 100%;
     }
