@@ -2,6 +2,7 @@ body,
 .thread {
     overflow-x: hidden;
 }
+
 .thread {
     display: flex;
     flex-direction: column;
@@ -19,14 +20,15 @@ body,
 }
 
 @media (max-width: 768px) {
-
     .message-card,
     .message-text,
     .thread-title {
         margin-left: 10px;
         margin-right: 10px;
+        padding: 0 15px;
     }
 }
+
 .gradient-paper {
     background: #d1d1d1;
 }
