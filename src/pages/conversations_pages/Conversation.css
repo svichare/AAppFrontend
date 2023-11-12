@@ -61,3 +61,7 @@
 .search__input {
     width: 50%; /* Default width for desktop */
 }
+
+.conversation_suggestions{
+    margin: 20px 0;
+}

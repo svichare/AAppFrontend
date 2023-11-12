@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
-import { TextField } from '@mui/material';
-import { InputAdornment } from '@mui/material';
-import { IconButton } from '@mui/material';
-import { KeyboardReturnRounded } from '@mui/icons-material';
+import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
+import { KeyboardReturnRounded, Clear } from '@mui/icons-material';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -106,6 +104,11 @@ const Conversation = () => {
         });
     }, [threads, debouncedSearchTerm]);
 
+    const handleSuggestionClick = (suggestion) => {
+        setSearchTerm(suggestion);
+        setDebouncedSearchTerm(suggestion);
+    }
+
     return (
         <div className="container">
             <div>
@@ -128,10 +131,29 @@ const Conversation = () => {
                                     }}>
                                         <KeyboardReturnRounded />
                                     </IconButton>
+                                    <IconButton onClick={() => {
+                                        setSearchTerm('');
+                                        setDebouncedSearchTerm('');
+                                    }}>
+                                        <Clear />
+                                    </IconButton>
                                 </InputAdornment>
                             ),
                         }}
                     />
+
+                    {
+                        debouncedSearchTerm.length === 0 && (
+                            <div>
+                                <ButtonGroup className='conversation_suggestions' variant="contained" aria-label="outlined primary button group">
+                                    <Button onClick={() => handleSuggestionClick("home")}>home</Button>
+                                    <Button onClick={() => handleSuggestionClick("event")}>event</Button>
+                                    <Button onClick={() => handleSuggestionClick("medicine")}>medicine</Button>
+                                </ButtonGroup>
+                            </div>
+                        )
+                    }
+
                     <div className="conversation__body">
                         {debouncedSearchTerm.length >= 2 && (loading ? (
                             <div className="loader"></div>
