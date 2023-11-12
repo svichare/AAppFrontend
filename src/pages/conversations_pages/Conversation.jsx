@@ -192,7 +192,7 @@ const Conversation = () => {
             });
             navigator.share({
                 title: 'Threads',
-                text: JSON.stringify(threadsToCopy),
+                text: threadsToCopy.join('\n\n'),
             })
                 .then(() => console.log('Successful share'))
                 .catch((error) => console.log('Error sharing', error));
