@@ -3,7 +3,7 @@ import { API } from '@aws-amplify/api'
 import { TextField } from '@mui/material';
 import { InputAdornment } from '@mui/material';
 import { IconButton } from '@mui/material';
-import { KeyboardReturnTwoTone } from '@mui/icons-material';
+import { KeyboardReturnRounded } from '@mui/icons-material';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -90,6 +90,7 @@ const Conversation = () => {
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             setDebouncedSearchTerm(searchTerm);
+            event.target.blur();
         }
     }
 
@@ -121,8 +122,11 @@ const Conversation = () => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <IconButton onClick={() => setDebouncedSearchTerm(searchTerm)}>
-                                        <KeyboardReturnTwoTone />
+                                    <IconButton onClick={() => {
+                                        setDebouncedSearchTerm(searchTerm);
+                                        document.activeElement.blur(); // Add this line
+                                    }}>
+                                        <KeyboardReturnRounded />
                                     </IconButton>
                                 </InputAdornment>
                             ),
