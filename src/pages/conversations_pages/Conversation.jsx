@@ -24,16 +24,6 @@ const Conversation = () => {
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
     useEffect(() => {
-        const timerId = setTimeout(() => {
-            setDebouncedSearchTerm(searchTerm);
-        }, 1000);
-
-        return () => {
-            clearTimeout(timerId);
-        };
-    }, [searchTerm]);
-
-    useEffect(() => {
         console.clear();
 
         !LOGGING && console.log(LOGGING_DISABLED_MESSAGE);
@@ -54,6 +44,8 @@ const Conversation = () => {
             }
 
             try {
+                //log the query
+                LOGGING && console.log(`🚀 Fetching threads from API : ${collectionName}-${fieldName}-${threadName}`);
                 const response = await API.graphql({
                     query: getThreads,
                     variables: {
@@ -89,6 +81,12 @@ const Conversation = () => {
 
     }, [collectionName, fieldName, threadName, debouncedSearchTerm]);
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            setDebouncedSearchTerm(searchTerm);
+        }
+    }
+
     const memoizedThreadList = useMemo(() => threads.filter(thread => thread.title.includes(debouncedSearchTerm)).map((thread, index) => (
         <ConversationThread key={index} thread={thread} />
     )), [threads, debouncedSearchTerm]);
@@ -99,10 +97,11 @@ const Conversation = () => {
                 <div className="conversation">
                     <h2>Threads</h2>
                     <TextField
-                        label="Search Threads"
+                        label="Press Enter to search"
                         variant="outlined"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={handleKeyPress}
                     />
                     <div className="conversation__body">
                         {debouncedSearchTerm.length >= 2 && (loading ? (
