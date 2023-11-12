@@ -11,18 +11,18 @@ import {
     LOGGING_DISABLED_MESSAGE,
     ALL_THREADS_FIELDNAME,
     ALL_THREADS_THREADNAME,
-    LOGGING
+    LOGGING,
+    SUGGESTIONS
 } from './ConversationSettings';
 
 const CACHE = {};
-
 
 const Conversation = () => {
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(false);
     const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
-    const [fieldName, setFieldName] = useState(ALL_THREADS_FIELDNAME);
-    const [threadName, setThreadName] = useState(ALL_THREADS_THREADNAME);
+    const [fieldName] = useState(ALL_THREADS_FIELDNAME);
+    const [threadName] = useState(ALL_THREADS_THREADNAME);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
@@ -146,9 +146,9 @@ const Conversation = () => {
                         debouncedSearchTerm.length === 0 && (
                             <div>
                                 <ButtonGroup className='conversation_suggestions' variant="contained" aria-label="outlined primary button group">
-                                    <Button onClick={() => handleSuggestionClick("home")}>home</Button>
-                                    <Button onClick={() => handleSuggestionClick("event")}>event</Button>
-                                    <Button onClick={() => handleSuggestionClick("medicine")}>medicine</Button>
+                                    {SUGGESTIONS.map(suggestion => (
+                                        <Button onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</Button>
+                                    ))}
                                 </ButtonGroup>
                             </div>
                         )
