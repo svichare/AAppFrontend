@@ -1,7 +1,18 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
+import { saveAs } from 'file-saver';
 import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
 import { KeyboardReturnRounded, Clear } from '@mui/icons-material';
+
+import Backdrop from '@mui/material/Backdrop';
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+
+import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
+import SaveIcon from '@mui/icons-material/Save';
+import PrintIcon from '@mui/icons-material/Print';
+import ShareIcon from '@mui/icons-material/Share';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -26,6 +37,9 @@ const Conversation = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
         console.clear();
@@ -111,6 +125,94 @@ const Conversation = () => {
         setDebouncedSearchTerm(suggestion);
     }
 
+    const handleCopy = () => {
+        if (!debouncedSearchTerm) return;
+        // Filter threads
+        const filteredThreads = threads.filter(thread => thread.title.includes(debouncedSearchTerm));
+
+        // Map to only include properties displayed on the screen
+        const threadsToCopy = filteredThreads.map(({ title, messages }) => {
+            const filteredMessages = messages.map(({ sender, text }) => `*${sender}*: ${text}`);
+            return `\n*${title}*\n\n${filteredMessages.join('\n\n')}`;
+        });
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(threadsToCopy.join('\n\n'));
+        console.log("Copy action triggered");
+    };
+
+    const handleSave = () => {
+        if (!debouncedSearchTerm) return;
+        // Implement save functionality
+        // Filter threads
+        const filteredThreads = threads.filter(thread => thread.title.includes(debouncedSearchTerm));
+
+        // Map to only include properties displayed on the screen
+        const threadsToCopy = filteredThreads.map(({ title, messages }) => {
+            const filteredMessages = messages.map(({ sender, text }) => ({ sender, text }));
+            return { title, messages: filteredMessages };
+        });
+
+        const blob = new Blob([JSON.stringify(threadsToCopy)], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, `threads_${debouncedSearchTerm}.json`);
+        console.log("Save action triggered");
+    };
+
+    const handlePrint = () => {
+        if (!debouncedSearchTerm) return;
+        const printWindow = window.open('', '_blank', 'width=600,height=600');
+        const threadsToPrint = document.querySelector('.conversation__body__messages').outerHTML;
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <title>Print Threads</title>
+                </head>
+                <body>
+                    ${threadsToPrint}
+                </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.onafterprint = () => printWindow.close();
+        printWindow.print();
+        console.log("Print action triggered");
+    };
+
+    const handleShare = () => {
+        if (!debouncedSearchTerm) return;
+        // Implement share functionality
+        if (navigator.share) {
+            // Filter threads
+            const filteredThreads = threads.filter(thread => thread.title.includes(debouncedSearchTerm));
+
+            // Map to only include properties displayed on the screen
+            const threadsToCopy = filteredThreads.map(({ title, messages }) => {
+                const filteredMessages = messages.map(({ sender, text }) => `*${sender}*: ${text}`);
+                return `\n*${title}*\n\n${filteredMessages.join('\n\n')}`;
+            });
+            navigator.share({
+                title: 'Threads',
+                text: JSON.stringify(threadsToCopy),
+            })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing', error));
+        }
+        console.log("Share action triggered");
+    };
+
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    };
+
+    const actions = [
+        { icon: <FileCopyIcon />, name: 'Copy', action: handleCopy },
+        { icon: <SaveIcon />, name: 'Save', action: handleSave },
+        { icon: <PrintIcon />, name: 'Print', action: handlePrint },
+        ...(isMobile() ? [{ icon: <ShareIcon />, name: 'Share', action: handleShare }] : [])
+    ];
+
+
+
     return (
         <div className="container">
             <div>
@@ -167,6 +269,29 @@ const Conversation = () => {
                     </div>
                 </div>
             </div>
+
+            <Backdrop open={open} />
+            <SpeedDial
+                ariaLabel="SpeedDial tooltip example"
+                sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                icon={<SpeedDialIcon />}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                open={open}
+            >
+                {actions.map((action) => (
+                    <SpeedDialAction
+                        key={action.name}
+                        icon={action.icon}
+                        tooltipTitle={action.name}
+                        tooltipOpen
+                        onClick={() => {
+                            action.action();
+                            handleClose();
+                        }}
+                    />
+                ))}
+            </SpeedDial>
         </div>
     );
 };

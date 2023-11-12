@@ -15,6 +15,7 @@
     "aws-amplify": "^5.3.11",
     "axios": "^1.5.1",
     "fetch": "^1.1.0",
+    "file-saver": "^2.0.5",
     "gapi-script": "^1.2.0",
     "http": "^0.0.1-security",
     "mixpanel-browser": "^2.47.0",
