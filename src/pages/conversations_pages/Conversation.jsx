@@ -16,7 +16,7 @@ const CACHE = {};
 
 const Conversation = () => {
     const [threads, setThreads] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
     const [fieldName, setFieldName] = useState(ALL_THREADS_FIELDNAME);
     const [threadName, setThreadName] = useState(ALL_THREADS_THREADNAME);
@@ -34,10 +34,6 @@ const Conversation = () => {
     }, [searchTerm]);
 
     useEffect(() => {
-        if (debouncedSearchTerm === '') {
-            setLoading(false);
-            return;
-        }
         console.clear();
 
         !LOGGING && console.log(LOGGING_DISABLED_MESSAGE);
@@ -100,13 +96,6 @@ const Conversation = () => {
         setThreadName("");
     }
 
-    // const oneConversation = () => {
-    //     LOGGING && console.log(`Fetching one conversation`);
-    //     setLoading(true);
-    //     setFieldName("title");
-    //     setThreadName(DEFAULT_THREAD_NAME);
-    // }
-
     const memoizedThreadList = useMemo(() => threads.filter(thread => thread.title.includes(debouncedSearchTerm)).map((thread, index) => (
         <ConversationThread key={index} thread={thread} />
     )), [threads, debouncedSearchTerm]);
@@ -122,19 +111,19 @@ const Conversation = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
+                            if (e.key === 'Enter' && searchTerm.length >= 2) {
                                 allConversations();
                             }
                         }}
                     />
                     <div className="conversation__body">
-                        {loading ? (
+                        {debouncedSearchTerm.length >= 2 && (loading ? (
                             <div className="loader"></div>
                         ) : (
                                 <div className="conversation__body__messages">
                                     {memoizedThreadList}
                                 </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             </div>
