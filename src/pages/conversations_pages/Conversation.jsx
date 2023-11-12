@@ -89,13 +89,6 @@ const Conversation = () => {
 
     }, [collectionName, fieldName, threadName, debouncedSearchTerm]);
 
-    const allConversations = () => {
-        LOGGING && console.log(`Fetching all conversations`);
-        setLoading(true);
-        setFieldName("");
-        setThreadName("");
-    }
-
     const memoizedThreadList = useMemo(() => threads.filter(thread => thread.title.includes(debouncedSearchTerm)).map((thread, index) => (
         <ConversationThread key={index} thread={thread} />
     )), [threads, debouncedSearchTerm]);
