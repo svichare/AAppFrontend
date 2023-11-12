@@ -115,9 +115,9 @@ const Conversation = () => {
         <div className="container">
             <div>
                 <div className="conversation">
-                    <h2>Conversations</h2>
+                    <h2>Threads</h2>
                     <TextField
-                        label="Search"
+                        label="Search Threads"
                         variant="outlined"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -129,7 +129,7 @@ const Conversation = () => {
                     />
                     <div className="conversation__body">
                         {loading ? (
-                            <div class="loader"></div>
+                            <div className="loader"></div>
                         ) : (
                                 <div className="conversation__body__messages">
                                     {memoizedThreadList}
