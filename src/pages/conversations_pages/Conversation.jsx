@@ -104,7 +104,7 @@ const Conversation = () => {
                         <Button variant="contained" onClick={() => allConversations()} disabled={fieldName === ALL_THREADS_FIELDNAME && threadName === ALL_THREADS_THREADNAME} style={{ marginRight: '10px' }}>All Threads</Button>
                         <Button variant="contained" onClick={() => oneConversation()} disabled={fieldName === DEFAULT_FIELD_NAME && threadName === DEFAULT_THREAD_NAME}>One Thread</Button>
                     </div>
-                    <div className="conversation__body fade">
+                    <div className="conversation__body">
                         {loading ? (
                             <div class="loader"></div>
                         ) : (
