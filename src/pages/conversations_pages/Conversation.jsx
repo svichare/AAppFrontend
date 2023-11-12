@@ -110,11 +110,6 @@ const Conversation = () => {
                         variant="outlined"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && searchTerm.length >= 2) {
-                                allConversations();
-                            }
-                        }}
                     />
                     <div className="conversation__body">
                         {debouncedSearchTerm.length >= 2 && (loading ? (
