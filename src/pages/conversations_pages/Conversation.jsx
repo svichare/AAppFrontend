@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
-
-import { Button } from '@mui/material';
+import { TextField } from '@mui/material';
 import { getThreads } from '../../graphql/queries'
-
 import ConversationThread from './ConversationThread';
 import './Conversation.css'
-
 import {
     DEFAULT_COLLECTION_NAME,
-    DEFAULT_FIELD_NAME,
-    DEFAULT_THREAD_NAME,
     LOGGING_DISABLED_MESSAGE,
     ALL_THREADS_FIELDNAME,
     ALL_THREADS_THREADNAME,
@@ -23,11 +18,28 @@ const Conversation = () => {
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(true);
     const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
-    const [fieldName, setFieldName] = useState(DEFAULT_FIELD_NAME);
-    const [threadName, setThreadName] = useState(DEFAULT_THREAD_NAME);
+    const [fieldName, setFieldName] = useState(ALL_THREADS_FIELDNAME);
+    const [threadName, setThreadName] = useState(ALL_THREADS_THREADNAME);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
 
     useEffect(() => {
+        const timerId = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 1000);
+
+        return () => {
+            clearTimeout(timerId);
+        };
+    }, [searchTerm]);
+
+    useEffect(() => {
+        if (debouncedSearchTerm === '') {
+            setLoading(false);
+            return;
+        }
         console.clear();
+
         !LOGGING && console.log(LOGGING_DISABLED_MESSAGE);
 
         if (LOGGING) {
@@ -78,7 +90,8 @@ const Conversation = () => {
         };
 
         fetchConversation();
-    }, [collectionName, fieldName, threadName]);
+
+    }, [collectionName, fieldName, threadName, debouncedSearchTerm]);
 
     const allConversations = () => {
         LOGGING && console.log(`Fetching all conversations`);
@@ -87,28 +100,39 @@ const Conversation = () => {
         setThreadName("");
     }
 
-    const oneConversation = () => {
-        LOGGING && console.log(`Fetching one conversation`);
-        setLoading(true);
-        setFieldName("title");
-        setThreadName(DEFAULT_THREAD_NAME);
-    }
+    // const oneConversation = () => {
+    //     LOGGING && console.log(`Fetching one conversation`);
+    //     setLoading(true);
+    //     setFieldName("title");
+    //     setThreadName(DEFAULT_THREAD_NAME);
+    // }
+
+    const memoizedThreadList = useMemo(() => threads.filter(thread => thread.title.includes(debouncedSearchTerm)).map((thread, index) => (
+        <ConversationThread key={index} thread={thread} />
+    )), [threads, debouncedSearchTerm]);
 
     return (
         <div className="container">
             <div>
                 <div className="conversation">
                     <h2>Conversations</h2>
-                    <Button variant="contained" onClick={() => allConversations()} disabled={fieldName === ALL_THREADS_FIELDNAME && threadName === ALL_THREADS_THREADNAME} className='threads_button' style={{ marginRight: '10px' }}>All Threads</Button>
-                    <Button variant="contained" onClick={() => oneConversation()} disabled={fieldName === DEFAULT_FIELD_NAME && threadName === DEFAULT_THREAD_NAME} className='threads_button'>One Thread</Button>
+                    <TextField
+                        label="Search"
+                        variant="outlined"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                allConversations();
+                            }
+                        }}
+                    />
                     <div className="conversation__body">
                         {loading ? (
                             <div class="loader"></div>
                         ) : (
                                 <div className="conversation__body__messages">
-                                    {threads.map((thread, index) => (
-                                        <ConversationThread key={index} thread={thread} />
-                                    ))}
+                                    {memoizedThreadList}
                                 </div>
                         )}
                     </div>
