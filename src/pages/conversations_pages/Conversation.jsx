@@ -18,6 +18,7 @@ import {
 
 const CACHE = {};
 
+
 const Conversation = () => {
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ const Conversation = () => {
     const [threadName, setThreadName] = useState(ALL_THREADS_THREADNAME);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [filteredThreadCount, setFilteredThreadCount] = useState(0);
 
     useEffect(() => {
         console.clear();
@@ -34,12 +36,12 @@ const Conversation = () => {
 
         if (LOGGING) {
             const CACHE_KEYS = Object.keys(CACHE)
-            console.log({ CACHE_KEYS });
+            console.log(`📦 Cache size : ${CACHE_KEYS.length} : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(CACHE)]).size / 1024).toFixed(2))}`);
         }
 
         const fetchConversation = async () => {
             setLoading(true);
-            const cacheKey = `${collectionName}-${fieldName}-${threadName}`;
+            const cacheKey = btoa(`${collectionName}-${fieldName}-${threadName}`).toString();
             if (CACHE[cacheKey]) {
                 LOGGING && console.log(`🏁 Cached threads Returned : ${CACHE[cacheKey].length} : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(CACHE[cacheKey])]).size / 1024).toFixed(2))}`);
                 setThreads(CACHE[cacheKey]);
@@ -49,7 +51,7 @@ const Conversation = () => {
 
             try {
                 //log the query
-                LOGGING && console.log(`🚀 Fetching threads from API : ${collectionName}-${fieldName}-${threadName}`);
+                LOGGING && console.log(`🚀 Fetching threads from API`);
                 const response = await API.graphql({
                     query: getThreads,
                     variables: {
@@ -91,15 +93,24 @@ const Conversation = () => {
         }
     }
 
-    const memoizedThreadList = useMemo(() => threads.filter(thread => thread.title.includes(debouncedSearchTerm)).map((thread, index) => (
-        <ConversationThread key={index} thread={thread} />
-    )), [threads, debouncedSearchTerm]);
+    const memoizedThreadList = useMemo(() => {
+        const filteredThreads = threads
+            .filter(thread => thread.title.includes(debouncedSearchTerm));
+
+        // Update the filtered thread count
+        setFilteredThreadCount(filteredThreads.length);
+
+        return filteredThreads.map((thread, index) => {
+            return (<ConversationThread key={index} thread={thread} />)
+        });
+    }, [threads, debouncedSearchTerm]);
 
     return (
         <div className="container">
             <div>
                 <div className="conversation">
                     <h2>Threads</h2>
+                    <p>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
                     <TextField
                         className='search__input'
                         variant="outlined"
