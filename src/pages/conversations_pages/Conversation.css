@@ -2,8 +2,8 @@
     max-width: 1200px;
     margin: 0 auto;
     box-sizing: border-box;
-        padding: 0 15px;
-        overflow-x: hidden;
+    padding: 0 15px;
+    overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
@@ -24,6 +24,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
     animation: spin 1s ease-in-out infinite;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.loader.show {
+    visibility: visible;
+    opacity: 1;
 }
 
 @keyframes spin {
@@ -34,4 +41,8 @@
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
+}
+
+.fade {
+    transition: opacity 2s;
 }

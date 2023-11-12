@@ -34,7 +34,7 @@ const ConversationThread = ({ thread }) => (
             <Typography variant='h6' align='center' className='thread-title'>{thread.title}</Typography>
             <br />
             {thread.messages.map((message, index) => (
-                <><ChatMessage key={index} {...message} /><br /></>
+                <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
             ))}
         </Paper>
     </>

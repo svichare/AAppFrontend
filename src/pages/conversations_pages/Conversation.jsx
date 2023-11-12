@@ -1,24 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import ConversationThread from './ConversationThread';
-import { getThreads } from '../../graphql/queries'
 import { API } from '@aws-amplify/api'
-import './Conversation.css'
-import { Button } from '@mui/material';
 
-const cache = {};
+import { Button } from '@mui/material';
+import { getThreads } from '../../graphql/queries'
+
+import ConversationThread from './ConversationThread';
+import './Conversation.css'
+
+import {
+    DEFAULT_COLLECTION_NAME,
+    DEFAULT_FIELD_NAME,
+    DEFAULT_THREAD_NAME,
+    LOGGING_ENABLED_MESSAGE,
+    ALL_THREADS_FIELDNAME,
+    ALL_THREADS_THREADNAME,
+    LOGGING
+} from './ConversationSettings';
+
+const CACHE = {};
 
 const Conversation = () => {
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [collectionName, setCollectionName] = useState("thread_details_telegram_first_file_complete");
-    const [fieldName, setFieldName] = useState("title");
-    const [threadName, setThreadName] = useState("Recommendation for child psychiatrist or counselor");
+    const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
+    const [fieldName, setFieldName] = useState(DEFAULT_FIELD_NAME);
+    const [threadName, setThreadName] = useState(DEFAULT_THREAD_NAME);
 
     useEffect(() => {
+        console.clear();
+        LOGGING && console.log(LOGGING_ENABLED_MESSAGE);
+
+        if (LOGGING) {
+            console.log(`Cache keys`);
+            const CACHE_KEYS = Object.keys(CACHE)
+            console.log({ CACHE_KEYS });
+        }
+
         const fetchConversation = async () => {
+            setLoading(true);
             const cacheKey = `${collectionName}-${fieldName}-${threadName}`;
-            if (cache[cacheKey]) {
-                setThreads(cache[cacheKey]);
+            if (CACHE[cacheKey]) {
+                console.log(`Returning ${CACHE[cacheKey].length} ${CACHE[cacheKey].length === 1 ? 'thread' : 'threads'} from cache`);
+                setThreads(CACHE[cacheKey]);
                 setLoading(false);
                 return;
             }
@@ -33,18 +56,24 @@ const Conversation = () => {
                     },
                 });
 
-                if (response.data.getThreads.length === 0) {
+                const THREAD_COUNT = response.data.getThreads.length;
+
+                if (THREAD_COUNT === 0) {
                     console.log("No threads returned!");
-                    return [];
+                    setThreads([]);
+                    setLoading(false);
+                    return;
                 }
-                console.log("Returning " + response.data.getThreads.length + " threads.");
-                const threads = response.data.getThreads;
-                console.log("Thread : ", threads);
-                setThreads(threads);
-                cache[cacheKey] = threads;
-                setLoading(false);
+                else {
+                    console.log(`Returning ${THREAD_COUNT} ${THREAD_COUNT === 1 ? 'thread' : 'threads'}`)
+                    const threads = response.data.getThreads;
+                    setThreads(threads);
+                    CACHE[cacheKey] = threads;
+                    setLoading(false);
+                }
             } catch (error) {
                 console.error('Error fetching conversation:', error);
+                setThreads([]);
                 setLoading(false);
             }
         };
@@ -53,40 +82,40 @@ const Conversation = () => {
     }, [collectionName, fieldName, threadName]);
 
     const allConversations = () => {
+        LOGGING && console.log(`Fetching all conversations`);
         setLoading(true);
         setFieldName("");
         setThreadName("");
     }
 
     const oneConversation = () => {
+        LOGGING && console.log(`Fetching one conversation`);
         setLoading(true);
         setFieldName("title");
-        setThreadName("Recommendation for child psychiatrist or counselor");
+        setThreadName(DEFAULT_THREAD_NAME);
     }
 
     return (
         <div className="container">
             <div>
-                {loading ? (
-                    <div class="loader"></div>
-                ) : (
-                    <>
-                        <div className="conversation">
-                            <div className="conversation__header">
-                                <h2>Conversations</h2>
-                                <Button variant="contained" onClick={() => allConversations()}>All Threads</Button>
-                                <Button variant="contained" onClick={() => oneConversation()}>One Thread</Button>
-                            </div>
-                            <div className="conversation__body">
+                <div className="conversation">
+                    <div className="conversation__header">
+                        <h2>Conversations</h2>
+                        <Button variant="contained" onClick={() => allConversations()} disabled={fieldName === ALL_THREADS_FIELDNAME && threadName === ALL_THREADS_THREADNAME} style={{ marginRight: '10px' }}>All Threads</Button>
+                        <Button variant="contained" onClick={() => oneConversation()} disabled={fieldName === DEFAULT_FIELD_NAME && threadName === DEFAULT_THREAD_NAME}>One Thread</Button>
+                    </div>
+                    <div className="conversation__body fade">
+                        {loading ? (
+                            <div class="loader"></div>
+                        ) : (
                                 <div className="conversation__body__messages">
                                     {threads.map((thread, index) => (
                                         <ConversationThread key={index} thread={thread} />
                                     ))}
                                 </div>
-                            </div>
-                        </div>
-                    </>
-                )}
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );
