@@ -3,12 +3,28 @@ import { Card, CardContent, Typography, CardActions, Paper } from '@mui/material
 import { css } from '@emotion/react';
 import './ConversationThread.css';
 
+const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '👦', '👧', '👨', '👩', '👴', '👵'];
+
+const hashString = (str) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash += str.charCodeAt(i);
+    }
+    return hash;
+};
+
+const getEmoji = (name) => {
+    const hash = hashString(name);
+    const index = hash % emojis.length;
+    return emojis[index];
+};
+
 const ChatMessage = ({ text, sender, messageType }) => {
     return (
         <Card className='message-card gradient-card'>
             <CardContent>
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {`${sender}`}
+                    {`${getEmoji(sender)}  ${sender}`}
                 </Typography>
                 <Typography
                     variant="body1"
