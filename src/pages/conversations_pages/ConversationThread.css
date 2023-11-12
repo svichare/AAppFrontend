@@ -32,3 +32,10 @@ body,
 .gradient-card {
     background: #d7e5ea!important; /* Light blue color */
 }
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+}

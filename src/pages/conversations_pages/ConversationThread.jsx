@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardContent, Typography, CardActions, Paper } from '@mui/material';
 import { css } from '@emotion/react';
 import './ConversationThread.css';
+import { IconButton } from '@mui/material';
+import { FileCopy, FileCopyRounded } from '@mui/icons-material';
 
 const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '👦', '👧', '👨', '👩', '👴', '👵'];
 
@@ -43,17 +45,30 @@ const ChatMessage = ({ text, sender, messageType }) => {
     );
 };
 
-const ConversationThread = ({ thread }) => (
-    <>
-        <Paper elevation={5} className='thread gradient-paper' >
-            <br />
-            <Typography variant='h5' className='thread-title'>{thread.title}</Typography>
-            <br />
-            {thread.messages.map((message, index) => (
-                <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
-            ))}
-        </Paper>
-    </>
-);
+const ConversationThread = ({ thread }) => {
+    const handleCopy = () => {
+        const messagesToCopy = thread.messages.map(({ sender, text }) => `*${sender}*: ${text}`);
+        const threadToCopy = `\n*${thread.title}*\n\n${messagesToCopy.join('\n\n')}`;
+
+        navigator.clipboard.writeText(threadToCopy);
+        console.log("Copy action triggered");
+    };
+
+    return (
+        <>
+            <Paper elevation={5} className='thread gradient-paper' >
+                <div className='title-container'>
+                    <Typography variant='h5' className='thread-title'>{thread.title}</Typography>
+                    <IconButton onClick={handleCopy}>
+                        <FileCopyRounded />
+                    </IconButton>
+                </div>
+                {thread.messages.map((message, index) => (
+                    <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
+                ))}
+            </Paper>
+        </>
+    )
+};
 
 export default ConversationThread;
