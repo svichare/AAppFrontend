@@ -25,6 +25,13 @@
     transform: translate(-50%, -50%);
     animation: spin 1s ease-in-out infinite;
     visibility: visible;
+    z-index: 1;
+}
+
+.threads_button {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    z-index: 2;
 }
 
 .loader.show {
@@ -40,4 +47,12 @@
     100% {
         transform: translate(-50%, -50%) rotate(360deg);
     }
+}
+
+.conversation h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 20px;
 }

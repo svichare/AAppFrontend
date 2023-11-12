@@ -99,11 +99,9 @@ const Conversation = () => {
         <div className="container">
             <div>
                 <div className="conversation">
-                    <div className="conversation__header">
-                        <h2>Conversations</h2>
-                        <Button variant="contained" onClick={() => allConversations()} disabled={fieldName === ALL_THREADS_FIELDNAME && threadName === ALL_THREADS_THREADNAME} style={{ marginRight: '10px' }}>All Threads</Button>
-                        <Button variant="contained" onClick={() => oneConversation()} disabled={fieldName === DEFAULT_FIELD_NAME && threadName === DEFAULT_THREAD_NAME}>One Thread</Button>
-                    </div>
+                    <h2>Conversations</h2>
+                    <Button variant="contained" onClick={() => allConversations()} disabled={fieldName === ALL_THREADS_FIELDNAME && threadName === ALL_THREADS_THREADNAME} className='threads_button' style={{ marginRight: '10px' }}>All Threads</Button>
+                    <Button variant="contained" onClick={() => oneConversation()} disabled={fieldName === DEFAULT_FIELD_NAME && threadName === DEFAULT_THREAD_NAME} className='threads_button'>One Thread</Button>
                     <div className="conversation__body">
                         {loading ? (
                             <div class="loader"></div>
