@@ -38,6 +38,8 @@ const Conversation = () => {
         }
 
         const fetchConversation = async () => {
+            // log search term
+            LOGGING && console.log(`🔍 Searching for threads with search term : ${debouncedSearchTerm}`);
             setLoading(true);
             const cacheKey = btoa(`${collectionName}-${fieldName}-${threadName}`).toString();
             if (CACHE[cacheKey]) {
