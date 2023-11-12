@@ -273,7 +273,7 @@ const Conversation = () => {
             <Backdrop open={open} />
             <SpeedDial
                 ariaLabel="SpeedDial tooltip example"
-                sx={{ position: 'absolute', bottom: 16, right: 16 }}
+                sx={{ position: 'fixed', bottom: 16, right: 16 }}
                 icon={<SpeedDialIcon />}
                 onClose={handleClose}
                 onOpen={handleOpen}
