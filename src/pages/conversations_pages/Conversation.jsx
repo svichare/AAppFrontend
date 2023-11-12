@@ -11,7 +11,7 @@ import {
     DEFAULT_COLLECTION_NAME,
     DEFAULT_FIELD_NAME,
     DEFAULT_THREAD_NAME,
-    LOGGING_ENABLED_MESSAGE,
+    LOGGING_DISABLED_MESSAGE,
     ALL_THREADS_FIELDNAME,
     ALL_THREADS_THREADNAME,
     LOGGING
@@ -28,10 +28,9 @@ const Conversation = () => {
 
     useEffect(() => {
         console.clear();
-        LOGGING && console.log(LOGGING_ENABLED_MESSAGE);
+        !LOGGING && console.log(LOGGING_DISABLED_MESSAGE);
 
         if (LOGGING) {
-            console.log(`Cache keys`);
             const CACHE_KEYS = Object.keys(CACHE)
             console.log({ CACHE_KEYS });
         }
@@ -40,7 +39,7 @@ const Conversation = () => {
             setLoading(true);
             const cacheKey = `${collectionName}-${fieldName}-${threadName}`;
             if (CACHE[cacheKey]) {
-                console.log(`Returning ${CACHE[cacheKey].length} ${CACHE[cacheKey].length === 1 ? 'thread' : 'threads'} from cache`);
+                LOGGING && console.log(`🏁 Cached threads Returned : ${CACHE[cacheKey].length} : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(CACHE[cacheKey])]).size / 1024).toFixed(2))}`);
                 setThreads(CACHE[cacheKey]);
                 setLoading(false);
                 return;
@@ -55,17 +54,17 @@ const Conversation = () => {
                         value: threadName
                     },
                 });
+                LOGGING && console.log(`🛸 Fetched ${response.data.getThreads.length} ${response.data.getThreads.length === 1 ? 'thread' : 'threads'} from API : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(response.data.getThreads)]).size / 1024).toFixed(2))}`);
 
                 const THREAD_COUNT = response.data.getThreads.length;
 
                 if (THREAD_COUNT === 0) {
-                    console.log("No threads returned!");
+                    LOGGING && console.log("No threads returned!");
                     setThreads([]);
                     setLoading(false);
                     return;
                 }
                 else {
-                    console.log(`Returning ${THREAD_COUNT} ${THREAD_COUNT === 1 ? 'thread' : 'threads'}`)
                     const threads = response.data.getThreads;
                     setThreads(threads);
                     CACHE[cacheKey] = threads;
