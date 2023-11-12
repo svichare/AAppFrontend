@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
 import { TextField } from '@mui/material';
+import { InputAdornment } from '@mui/material';
+import { IconButton } from '@mui/material';
+import { KeyboardReturnTwoTone } from '@mui/icons-material';
+
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
 import './Conversation.css'
@@ -97,11 +101,21 @@ const Conversation = () => {
                 <div className="conversation">
                     <h2>Threads</h2>
                     <TextField
-                        label="Press Enter to search"
+                        className='search__input'
                         variant="outlined"
+                        placeholder="Search"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         onKeyDown={handleKeyPress}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={() => setDebouncedSearchTerm(searchTerm)}>
+                                        <KeyboardReturnTwoTone />
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <div className="conversation__body">
                         {debouncedSearchTerm.length >= 2 && (loading ? (

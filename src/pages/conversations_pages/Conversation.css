@@ -6,8 +6,9 @@
     overflow-x: hidden;
 }
 
-@media (max-width: 768px) {
-    .container {
+@media screen and (max-width: 768px) {
+    .container 
+    .search__input {
         width: 100%;
     }
 }
@@ -55,4 +56,8 @@
     letter-spacing: 0.15px;
     color: rgba(0, 0, 0, 1);
     margin-bottom: 20px;
+}
+
+.search__input {
+    width: 50%; /* Default width for desktop */
 }
