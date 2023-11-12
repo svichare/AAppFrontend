@@ -5,6 +5,8 @@ import { API } from '@aws-amplify/api'
 import './Conversation.css'
 import { Button } from '@mui/material';
 
+const cache = {};
+
 const Conversation = () => {
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -14,8 +16,14 @@ const Conversation = () => {
 
     useEffect(() => {
         const fetchConversation = async () => {
+            const cacheKey = `${collectionName}-${fieldName}-${threadName}`;
+            if (cache[cacheKey]) {
+                setThreads(cache[cacheKey]);
+                setLoading(false);
+                return;
+            }
+
             try {
-                // Make a GraphQL query to your AWS AppSync API
                 const response = await API.graphql({
                     query: getThreads,
                     variables: {
@@ -25,7 +33,6 @@ const Conversation = () => {
                     },
                 });
 
-                // For local testing.
                 if (response.data.getThreads.length === 0) {
                     console.log("No threads returned!");
                     return [];
@@ -33,8 +40,8 @@ const Conversation = () => {
                 console.log("Returning " + response.data.getThreads.length + " threads.");
                 const threads = response.data.getThreads;
                 console.log("Thread : ", threads);
-                // Update the state with the fetched conversation
                 setThreads(threads);
+                cache[cacheKey] = threads;
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching conversation:', error);
@@ -43,11 +50,7 @@ const Conversation = () => {
         };
 
         fetchConversation();
-    }, [
-        collectionName,
-        fieldName,
-        threadName,
-    ]);
+    }, [collectionName, fieldName, threadName]);
 
     const allConversations = () => {
         setLoading(true);
