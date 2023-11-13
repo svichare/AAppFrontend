@@ -5,14 +5,12 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-color: #f5f5f5;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 .message-card {
     margin-left: 10px;
     margin-right: 10px;
-    background: #d7e5ea!important;
 }
 
 .card-content {
@@ -49,11 +47,11 @@
 }
 
 .gradient-paper {
-    background: #f0f0f0!important;
+    background: #D4EDFF!important;
 }
 
 .gradient-card {
-    background: #d7e5ea!important;
+    background: #B1E8FE!important;
 }
 
 .title-container {

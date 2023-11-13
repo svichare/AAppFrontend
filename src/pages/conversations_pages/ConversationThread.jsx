@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Card, CardContent, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, IconButton } from '@mui/material';
+import { Card, CardContent, Typography, Accordion, AccordionSummary, AccordionDetails, IconButton } from '@mui/material';
 import './ConversationThread.css';
 import { DownloadRounded } from '@mui/icons-material';
 import domtoimage from 'dom-to-image';

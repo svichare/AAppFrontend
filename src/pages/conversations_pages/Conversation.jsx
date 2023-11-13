@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
 import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
-import { KeyboardReturnRounded, Clear, FileCopyOutlined } from '@mui/icons-material';
+import { KeyboardReturnRounded, Clear, FileCopyRounded } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import { styled } from '@mui/system';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -145,8 +146,8 @@ const Conversation = () => {
                     <h2>Conversation Threads</h2>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
-                        <Button onClick={copyToClipboard}>
-                            <FileCopyOutlined />
+                        <Button className="square-button" onClick={copyToClipboard}>
+                            <FileCopyRounded />
                         </Button>
                     </div>
                     <TextField
