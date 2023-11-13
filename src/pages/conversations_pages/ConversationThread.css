@@ -18,14 +18,15 @@
 /* set  card-content to have padding for left and right to be 5px */
 .card-content
 {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
+    padding-left: 5px ;
+    margin-left: 5px;
+    padding-right: 5px ;
     /* do the same for bottom padding */
-    padding-bottom: 5px !important;
+    padding-bottom: 5px ;
     /* do the same for top padding */
-    padding-top: 5px !important;
+    padding-top: 5px ;
     /* do the same for bottom margin */
-    margin-bottom: 5px !important;
+    margin-bottom: 5px ;
 }
 .card-content:last-child {
     margin-bottom: 5px !important;
