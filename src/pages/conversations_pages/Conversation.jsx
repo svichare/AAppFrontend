@@ -115,7 +115,7 @@ const Conversation = () => {
         <div className="container">
             <div>
                 <div className="conversation">
-                    <h2>Threads</h2>
+                    <h2>Conversation Threads</h2>
                     <p>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
                     <TextField
                         className='search__input'
