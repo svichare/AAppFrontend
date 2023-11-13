@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Card, CardContent, Typography, Paper } from '@mui/material';
 import './ConversationThread.css';
 import { IconButton } from '@mui/material';
-import { FileCopyRounded } from '@mui/icons-material';
+import { DownloadRounded } from '@mui/icons-material';
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
+import logo from '../../assets/logo/always_around_me.png';
 
 const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'];
 
@@ -36,22 +39,44 @@ const ChatMessage = ({ text, sender, messageType }) => {
 };
 
 const ConversationThread = ({ thread }) => {
-    const handleCopy = () => {
-        const messagesToCopy = thread.messages.map(({ sender, text }) => `*${sender}*: ${text}`);
-        const threadToCopy = `\n*${thread.title}*\n\n${messagesToCopy.join('\n\n')}`;
 
-        navigator.clipboard.writeText(threadToCopy);
-        console.log("Copy action triggered");
+    const threadRef = useRef(null);
+
+    const handleShare = async () => {
+        if (threadRef.current) {
+            const logoImg = document.createElement('img');
+            logoImg.src = logo;
+            threadRef.current.prepend(logoImg); // prepend to add the logo at the top
+
+            domtoimage.toBlob(threadRef.current)
+                .then(blob => {
+                    saveAs(blob, `${thread.title}.png`);
+                })
+                .catch(error => {
+                    console.error('Error converting thread to image:', error);
+                })
+                .finally(() => {
+                    threadRef.current.removeChild(logoImg);
+                });
+        }
+
+        console.log("⬇️ Download", thread.title);
+    };
+
+
+
+    const isMobile = () => {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     };
 
     return (
         <>
-            <Paper elevation={5} className='thread gradient-paper' >
+            <Paper elevation={5} className='thread gradient-paper' ref={threadRef}>
                 <div className='title-container'>
                     <Typography variant='h5' className='thread-title'>{thread.title}</Typography>
-                    <IconButton onClick={handleCopy}>
-                        <FileCopyRounded />
-                    </IconButton>
+                    {isMobile ? (<IconButton onClick={handleShare}>
+                        <DownloadRounded />
+                    </IconButton>) : null}
                 </div>
                 {thread.messages.map((message, index) => (
                     <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
