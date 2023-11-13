@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
-import { Card, CardContent, Typography, Paper } from '@mui/material';
+import React, { useRef, useState } from 'react';
+import { Card, CardContent, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, IconButton } from '@mui/material';
 import './ConversationThread.css';
-import { IconButton } from '@mui/material';
 import { DownloadRounded } from '@mui/icons-material';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 import logo from '../../assets/logo/always_around_me.png';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'];
 
@@ -63,25 +63,35 @@ const ConversationThread = ({ thread }) => {
         console.log("⬇️ Download", thread.title);
     };
 
+    const [isExpanded, setIsExpanded] = useState(false);
 
-
-    const isMobile = () => {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const handleAccordionChange = (event, newIsExpanded) => {
+        setIsExpanded(newIsExpanded);
     };
 
     return (
         <>
-            <Paper elevation={5} className='thread gradient-paper' ref={threadRef}>
+            <Accordion elevation={5} className='thread gradient-paper' onChange={handleAccordionChange}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                >
                 <div className='title-container'>
                     <Typography variant='h5' className='thread-title'>{thread.title}</Typography>
-                    {isMobile ? (<IconButton onClick={handleShare}>
-                        <DownloadRounded />
-                    </IconButton>) : null}
+                        {isExpanded ? (
+                            <IconButton onClick={handleShare}>
+                                <DownloadRounded />
+                            </IconButton>
+                        ) : null}
                 </div>
+                </AccordionSummary>
+                <AccordionDetails ref={threadRef}>
                 {thread.messages.map((message, index) => (
                     <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
                 ))}
-            </Paper>
+                </AccordionDetails>
+            </Accordion>
         </>
     )
 };
