@@ -171,13 +171,13 @@ export default function TopicList({dependentId}) {
   const showNextRecords = () => {
     // Call the onFetchThreads function to fetch and display threads
    
-    
-    fetch_topics_and_messages (parseInt(threadEndRank) + 1, parseInt(threadEndRank) + 20)
+    let numEndRank = parseInt(threadEndRank);
+    fetch_topics_and_messages (numEndRank + 1, numEndRank + 20)
     .then((threads_returned) => {
       setThreads(threads_returned);
-      console.log("Updated local threads. Setting ranks to :", parseInt(threadEndRank) + 1, " ", parseInt(threadEndRank) + 20);
-      setThreadStartRank(parseInt(threadEndRank) + 1);
-      setThreadEndRank(parseInt(threadEndRank) + 20);
+      console.log("Updated local threads. Setting ranks to :", numEndRank + 1, " ", numEndRank + 20);
+      setThreadStartRank(numEndRank + 1);
+      setThreadEndRank(numEndRank + 20);
     
     });
   };
