@@ -1,4 +1,4 @@
-export const DEFAULT_COLLECTION_NAME = "thread_details_telegram_first_file_complete";
+export const DEFAULT_COLLECTION_NAME = "thread_details_telegram_first_run_with_topics";
 export const DEFAULT_FIELD_NAME = "title";
 export const DEFAULT_THREAD_NAME = "Recommendation for child psychiatrist or counselor";
 export const LOGGING_DISABLED_MESSAGE = "⏩ Logging disabled. Set LOGGING to true to enable logging.";
