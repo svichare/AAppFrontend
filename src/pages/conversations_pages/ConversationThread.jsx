@@ -78,7 +78,7 @@ const ConversationThread = ({ thread }) => {
                     id="panel1a-header"
                 >
                 <div className='title-container'>
-                    <Typography variant='h5' className='thread-title'>{thread.title}</Typography>
+                        <Typography variant='h6' className='thread-title'>{thread.title}</Typography>
                         {isExpanded ? (
                             <IconButton onClick={handleShare}>
                                 <DownloadRounded />
@@ -86,7 +86,7 @@ const ConversationThread = ({ thread }) => {
                         ) : null}
                 </div>
                 </AccordionSummary>
-                <AccordionDetails ref={threadRef}>
+                <AccordionDetails className='accordion_details' ref={threadRef}>
                 {thread.messages.map((message, index) => (
                     <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
                 ))}

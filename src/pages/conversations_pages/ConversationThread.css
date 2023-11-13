@@ -15,7 +15,18 @@
     margin-right: 10px;
 }
 
-/* set last child of card-content to have margin and padding for bottom to be 5px */
+/* set  card-content to have padding for left and right to be 5px */
+.card-content
+{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    /* do the same for bottom padding */
+    padding-bottom: 5px !important;
+    /* do the same for top padding */
+    padding-top: 5px !important;
+    /* do the same for bottom margin */
+    margin-bottom: 5px !important;
+}
 .card-content:last-child {
     margin-bottom: 5px !important;
     padding-bottom: 5px !important;
@@ -29,9 +40,16 @@
     margin-right: 10px;
 }
 
+.accordion_details{
+    /* sets the left and right padding to 5px */
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    /* sets the bottom padding to 5px */
+    padding-bottom: 5px !important;
+}
+
 .thread-title {
-    padding: 10px 10px 10px 20px;
-    color: #3f51b5;
+    color: #1b34bf;
 }
 
 .gradient-paper {
