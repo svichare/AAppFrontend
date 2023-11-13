@@ -107,6 +107,7 @@ const App = () => {
                 <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
                 <Route path="/ErrorPage" Component={ErrorPage} />
                 <Route path='/Conversations' Component={Conversation}></Route>
+                <Route path="/Conversations/search/:searchTerm?" Component={Conversation} />
                 {traitRoutes.map(route => (
                   <Route
                     key={route.path}

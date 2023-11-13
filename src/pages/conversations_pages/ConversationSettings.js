@@ -6,3 +6,4 @@ export const ALL_THREADS_FIELDNAME = "";
 export const ALL_THREADS_THREADNAME = "";
 export const SUGGESTIONS = ["home", "event", "Edison"];
 export const LOGGING = true;
+export const PERSIST_LOGS = false;

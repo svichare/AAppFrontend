@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
 import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
 import { KeyboardReturnRounded, Clear } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -12,7 +14,8 @@ import {
     ALL_THREADS_FIELDNAME,
     ALL_THREADS_THREADNAME,
     LOGGING,
-    SUGGESTIONS
+    SUGGESTIONS,
+    PERSIST_LOGS
 } from './ConversationSettings';
 
 const CACHE = {};
@@ -23,12 +26,27 @@ const Conversation = () => {
     const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
     const [fieldName] = useState(ALL_THREADS_FIELDNAME);
     const [threadName] = useState(ALL_THREADS_THREADNAME);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
 
+    const navigate = useNavigate();
+    const { searchTerm: urlSearchTerm } = useParams();
+
+    const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(urlSearchTerm || '');
+
     useEffect(() => {
-        console.clear();
+        if (urlSearchTerm !== debouncedSearchTerm) {
+            setSearchTerm(urlSearchTerm || '');
+            setDebouncedSearchTerm(urlSearchTerm || '');
+        }
+    }, [urlSearchTerm]);
+
+    useEffect(() => {
+        navigate(`/Conversations/search/${debouncedSearchTerm}`);
+    }, [debouncedSearchTerm]);
+
+    useEffect(() => {
+        !PERSIST_LOGS && console.clear();
 
         !LOGGING && console.log(LOGGING_DISABLED_MESSAGE);
 
