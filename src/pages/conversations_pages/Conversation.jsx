@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
 import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
-import { KeyboardReturnRounded, Clear } from '@mui/icons-material';
+import { KeyboardReturnRounded, Clear, FileCopyOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -105,6 +105,15 @@ const Conversation = () => {
 
     }, [collectionName, fieldName, threadName, debouncedSearchTerm]);
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(window.location.href)
+            .then(() => {
+                console.log(`📎 Copied URL`);
+            }, err => {
+                console.error('Could not copy text: ', err);
+            });
+    };
+
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             setDebouncedSearchTerm(searchTerm);
@@ -134,7 +143,12 @@ const Conversation = () => {
             <div>
                 <div className="conversation">
                     <h2>Conversation Threads</h2>
-                    <p>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
+                        <Button onClick={copyToClipboard}>
+                            <FileCopyOutlined />
+                        </Button>
+                    </div>
                     <TextField
                         className='search__input'
                         variant="outlined"
