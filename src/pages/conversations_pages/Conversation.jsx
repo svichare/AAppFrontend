@@ -114,7 +114,7 @@ const Conversation = () => {
 
     const memoizedThreadList = useMemo(() => {
         const filteredThreads = threads
-            .filter(thread => thread.title.includes(debouncedSearchTerm));
+            .filter(thread => thread.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
 
         // Update the filtered thread count
         setFilteredThreadCount(filteredThreads.length);
