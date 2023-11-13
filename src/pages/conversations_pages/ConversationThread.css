@@ -1,9 +1,6 @@
-body,
-.thread {
-    overflow-x: hidden;
-}
 
 .thread {
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -13,24 +10,36 @@ body,
     margin-bottom: 10px;
 }
 
-.message-card,
-.message-text,
-.thread-title {
+.message-card {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/* set last child of card-content to have margin and padding for bottom to be 5px */
+.card-content:last-child {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+    /* do the same for top margin */
+    margin-top: 5px !important;
+    padding-top: 5px !important;
+}
+
+.message-text {
     margin-left: 10px;
     margin-right: 10px;
 }
 
 .thread-title {
-    padding: 10px 10px 10px 20px; /* More vertical padding */
-    color: #3f51b5; /* Material UI primary color */
+    padding: 10px 10px 10px 20px;
+    color: #3f51b5;
 }
 
 .gradient-paper {
-    background: #f0f0f0!important; /* Light gray background */
+    background: #f0f0f0!important;
 }
 
 .gradient-card {
-    background: #d7e5ea!important; /* Light blue color */
+    background: #d7e5ea!important;
 }
 
 .title-container {

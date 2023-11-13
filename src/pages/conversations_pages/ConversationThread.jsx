@@ -1,11 +1,10 @@
 import React from 'react';
-import { Card, CardContent, Typography, CardActions, Paper } from '@mui/material';
-import { css } from '@emotion/react';
+import { Card, CardContent, Typography, Paper } from '@mui/material';
 import './ConversationThread.css';
 import { IconButton } from '@mui/material';
-import { FileCopy, FileCopyRounded } from '@mui/icons-material';
+import { FileCopyRounded } from '@mui/icons-material';
 
-const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '👦', '👧', '👨', '👩', '👴', '👵'];
+const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'];
 
 const hashString = (str) => {
     let hash = 0;
@@ -24,23 +23,14 @@ const getEmoji = (name) => {
 const ChatMessage = ({ text, sender, messageType }) => {
     return (
         <Card className='message-card gradient-card'>
-            <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {`${getEmoji(sender)}  ${sender}`}
-                </Typography>
+            <CardContent className='card-content'>
                 <Typography
                     variant="body1"
                     component="div"
-                    className='message-text'
-                    css={css`
-                    text-align: ${messageType === 'question' ? 'left' : 'right'};
-                    `}>
-                    {text}
+                    className='message-text'>
+                    <span style={{ fontSize: '1.5em' }}>{getEmoji(sender)}</span>  {text}
                 </Typography>
             </CardContent>
-            <CardActions>
-                {/* Add any actions here */}
-            </CardActions>
         </Card>
     );
 };
