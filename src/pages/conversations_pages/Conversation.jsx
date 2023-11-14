@@ -147,13 +147,22 @@ const Conversation = () => {
         // Filter the threads based on the search term
         const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
         console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
-        const filteredThreads = threads.filter(thread => {
-            const titleMatch = thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm);
-            const messageMatch = thread.messages.some(message => message.text && message.text.toLowerCase().includes(lowerCaseSearchTerm));
 
-            // Only include threads if the title or any of the messages match the search term
-            return (titleMatch || messageMatch) && thread.isValid;
+        const titleMatches = threads.filter(thread => {
+            if (!thread.isValid) return false;
+            const lowerCaseTitle = thread.title && thread.title.toLowerCase();
+            return lowerCaseTitle && lowerCaseTitle.includes(lowerCaseSearchTerm);
         });
+
+        const messageMatches = threads.filter(thread => {
+            if (!thread.isValid || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
+            return thread.messages.some(message => {
+                const lowerCaseText = message.text && message.text.toLowerCase();
+                return lowerCaseText && lowerCaseText.includes(lowerCaseSearchTerm);
+            });
+        });
+
+        const filteredThreads = [...titleMatches, ...messageMatches];
 
         // Update the filtered thread count
         setFilteredThreadCount(filteredThreads.length);
