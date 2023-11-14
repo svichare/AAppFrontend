@@ -65,6 +65,7 @@
 
 .search__input {
     width: 95%; /* Default width for desktop */
+    background-color: #fcfcff;
 }
 
 .conversation_suggestions{
