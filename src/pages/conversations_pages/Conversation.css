@@ -6,6 +6,15 @@
     overflow-x: hidden;
 }
 
+.container h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: 0.15px;
+    color: rgba(0, 0, 0, 1);
+    margin-bottom: 20px;
+}
+
+
 @media screen and (max-width: 768px) {
     .container 
     .search__input {
@@ -55,13 +64,6 @@
     background-color: #1b34bf;
 }
 
-.conversation h2 {
-    font-size: 32px;
-    font-weight: 700;
-    letter-spacing: 0.15px;
-    color: rgba(0, 0, 0, 1);
-    margin-bottom: 20px;
-}
 
 .search__input {
     width: 95%; /* Default width for desktop */
