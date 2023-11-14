@@ -28,6 +28,9 @@ const Conversation = () => {
     const [fieldName] = useState(ALL_THREADS_FIELDNAME);
     const [threadName] = useState(ALL_THREADS_THREADNAME);
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
+    const [topicCountMap, setTopicCountMap] = useState(new Map());
+    const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
+    
 
     const navigate = useNavigate();
     const { searchTerm: urlSearchTerm } = useParams();
@@ -93,6 +96,35 @@ const Conversation = () => {
                     const threads = response.data.getThreads;
                     setThreads(threads);
                     CACHE[cacheKey] = threads;
+                    // Update the topic count map.
+                    const curTopicCountMap = new Map();
+                    const curTopicSubTopicCountMap = new Map();
+                    var threadTitleCount = 0;
+                    threads.forEach(obj => {
+                      const topic = obj.topic;
+                      const subtopic = obj.subtopic;
+                      const title = obj.title;
+                      
+                      if (typeof title !== 'undefined') {
+                          ++threadTitleCount;
+                      }
+
+                      // If the topic is not in the map, initialize count to 1; otherwise, increment the count
+                      if (typeof topic === 'undefined') {
+                          return;
+                      }
+                      curTopicCountMap.set(topic, (curTopicCountMap.get(topic) || 0) + 1);
+                      
+                      if (typeof subtopic === 'undefined') {
+                          return;
+                      }
+                      var cur_pair = (topic, subtopic);
+                      curTopicSubTopicCountMap.set(cur_pair, (curTopicSubTopicCountMap.get(cur_pair) || 0) + 1);
+                    });
+                    setTopicCountMap(curTopicCountMap);
+                    console.log("TopicMap size : ", curTopicCountMap.size," title count ", threadTitleCount);
+                    setTopicSubtopicCountMap(curTopicSubTopicCountMap);
+                    console.log("SubTopicMap size : ", curTopicSubTopicCountMap.size);
                     setLoading(false);
                 }
             } catch (error) {
