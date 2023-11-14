@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
-import { Button, ButtonGroup, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Button, ButtonGroup, Chip, IconButton, InputAdornment, TextField } from '@mui/material';
 import { KeyboardReturnRounded, Clear, FileCopyRounded } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -129,7 +129,8 @@ const Conversation = () => {
             const titleMatch = thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm);
             const messageMatch = thread.messages.some(message => message.text && message.text.toLowerCase().includes(lowerCaseSearchTerm));
 
-            return titleMatch || messageMatch;
+            // Only include threads if the title or any of the messages match the search term
+            return (titleMatch || messageMatch) && thread.isValid;
         });
 
         // Update the filtered thread count
@@ -185,12 +186,13 @@ const Conversation = () => {
 
                     {
                         debouncedSearchTerm.length === 0 && (
-                            <div>
-                                <ButtonGroup className='conversation_suggestions' variant="contained" aria-label="outlined primary button group">
-                                    {SUGGESTIONS.map(suggestion => (
-                                        <Button onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</Button>
-                                    ))}
-                                </ButtonGroup>
+                            <div className='search-suggestions'>
+                                {SUGGESTIONS.map(suggestion => (
+                                    <Chip className='chip'
+                                        label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
+                                        onClick={() => handleSuggestionClick(suggestion)}>
+                                    </Chip>
+                                ))}
                             </div>
                         )
                     }

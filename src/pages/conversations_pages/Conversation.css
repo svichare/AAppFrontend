@@ -74,3 +74,15 @@
 body {
     background-color: #EFF0FE; /* Replace with your preferred color */
 }
+
+.chip {
+    margin: 5px 5px 5px 0 !important;
+}
+
+.suggestion-text {
+    margin-left: 10px;
+}
+
+.search-suggestions{
+    margin-top: 10px;
+}
