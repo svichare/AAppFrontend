@@ -123,8 +123,14 @@ const Conversation = () => {
     }
 
     const memoizedThreadList = useMemo(() => {
-        const filteredThreads = threads
-            .filter(thread => thread.title.toLowerCase().includes(debouncedSearchTerm.toLowerCase()));
+        const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
+
+        const filteredThreads = threads.filter(thread => {
+            const titleMatch = thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm);
+            const messageMatch = thread.messages.some(message => message.text && message.text.toLowerCase().includes(lowerCaseSearchTerm));
+
+            return titleMatch || messageMatch;
+        });
 
         // Update the filtered thread count
         setFilteredThreadCount(filteredThreads.length);
