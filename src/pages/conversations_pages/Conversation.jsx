@@ -5,6 +5,7 @@ import { KeyboardReturnRounded, Clear, FileCopyRounded } from '@mui/icons-materi
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
+import mixpanel from 'mixpanel-browser';
 
 import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
@@ -37,6 +38,8 @@ const Conversation = () => {
 
     const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(urlSearchTerm || '');
+    
+    mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
 
     useEffect(() => {
         if (urlSearchTerm !== debouncedSearchTerm) {
@@ -74,6 +77,9 @@ const Conversation = () => {
             try {
                 //log the query
                 LOGGING && console.log(`🚀 Fetching threads from API`);
+                mixpanel.track('Conversation Page Opened', {
+                });
+
                 const response = await API.graphql({
                     query: getThreads,
                     variables: {
@@ -156,6 +162,8 @@ const Conversation = () => {
 
     const memoizedThreadList = useMemo(() => {
         const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
+        
+        
 
         const filteredThreads = threads.filter(thread => {
             const titleMatch = thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm);
@@ -167,6 +175,13 @@ const Conversation = () => {
 
         // Update the filtered thread count
         setFilteredThreadCount(filteredThreads.length);
+        
+        if (debouncedSearchTerm.length > 1) {
+            mixpanel.track('Conversation Searched', {
+                'Search term': debouncedSearchTerm,
+                'threads found': filteredThreads.length
+            });
+        }
 
         return filteredThreads.map((thread, index) => {
             return (<ConversationThread key={index} thread={thread} />)
