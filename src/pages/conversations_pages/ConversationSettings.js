@@ -4,6 +4,6 @@ export const DEFAULT_THREAD_NAME = "Recommendation for child psychiatrist or cou
 export const LOGGING_DISABLED_MESSAGE = "⏩ Logging disabled. Set LOGGING to true to enable logging.";
 export const ALL_THREADS_FIELDNAME = "";
 export const ALL_THREADS_THREADNAME = "";
-export const SUGGESTIONS = ["ABA", "Edison", "Princeton", "Speech", "OT", "IEP", "Dentist", "Pediatrician", "Diet", "Stem", "Apraxia", "Developmental", "Neurologist", "Insurance", "Social", "Evaluation", "Summer"];
+export const SUGGESTIONS = ["ABA", "Edison", "Princeton", "OT", "Speech", "IEP", "Dentist", "Diet", "Pediatrician",  "Apraxia", "Swimming", "Insurance", "Summer"];
 export const LOGGING = true;
 export const PERSIST_LOGS = false;

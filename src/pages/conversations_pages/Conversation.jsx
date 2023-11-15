@@ -200,6 +200,17 @@ const Conversation = () => {
                 </Button>
             </div>
 
+                    {
+
+                        <div className='search-suggestions'>
+                            {SUGGESTIONS.map(suggestion => (
+                                <Chip className='chip'
+                                    label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
+                                    onClick={() => handleSuggestionClick(suggestion)}>
+                                </Chip>
+                            ))}
+                        </div>
+                    }
             <TextField
                 className='search__input'
                 variant="outlined"
