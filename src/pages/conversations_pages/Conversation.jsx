@@ -200,17 +200,6 @@ const Conversation = () => {
                 </Button>
             </div>
 
-                    {
-
-                        <div className='search-suggestions'>
-                            {SUGGESTIONS.map(suggestion => (
-                                <Chip className='chip'
-                                    label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
-                                    onClick={() => handleSuggestionClick(suggestion)}>
-                                </Chip>
-                            ))}
-                        </div>
-                    }
             <TextField
                 className='search__input'
                 variant="outlined"
@@ -237,20 +226,14 @@ const Conversation = () => {
                     ),
                 }}
             />
-
-            {debouncedSearchTerm.length === 0 && (
-                <div className='search-suggestions'>
-                    {SUGGESTIONS.map(suggestion => (
-                        <Chip
-                            key={suggestion}
-                            className='chip'
-                            label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
-                            onClick={() => handleSuggestionClick(suggestion)}>
-                        </Chip>
-                    ))}
-                </div>
-            )
-            }
+            <div className='search-suggestions'>
+                {SUGGESTIONS.map(suggestion => (
+                    <Chip className='chip'
+                        label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
+                        onClick={() => handleSuggestionClick(suggestion)}>
+                    </Chip>
+                ))}
+            </div>
 
             <div className="conversation__body">
                 {debouncedSearchTerm.length >= 2 && (loading ? (
