@@ -229,6 +229,7 @@ const Conversation = () => {
             <div className='search-suggestions'>
                 {SUGGESTIONS.map(suggestion => (
                     <Chip className='chip'
+                        key={suggestion}
                         label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
                         onClick={() => handleSuggestionClick(suggestion)}>
                     </Chip>
