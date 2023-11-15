@@ -148,12 +148,14 @@ const Conversation = () => {
         const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
         console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
 
+        // Get the threads that match the search term in the title
         const titleMatches = threads.filter(thread => {
             if (!thread.isValid) return false;
             const lowerCaseTitle = thread.title && thread.title.toLowerCase();
             return lowerCaseTitle && lowerCaseTitle.includes(lowerCaseSearchTerm);
         });
 
+        // Get the threads that match the search term in the messages
         const messageMatches = threads.filter(thread => {
             if (!thread.isValid || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
             return thread.messages.some(message => {
@@ -162,6 +164,7 @@ const Conversation = () => {
             });
         });
 
+        // Combine the title and message matches based on ranking
         const filteredThreads = [...titleMatches, ...messageMatches];
 
         // Update the filtered thread count
