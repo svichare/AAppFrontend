@@ -28,6 +28,7 @@ const Conversation = () => {
     const [fieldName] = useState(ALL_THREADS_FIELDNAME);
     const [threadName] = useState(ALL_THREADS_THREADNAME);
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
+    const [featuredThreads, setFeaturedThreads] = useState([]);
     const [topicCountMap, setTopicCountMap] = useState(new Map());
     const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
 
@@ -178,8 +179,12 @@ const Conversation = () => {
             });
         }
 
+        const displayThreads = debouncedSearchTerm === '' ? threads.slice(50, 60) : filteredThreads;
+
+        LOGGING && console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${debouncedSearchTerm}`);
+
         // Render the filtered threads
-        return filteredThreads.map((thread, index) => {
+        return displayThreads.map((thread, index) => {
             return (<ConversationThread key={index} thread={thread} />)
         });
     }, [threads, debouncedSearchTerm]);
@@ -237,7 +242,7 @@ const Conversation = () => {
             </div>
 
             <div className="conversation__body">
-                {debouncedSearchTerm.length >= 2 && (loading ? (
+                {(loading ? (
                     <div className="loader"></div>
                 ) : (
                     <div className="conversation__body__messages">
