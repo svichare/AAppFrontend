@@ -27,7 +27,9 @@ const ConversationsCodeError = () => {
     return (
         <Box className="error-page-box">
             <Typography className="error-page-emoji" variant="h2" gutterBottom>
-                <div >🙈 Oops!</div>
+                <div>
+                    <span className="emoji">🙈 </span><span>Oops!</span>
+                </div>
                 group not found
             </Typography>
             <Typography variant="h6" gutterBottom>
