@@ -156,7 +156,7 @@ const Conversation = () => {
 
     // Copy the URL to the clipboard
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(window.location.href)
+        navigator && navigator.clipboard && navigator.clipboard.writeText(window.location.href)
             .then(() => {
                 console.log(`📎 Copied URL`);
             }, err => {

@@ -21,7 +21,7 @@ const ConversationsCodeError = () => {
     }
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText('onboard.icu@gmail.com');
+        navigator && navigator.clipboard && navigator.clipboard.writeText('onboard.icu@gmail.com');
     }
 
     return (
