@@ -26,7 +26,7 @@ const ConversationsCodeError = () => {
 
     return (
         <Box className="error-page-box">
-            <Typography className="error-page-emoji" variant="h2" gutterBottom>
+            <Typography className="error-page-emoji no-select" variant="h2" gutterBottom>
                 <div>
                     <span className="emoji">🙈 </span><span>Oops!</span>
                 </div>
@@ -34,7 +34,7 @@ const ConversationsCodeError = () => {
             </Typography>
             <Typography variant="h6" gutterBottom>
                 <div className="error-page-emoji spacer">
-                    get the group code from onboard.icu@gmail.com
+                    <span className="no-select">get the group code from onboard.icu@gmail.com</span>
                     <IconButton onClick={copyToClipboard}>
                         <FileCopyIcon />
                     </IconButton>
