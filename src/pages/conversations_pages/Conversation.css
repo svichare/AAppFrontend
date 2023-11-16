@@ -30,7 +30,7 @@
     border-radius: 50%;
     border-top-color: #3498db;
     position: fixed;
-    top: 50%;
+    top: 75%;
     left: 50%;
     transform: translate(-50%, -50%);
     animation: spin 1s ease-in-out infinite;

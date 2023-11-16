@@ -10,30 +10,45 @@ import { getThreads } from '../../graphql/queries'
 import ConversationThread from './ConversationThread';
 import './Conversation.css'
 import {
-    DEFAULT_COLLECTION_NAME,
-    ALL_THREADS_FIELDNAME,
-    ALL_THREADS_THREADNAME,
     LOGGING,
     SUGGESTIONS,
+    COLLECTIONS,
+    FEATURED_THREADS_COUNT,
+    SKIP_THREADS_COUNT
 } from './ConversationSettings';
 
 const Conversation = () => {
     const navigate = useNavigate();
-    const { searchTerm: urlSearchTerm } = useParams();
+    const { query: urlSearchTerm } = useParams();
+    const { collectionCode: urlCollectionCode } = useParams();
     const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(urlSearchTerm || '');
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [collectionName] = useState(DEFAULT_COLLECTION_NAME);
-    const [fieldName] = useState(ALL_THREADS_FIELDNAME);
-    const [threadName] = useState(ALL_THREADS_THREADNAME);
+    const [collection, setCollection] = useState(getCollectionByCode(urlCollectionCode));
     const [filteredThreadCount, setFilteredThreadCount] = useState(0);
-    const [featuredThreads, setFeaturedThreads] = useState([]);
     const [topicCountMap, setTopicCountMap] = useState(new Map());
     const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
 
     // Initialize Mixpanel
     mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
+
+    // Get collection by collection code
+    function getCollectionByCode(code) {
+        return COLLECTIONS.find(collection => collection.code === code);
+    }
+
+    // Update Collection when the URL changes
+    useEffect(() => {
+        console.log("useEffect : URL Collection Code : ", urlCollectionCode);
+        const collection = getCollectionByCode(urlCollectionCode);
+        if (collection) {
+            setCollection(collection);
+        }
+        else {
+            navigate(`/Conversations/`);
+        }
+    }, [urlCollectionCode]);
 
     // Update the search term when the URL changes
     useEffect(() => {
@@ -45,15 +60,12 @@ const Conversation = () => {
 
     // Update the URL when the search term changes
     useEffect(() => {
-        navigate(`/Conversations/search/${debouncedSearchTerm}`);
+        navigate(`/Conversations/${collection && collection.code}/search/${debouncedSearchTerm}`);
 
     }, [debouncedSearchTerm]);
 
-    // Fetches the conversations once after the component is mounted
-    useEffect(() => {
-        fetchConversations();
-        console.log('Fetching conversations : Should happen only once')
-    }, []);
+    // Fetches the conversations once after the component is mounted only if the url code is valid
+    useEffect(() => { if (!collection) { return; } fetchConversations(); LOGGING && console.log('Fetching conversations : Should happen only once') }, [collection]);
 
     // Function to fetch the conversations from the API
     async function fetchConversations() {
@@ -65,12 +77,22 @@ const Conversation = () => {
             mixpanel.track('Conversation Page Opened', {
             });
 
+            // use getCollectionByCode(urlCollectionCode)
+            const collection = getCollectionByCode(urlCollectionCode);
+            if (!collection) {
+                console.error(`Invalid collection code : ${urlCollectionCode}`);
+                setThreads([]);
+                setLoading(false);
+                return;
+            }
+
+
             const response = await API.graphql({
                 query: getThreads,
                 variables: {
-                    collection_name: collectionName,
-                    key: fieldName,
-                    value: threadName
+                    collection_name: collection.name,
+                    key: undefined,
+                    value: undefined
                 },
             });
             LOGGING && console.log(`🛸 Fetched ${response.data.getThreads.length} ${response.data.getThreads.length === 1 ? 'thread' : 'threads'} from API : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(response.data.getThreads)]).size / 1024).toFixed(2))}`);
@@ -179,7 +201,7 @@ const Conversation = () => {
             });
         }
 
-        const displayThreads = debouncedSearchTerm === '' ? threads.slice(50, 60) : filteredThreads;
+        const displayThreads = debouncedSearchTerm === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : filteredThreads;
 
         LOGGING && console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${debouncedSearchTerm}`);
 
@@ -198,12 +220,14 @@ const Conversation = () => {
     return (
         <div className="container">
             <h2>Conversation Threads</h2>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
-                <Button className="square-button" onClick={copyToClipboard}>
-                    <FileCopyRounded />
-                </Button>
-            </div>
+            {(
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
+                    <Button className="square-button" onClick={copyToClipboard}>
+                        <FileCopyRounded />
+                    </Button>
+                </div>
+            )}
 
             <TextField
                 className='search__input'

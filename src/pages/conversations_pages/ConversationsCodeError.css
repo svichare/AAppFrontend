@@ -1,0 +1,47 @@
+.error-page-box{
+    /* add margin to left and right */
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-top: 50px;
+
+}
+
+.error-page-emoji{
+    font-family: 'Sansation', Consolas, sans-serif !important;
+    font-weight: 250;
+}
+
+.spacer{
+    margin-bottom: 50px !important;
+}
+
+.button{
+    font-family: 'Sansation', Consolas, sans-serif;
+    font-weight: 250;
+    font-size: 1.5rem;
+    border: none;
+    margin: 20px !important;
+/* align center */
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+    height: 30px;
+    width: 150px;
+    background-color: rgba(0, 0, 0, 0); 
+}
+
+
+.error-page-message{
+    font-size: 1.5rem;
+    /* maintain case while showing button text */
+    text-transform: none;
+    /* increase height and occupy the entire screen */
+    height: 100px;
+    width: 100%;
+    /* add margin to left and right */
+    margin-left: 20px;
+    margin-right: 20px;
+    /* add margin to top and bottom */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
