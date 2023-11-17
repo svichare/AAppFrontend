@@ -14,7 +14,8 @@
 }
 
 .thread-messages{
-    padding-bottom: 10px;
+    padding-bottom: 15px;
+    margin-bottom: 120px;
 }
 
 .card{
@@ -49,9 +50,6 @@
     margin:5px
 }
 
-.message-container:last-child{
-    margin-bottom: 120px !important;
-}
 
 .emoji{
     font-size: 2rem !important;
@@ -65,7 +63,7 @@
 }
 
 .fixed-button {
-    width: 25% !important;
+    width: 23% !important;
     height: 100px !important;
     margin: 0 !important;
     padding: 10px 0 !important;

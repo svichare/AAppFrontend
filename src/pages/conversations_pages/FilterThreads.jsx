@@ -9,7 +9,9 @@ import { styled } from '@mui/system';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
+
+import { SkipPrevious, SkipNext, ArrowBackIosNew, ArrowForwardIos } from '@mui/icons-material';
 
 import { COLLECTIONS, FILTER_SKIP_COUNT } from './ConversationSettings';
 
@@ -268,10 +270,15 @@ export default function FilterThreads() {
                 )}
             </Paper>
             {collection && !loading && <div className='footer'>
-                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(FILTER_SKIP_COUNT)}>⏪ {FILTER_SKIP_COUNT.toString()}</Button>
-                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(1)}>Previous</Button>
-                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(1)}>Next</Button>
-                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(FILTER_SKIP_COUNT)}>{FILTER_SKIP_COUNT.toString()} ⏩</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(FILTER_SKIP_COUNT)}>
+                    <SkipPrevious />
+                    {FILTER_SKIP_COUNT.toString()}</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(1)}><ArrowBackIosNew /></Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(1)}><ArrowForwardIos /></Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(FILTER_SKIP_COUNT)}>
+                    {FILTER_SKIP_COUNT.toString()}
+                    <SkipNext />
+                </Button>
             </div>}
         </div>
     );
