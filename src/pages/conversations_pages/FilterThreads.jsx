@@ -230,6 +230,8 @@ export default function FilterThreads() {
             </Select>
             <FormHelperText>{threads && threads.length > 0 && `Showing ${currentThreadIndex + 1} of ${threads.length - 1} threads`}</FormHelperText>
 
+            {/* Adds hint to ask user to select a collection if none is selected */}
+            {collection === undefined && <div className='hint'>Please select a collection to filter.</div>}
 
             <Paper elevation={2} className='thread-container paper'>
                 {loading ? <div className='loader'></div> : thread && (

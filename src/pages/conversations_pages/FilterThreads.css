@@ -13,6 +13,10 @@
     padding: 10px;
 }
 
+.thread-messages{
+    padding-bottom: 10px;
+}
+
 .card{
     margin: 10px !important;
     background-color: #EFF0FE !important;
@@ -46,7 +50,7 @@
 }
 
 .message-container:last-child{
-    margin-bottom: 50px !important;
+    margin-bottom: 120px !important;
 }
 
 .emoji{
