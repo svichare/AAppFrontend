@@ -93,7 +93,7 @@ const ConversationThread = ({ thread }) => {
                 </div>
                 </AccordionSummary>
                 <AccordionDetails className='accordion_details' ref={threadRef}>
-                    {thread ? thread.messages.map((message, index) => (
+                    {thread ? thread.messages.map((message, index) => (message && message.isValid && message.text !== "NA" &&
                     <React.Fragment key={index}><ChatMessage key={index} {...message} /><br /></React.Fragment>
                 ))
                         : null}
