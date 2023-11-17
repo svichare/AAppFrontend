@@ -133,7 +133,19 @@ export default function FilterThreads() {
             }
             return thread;
         }));
-        await update_thread_validity(DEFAULT_COLLECTION.name, thread_id, validity);
+        // add try catch and in case of error, revert the change
+        try {
+            await update_thread_validity(DEFAULT_COLLECTION.name, thread_id, validity);
+        }
+        catch (error) {
+            console.log("❌ Caught error in update_thread_validity function: ", JSON.stringify(error));
+            setThreads(threads.map(thread => {
+                if (thread._id === thread_id) {
+                    thread.isValid = !validity;
+                }
+                return thread;
+            }));
+        }
     }
 
     const updateMessage = async (thread_id, message_text, validity) => {
@@ -150,7 +162,24 @@ export default function FilterThreads() {
             }
             return thread;
         }));
-        await update_message_validity(DEFAULT_COLLECTION.name, thread_id, validity, message_text);
+        // add try catch and in case of error, revert the change
+        try {   
+            await update_message_validity(DEFAULT_COLLECTION.name, thread_id, validity, message_text);
+        }
+        catch (error) {
+            console.log("❌ Caught error in update_message_validity function: ", JSON.stringify(error));
+            setThreads(threads.map(thread => {
+                if (thread._id === thread_id) {
+                    thread.messages.map(message => {
+                        if (message.text === message_text) {
+                            message.isValid = !validity;
+                        }
+                        return message;
+                    });
+                }
+                return thread;
+            }));
+        }
     }
 
     const IOSSwitch = styled((props) => (
