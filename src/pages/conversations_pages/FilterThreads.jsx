@@ -11,7 +11,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import { COLLECTIONS } from './ConversationSettings';
+import { COLLECTIONS, FILTER_SKIP_COUNT } from './ConversationSettings';
 
 const fetchThreads = async (collection, setThreads, setLoading) => {
     setLoading(true);
@@ -111,15 +111,15 @@ export default function FilterThreads() {
     }, [collection]);
 
 
-    const incrementThreadIndex = () => {
-        if (currentThreadIndex < threads.length - 1) {
-            setCurrentThreadIndex(currentThreadIndex + 1);
+    const incrementThreadIndex = (count) => {
+        if (currentThreadIndex < threads.length - 1 && currentThreadIndex + count < threads.length - 1) {
+            setCurrentThreadIndex(currentThreadIndex + count);
         }
     }
 
-    const decrementThreadIndex = () => {
-        if (currentThreadIndex > 0) {
-            setCurrentThreadIndex(currentThreadIndex - 1);
+    const decrementThreadIndex = (count) => {
+        if (currentThreadIndex > 0 && currentThreadIndex - count >= 0) {
+            setCurrentThreadIndex(currentThreadIndex - count);
         }
     }
 
@@ -228,7 +228,7 @@ export default function FilterThreads() {
                     <MenuItem key={index} value={collection.code}>{collection.code}</MenuItem>
                 ))}
             </Select>
-            <FormHelperText>{threads && threads.length > 0 && `Showing ${currentThreadIndex + 1} of ${threads.length} threads`}</FormHelperText>
+            <FormHelperText>{threads && threads.length > 0 && `Showing ${currentThreadIndex + 1} of ${threads.length - 1} threads`}</FormHelperText>
 
 
             <Paper elevation={2} className='thread-container paper'>
@@ -266,8 +266,10 @@ export default function FilterThreads() {
                 )}
             </Paper>
             {collection && !loading && <div className='footer'>
-                <Button variant='contained' className='fixed-button' onClick={decrementThreadIndex}>Previous</Button>
-                <Button variant='contained' className='fixed-button' onClick={incrementThreadIndex}>Next</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(FILTER_SKIP_COUNT)}>⏪ {FILTER_SKIP_COUNT.toString()}</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(1)}>Previous</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(1)}>Next</Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(FILTER_SKIP_COUNT)}>{FILTER_SKIP_COUNT.toString()} ⏩</Button>
             </div>}
         </div>
     );

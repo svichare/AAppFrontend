@@ -52,27 +52,21 @@
 .emoji{
     font-size: 2rem !important;
 }
+.footer {
+    display: flex;
+    justify-content: space-around; /* Distributes space evenly between the buttons */
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
 .fixed-button {
-    width: 48% !important;
+    width: 25% !important;
     height: 100px !important;
-    position: fixed !important;
-    bottom: 5px !important;
     margin: 0 !important;
     padding: 10px 0 !important;
     box-sizing: border-box;
     background-color: lightblue !important;
-}
-
-.fixed-button:first-child {
-    left: 5px !important;
-}
-
-.fixed-button:last-child {
-    right: 5px !important;
-}
-
-.footer{
-    height: 50px;
 }
 
 .loader {
