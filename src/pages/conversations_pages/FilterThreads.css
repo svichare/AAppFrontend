@@ -20,16 +20,17 @@
 
 .card{
     margin: 10px !important;
-    background-color: #EFF0FE !important;
+    background-color: whitesmoke !important;
 }
 
 .paper{
-    background-color: #EFF0FE !important;
+    background-color: lightcyan !important;
 }
 
 .collection-select{
     width:95%;
     margin : 10px;
+    background-color: whitesmoke;
 }
 
 .thread-header-buttons, .message-header > IOSSwitch {
@@ -58,7 +59,7 @@
     display: flex;
     justify-content: space-around; /* Distributes space evenly between the buttons */
     position: fixed;
-    bottom: 0;
+    bottom: 5px;
     width: 100%;
 }
 
@@ -68,7 +69,7 @@
     margin: 0 !important;
     padding: 10px 0 !important;
     box-sizing: border-box;
-    background-color: lightblue !important;
+    background-color: rgb(255, 254, 254) !important;
 }
 
 .loader {
