@@ -1,5 +1,5 @@
 .filter-threads-container{
-    margin:10px;
+    margin:10px
 }
 
 .thread-header, .message-header {
@@ -16,8 +16,6 @@
 .thread-messages{
     padding-bottom: 15px;
     margin-bottom: 120px;
-    height: calc(100vh - 400px);
-    overflow-y: auto;
 }
 
 .card{

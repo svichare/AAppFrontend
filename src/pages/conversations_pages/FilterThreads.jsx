@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getThreads } from '../../graphql/queries'
 import { API, graphqlOperation } from 'aws-amplify';
 import './FilterThreads.css';
@@ -101,7 +101,6 @@ export default function FilterThreads() {
     const [collection, setCollection] = useState(undefined);
     const [currentThreadIndex, setCurrentThreadIndex] = useState(0);
     const thread = threads[currentThreadIndex];
-    const messagesRef = React.useRef(null);
 
     // Gets the threads from the database
     useEffect(() => {
@@ -243,51 +242,24 @@ export default function FilterThreads() {
 
     useEffect(() => {
         const handleGlobalKeyDown = (event) => {
-            console.log('Key pressed: ', event.key); // Log the key that was pressed
-            switch (event.key) {
-                case 'ArrowLeft':
-                    event.shiftKey ? decrementThreadIndex(FILTER_SKIP_COUNT) : decrementThreadIndex(1);
-                    break;
-                case 'ArrowRight':
-                    event.shiftKey ? incrementThreadIndex(FILTER_SKIP_COUNT) : incrementThreadIndex(1);
-                    break;
-                case ' ':
-                    console.log('Space key pressed'); // Log when Space key is pressed
-                    if (thread) {
-                        updateThread(thread._id, !thread.isValid);
-                    }
-                    event.preventDefault(); // Prevent scrolling down
-                    break;
-                case 'ArrowDown':
-                    if (messagesRef.current) {
-                        messagesRef.current.scrollTo({
-                            top: messagesRef.current.scrollTop + 500,
-                            behavior: 'smooth'
-                        });
-                    }
-                    break;
-                case 'ArrowUp':
-                    if (messagesRef.current) {
-                        messagesRef.current.scrollTo({
-                            top: messagesRef.current.scrollTop - 500,
-                            behavior: 'smooth'
-                        });
-                    }
-                    break;
-                default:
-                    // Optional: handle any other key events here
-                    break;
+            if (event.key === 'ArrowLeft') {
+                event.shiftKey ? decrementThreadIndex(FILTER_SKIP_COUNT) : decrementThreadIndex(1);
+            } else if (event.key === 'ArrowRight') {
+                event.shiftKey ? incrementThreadIndex(FILTER_SKIP_COUNT) : incrementThreadIndex(1);
+            } else if (event.key === ' ') {
+                if (thread) {
+                    updateThread(thread._id, !thread.isValid);
+                }
+                event.preventDefault(); // Prevent scrolling down
             }
         }
 
-        console.log('Adding event listener'); // Log when the event listener is added
         window.addEventListener('keydown', handleGlobalKeyDown);
 
         return () => {
-            console.log('Removing event listener'); // Log when the event listener is removed
             window.removeEventListener('keydown', handleGlobalKeyDown);
         }
-    }, [currentThreadIndex, messagesRef]);
+    }, [currentThreadIndex]);
 
     return (
         <div className='filter-threads-container' tabIndex="0">
@@ -326,7 +298,7 @@ export default function FilterThreads() {
                             </div>
                             <span>{thread.title}</span>
                         </div>
-                        <div className="thread-messages" ref={messagesRef}>
+                        <div className='thread-messages'>
                             {thread.messages.map((message, index) => (
                                 <Card elevation={2} className='message-container card' key={index}>
                                     <div className='message-header'>
