@@ -265,10 +265,10 @@ export default function FilterThreads() {
                     </>
                 )}
             </Paper>
-            <div className='footer'>
+            {collection && !loading && <div className='footer'>
                 <Button variant='contained' className='fixed-button' onClick={decrementThreadIndex}>Previous</Button>
                 <Button variant='contained' className='fixed-button' onClick={incrementThreadIndex}>Next</Button>
-            </div>
+            </div>}
         </div>
     );
 }
