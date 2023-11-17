@@ -20,11 +20,11 @@
 
 .card{
     margin: 10px !important;
-    background-color: whitesmoke !important;
+    background-color: #E7EFFE !important;
 }
 
 .paper{
-    background-color: lightcyan !important;
+    background-color: #EFF0FE !important;
 }
 
 .collection-select{
