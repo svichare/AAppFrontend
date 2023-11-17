@@ -30,6 +30,7 @@ import { DependentProvider } from './components/DependentContext';
 
 import Conversation from './pages/conversations_pages/Conversation.jsx';
 import ConversationsCodeError from './pages/conversations_pages/ConversationsCodeError.jsx';
+import FilterThreads from './pages/conversations_pages/FilterThreads.jsx';
 import Groups from './pages/conversations_pages/Groups.jsx';
 
 
@@ -110,6 +111,7 @@ const App = () => {
                 <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
                 <Route path="/ErrorPage" Component={ErrorPage} />
                 <Route path='/Conversations' Component={ConversationsCodeError}></Route>
+                <Route path='/FilterThreads' Component={FilterThreads}></Route>
                 <Route path="/Conversations/:collectionCode/search?/:query?" element={<Conversation />} />
                 {traitRoutes.map(route => (
                   <Route
