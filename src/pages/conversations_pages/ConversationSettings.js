@@ -4,7 +4,7 @@ export const COLLECTIONS = [
 ];
 
 export const SUGGESTIONS = ["ABA", "Edison", "Princeton", "OT", "Speech", "IEP", "Dentist", "Diet", "Pediatrician",  "Apraxia", "Swimming", "Insurance", "Summer"];
-export const LOGGING = true; // TODO : set to false for production
+export const LOGGING = process.env.LOGGING === 'true'; // set to true to enable logging
 export const FEATURED_THREADS_COUNT = 10;
 export const SKIP_THREADS_COUNT = 50;
 export const FILTER_SKIP_COUNT = 10;

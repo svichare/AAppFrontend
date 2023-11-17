@@ -40,7 +40,7 @@ const Conversation = () => {
 
     // Update Collection when the URL changes
     useEffect(() => {
-        console.log("useEffect : URL Collection Code : ", urlCollectionCode);
+        LOGGING && console.log("useEffect : URL Collection Code : ", urlCollectionCode);
         const collection = getCollectionByCode(urlCollectionCode);
         if (collection) {
             setCollection(collection);
@@ -134,9 +134,9 @@ const Conversation = () => {
                     curTopicSubTopicCountMap.set(cur_pair, (curTopicSubTopicCountMap.get(cur_pair) || 0) + 1);
                 });
                 setTopicCountMap(curTopicCountMap);
-                console.log("TopicMap size : ", curTopicCountMap.size, " title count ", threadTitleCount);
+                LOGGING && console.log("TopicMap size : ", curTopicCountMap.size, " title count ", threadTitleCount);
                 setTopicSubtopicCountMap(curTopicSubTopicCountMap);
-                console.log("SubTopicMap size : ", curTopicSubTopicCountMap.size);
+                LOGGING && console.log("SubTopicMap size : ", curTopicSubTopicCountMap.size);
                 setLoading(false);
             }
         } catch (error) {
@@ -158,7 +158,7 @@ const Conversation = () => {
     const copyToClipboard = () => {
         navigator && navigator.clipboard && navigator.clipboard.writeText(window.location.href)
             .then(() => {
-                console.log(`📎 Copied URL`);
+                LOGGING && console.log(`📎 Copied URL`);
             }, err => {
                 console.error('Could not copy text: ', err);
             });
@@ -169,7 +169,7 @@ const Conversation = () => {
 
         // Filter the threads based on the search term
         const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
-        console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
+        LOGGING && console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
 
         // Get the threads that match the search term in the title
         const titleMatches = threads.filter(thread => {
