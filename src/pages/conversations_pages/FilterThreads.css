@@ -23,6 +23,10 @@
     background-color: #E7EFFE !important;
 }
 
+.filter-threads-container:focus {
+    outline: none;
+}
+
 .paper{
     background-color: #EFF0FE !important;
 }

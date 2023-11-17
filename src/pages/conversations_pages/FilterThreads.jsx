@@ -240,9 +240,29 @@ export default function FilterThreads() {
         setCurrentThreadIndex(0);
     }
 
+    useEffect(() => {
+        const handleGlobalKeyDown = (event) => {
+            if (event.key === 'ArrowLeft') {
+                event.shiftKey ? decrementThreadIndex(FILTER_SKIP_COUNT) : decrementThreadIndex(1);
+            } else if (event.key === 'ArrowRight') {
+                event.shiftKey ? incrementThreadIndex(FILTER_SKIP_COUNT) : incrementThreadIndex(1);
+            } else if (event.key === ' ') {
+                if (thread) {
+                    updateThread(thread._id, !thread.isValid);
+                }
+                event.preventDefault(); // Prevent scrolling down
+            }
+        }
+
+        window.addEventListener('keydown', handleGlobalKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleGlobalKeyDown);
+        }
+    }, [currentThreadIndex]);
 
     return (
-        <div className='filter-threads-container'>
+        <div className='filter-threads-container' tabIndex="0">
             <InputLabel id="demo-simple-select-helper-label">Filter Collection</InputLabel>
             <Select
                 variant='outlined'
@@ -260,6 +280,7 @@ export default function FilterThreads() {
                 ))}
             </Select>
             <FormHelperText>{threads && threads.length > 0 && `Showing ${currentThreadIndex + 1} of ${threads.length - 1} threads`}</FormHelperText>
+            <FormHelperText>⚠️ WARNING : Disabled Threads will disappear on refresh</FormHelperText>
 
             {/* Adds hint to ask user to select a collection if none is selected */}
             {collection === undefined && <div className='hint'>Please select a collection to filter.</div>}
@@ -299,12 +320,13 @@ export default function FilterThreads() {
                 )}
             </Paper>
             {collection && !loading && <div className='footer'>
-                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(FILTER_SKIP_COUNT)}>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(FILTER_SKIP_COUNT)} >
                     <SkipPrevious />
-                    {FILTER_SKIP_COUNT.toString()}</Button>
-                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(1)}><ArrowBackIosNew /></Button>
-                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(1)}><ArrowForwardIos /></Button>
-                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(FILTER_SKIP_COUNT)}>
+                    {FILTER_SKIP_COUNT.toString()}
+                </Button>
+                <Button variant='contained' className='fixed-button' onClick={() => decrementThreadIndex(1)} ><ArrowBackIosNew /></Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(1)} ><ArrowForwardIos /></Button>
+                <Button variant='contained' className='fixed-button' onClick={() => incrementThreadIndex(FILTER_SKIP_COUNT)} >
                     {FILTER_SKIP_COUNT.toString()}
                     <SkipNext />
                 </Button>
