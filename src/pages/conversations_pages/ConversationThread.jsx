@@ -44,7 +44,7 @@ const ChatMessage = ({ text, sender, messageType }) => {
     );
 };
 
-const ConversationThread = ({ thread }) => {
+const ConversationThread = ({ thread, autoExpand }) => {
 
     const threadRef = useRef(null);
 
@@ -69,15 +69,25 @@ const ConversationThread = ({ thread }) => {
         console.log("⬇️ Download", thread.title);
     };
 
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(autoExpand);
 
     const handleAccordionChange = (event, newIsExpanded) => {
         setIsExpanded(newIsExpanded);
     };
 
+    React.useEffect(() => {
+        if (autoExpand) {
+            setIsExpanded(true);
+        }
+        else {
+            setIsExpanded(false);
+        }
+    }
+        , [autoExpand]);
+
     return (
         <>
-            <Accordion elevation={5} className='thread gradient-paper' onChange={handleAccordionChange}>
+            <Accordion elevation={5} className='thread gradient-paper' onChange={handleAccordionChange} expanded={isExpanded}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1a-content"

@@ -207,7 +207,7 @@ const Conversation = () => {
 
         // Render the filtered threads
         return displayThreads.map((thread, index) => {
-            return (<ConversationThread key={index} thread={thread} />)
+            return (<ConversationThread key={index} thread={thread} autoExpand={filteredThreads.length === 1} />)
         });
     }, [threads, debouncedSearchTerm]);
 
