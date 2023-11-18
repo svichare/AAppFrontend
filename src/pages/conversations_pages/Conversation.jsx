@@ -52,16 +52,17 @@ const Conversation = () => {
 
     // Update the search term when the URL changes
     useEffect(() => {
-        if (urlSearchTerm !== debouncedSearchTerm) {
-            setSearchTerm(urlSearchTerm || '');
-            setDebouncedSearchTerm(urlSearchTerm || '');
+        const modifiedSearchTerm = urlSearchTerm ? urlSearchTerm.replace(/\+/g, ' ') : '';
+        if (modifiedSearchTerm !== debouncedSearchTerm) {
+            setSearchTerm(modifiedSearchTerm || '');
+            setDebouncedSearchTerm(modifiedSearchTerm || '');
         }
     }, [urlSearchTerm]);
 
     // Update the URL when the search term changes
     useEffect(() => {
-        navigate(`/Conversations/${collection && collection.code}/search/${debouncedSearchTerm}`);
-
+        const modifiedSearchTerm = debouncedSearchTerm.replace(/ /g, '+');
+        navigate(`/Conversations/${collection && collection.code}/search/${modifiedSearchTerm}`);
     }, [debouncedSearchTerm]);
 
     // Fetches the conversations once after the component is mounted only if the url code is valid
