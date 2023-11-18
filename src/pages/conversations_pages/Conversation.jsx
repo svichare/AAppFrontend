@@ -220,14 +220,19 @@ const Conversation = () => {
 
     return (
         <div className="container">
+
+            {/* Header */}
             <h2>Conversation Threads</h2>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
+
+            {/* Search Bar */}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
                     <Button className="square-button" onClick={copyToClipboard}>
                         <FileCopyRounded />
                     </Button>
             </div>
 
+            {/* Search Input */}
             <TextField
                 className='search__input'
                 variant="outlined"
@@ -254,6 +259,8 @@ const Conversation = () => {
                     ),
                 }}
             />
+
+            {/* Search Suggestions */}
             <div className='search-suggestions'>
                 {SUGGESTIONS.map(suggestion => (
                     <Chip className='chip'
@@ -263,6 +270,8 @@ const Conversation = () => {
                     </Chip>
                 ))}
             </div>
+
+            {/* Threads */}
             {loading ?
                 <Box sx={{ width: '100%' }}>
                     <LinearProgress />
