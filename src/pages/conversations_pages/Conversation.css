@@ -22,20 +22,10 @@
     }
 }
 
-.loader {
-    display: inline-block;
-    width: 80px;
-    height: 80px;
-    border: 6px solid rgba(0, 0, 0, .3);
-    border-radius: 50%;
-    border-top-color: #3498db;
-    position: fixed;
-    top: 75%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: spin 1s ease-in-out infinite;
-    visibility: visible;
-    z-index: 1;
+.skeleton {
+    margin:20px;
+    width: 90% !important;
+    height: 56px !important;
 }
 
 .threads_button {

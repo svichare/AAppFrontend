@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
-import { Button, Chip, IconButton, InputAdornment, TextField } from '@mui/material';
+import { Button, Chip, IconButton, InputAdornment, TextField, LinearProgress, Box, Skeleton } from '@mui/material';
 import { KeyboardReturnRounded, Clear, FileCopyRounded } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -221,14 +221,12 @@ const Conversation = () => {
     return (
         <div className="container">
             <h2>Conversation Threads</h2>
-            {(
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                     <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
                     <Button className="square-button" onClick={copyToClipboard}>
                         <FileCopyRounded />
                     </Button>
-                </div>
-            )}
+            </div>
 
             <TextField
                 className='search__input'
@@ -265,18 +263,24 @@ const Conversation = () => {
                     </Chip>
                 ))}
             </div>
-
-            <div className="conversation__body">
-                {(loading ? (
-                    <div className="loader"></div>
-                ) : (
+            {loading ?
+                <Box sx={{ width: '100%' }}>
+                    <LinearProgress />
+                    <Skeleton className='skeleton' variant="rounded" animation="wave" />
+                    <Skeleton className='skeleton' variant="rounded" animation="wave" />
+                    <Skeleton className='skeleton' variant="rounded" animation="wave" />
+                    <Skeleton className='skeleton' variant="rounded" animation="wave" />
+                    <Skeleton className='skeleton' variant="rounded" animation="wave" />
+                </Box>
+                : (
+                    <div className="conversation__body">
                     <div className="conversation__body__messages">
                         {renderConversations}
+                        </div>
                     </div>
-                ))}
-            </div>
+                )}
         </div>
     );
-};
+}
 
 export default Conversation;
