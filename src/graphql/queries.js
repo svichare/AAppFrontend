@@ -204,6 +204,7 @@ export const getThreadsAndMessages = /* GraphQL */ `
         __typename
       }
       isValid
+      isValidQnA
       __typename
     }
   }
@@ -222,6 +223,7 @@ export const getThreads = /* GraphQL */ `
         __typename
       }
       isValid
+      isValidQnA
       __typename
     }
   }
