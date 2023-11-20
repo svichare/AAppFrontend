@@ -174,14 +174,14 @@ const Conversation = () => {
 
         // Get the threads that match the search term in the title
         const titleMatches = threads.filter(thread => {
-            if (!thread.isValid) return false;
+            if (!thread.isValid || !thread.isValidQnA) return false;
             const lowerCaseTitle = thread.title && thread.title.toLowerCase();
             return lowerCaseTitle && lowerCaseTitle.includes(lowerCaseSearchTerm);
         });
 
         // Get the threads that match the search term in the messages
         const messageMatches = threads.filter(thread => {
-            if (!thread.isValid || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
+            if (!thread.isValid || !thread.isValidQnA || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
             return thread.messages.some(message => {
                 const lowerCaseText = message.text && message.text.toLowerCase();
                 return lowerCaseText && lowerCaseText.includes(lowerCaseSearchTerm);
