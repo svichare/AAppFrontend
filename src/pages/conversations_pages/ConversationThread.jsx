@@ -29,12 +29,12 @@ const ChatMessage = ({ text, sender, messageType }) => {
             <CardContent className='card-content'>
                 <div className='message-card-container'>
                     <div className='message-card-icon'>
-                        <Typography variant="body1" component="div" className='message-text no-select'>
+                        <Typography variant="body1" component="div" className='message-text'>
                             <span style={{ fontSize: '2em' }}>{getEmoji(sender)}</span>
                         </Typography>
                     </div>
                     <div className='message-card-text'>
-                        <Typography variant="body1" component="div" className='message-text no-select'>
+                        <Typography variant="body1" component="div" className='message-text'>
                             {text}
                         </Typography>
                     </div>
