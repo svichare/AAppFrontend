@@ -46,7 +46,7 @@ const Conversation = () => {
             setCollection(collection);
         }
         else {
-            navigate(`/Conversations/`);
+            navigate(`/KnowledgeBase/`);
         }
     }, [urlCollectionCode]);
 
@@ -62,7 +62,7 @@ const Conversation = () => {
     // Update the URL when the search term changes
     useEffect(() => {
         const modifiedSearchTerm = debouncedSearchTerm.replace(/ /g, '+');
-        navigate(`/Conversations/${collection && collection.code}/search/${modifiedSearchTerm}`);
+        navigate(`/KnowledgeBase/${collection && collection.code}/search/${modifiedSearchTerm}`);
     }, [debouncedSearchTerm]);
 
     // Fetches the conversations once after the component is mounted only if the url code is valid

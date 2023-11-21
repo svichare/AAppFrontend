@@ -110,9 +110,9 @@ const App = () => {
                 <Route path="/ProfileHome" Component={() => (<ProfileHome userEmail={userEmail} resetUserEmail={resetUserEmail} />)} />
                 <Route path="/DependentProfile" Component={() => (<DependentProfile />)} />
                 <Route path="/ErrorPage" Component={ErrorPage} />
-                <Route path='/Conversations' Component={ConversationsCodeError}></Route>
+                <Route path='/KnowledgeBase' Component={ConversationsCodeError}></Route>
                 <Route path='/FilterThreads' Component={FilterThreads}></Route>
-                <Route path="/Conversations/:collectionCode/search?/:query?" element={<Conversation />} />
+                <Route path="/KnowledgeBase/:collectionCode/search?/:query?" element={<Conversation />} />
                 {traitRoutes.map(route => (
                   <Route
                     key={route.path}
