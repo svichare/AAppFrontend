@@ -222,7 +222,7 @@ const Conversation = () => {
         <div className="container">
 
             {/* Header */}
-            <h2>Conversation Threads</h2>
+            <h2>Explore the Knowledge Base</h2>
 
             {/* Search Bar */}
             <div style={{ display: 'flex', alignItems: 'center' }}>
