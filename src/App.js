@@ -21,6 +21,7 @@ import profileRoutes from './pages/profile_pages/ProfileRoutes.js';
 import openAIRoutes from './pages/openai_pages/OpenAIRoutes.js';
 import journeyRoutes from './pages/journey_pages/JourneyRoutes.js';
 import kbFilterRoutes from './pages/kb_filter_pages/kbFilterRoutes.js';
+import groupchatRoutes from './pages/groupchat_pages/groupchatRoutes.js';
 
 import { GoogleLogin } from './components';
 import mixpanel from 'mixpanel-browser';
@@ -146,6 +147,14 @@ const App = () => {
                   />
                 ))}
                 {kbFilterRoutes.map(route => (
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    Component={route.Component}
+                    exact={route.exact}
+                  />
+                ))}
+                {groupchatRoutes.map(route => (
                   <Route
                     key={route.path}
                     path={route.path}

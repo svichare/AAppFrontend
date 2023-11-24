@@ -1,0 +1,86 @@
+
+.thread {
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.message-card {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.card-content {
+    padding-left: 5px!important;
+    margin-left: 5px !important;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-bottom: 5px;
+}
+
+.card-content:last-child {
+    margin-bottom: 5px !important;
+    padding-bottom: 5px !important;
+    margin-top: 5px !important;
+    padding-top: 5px !important;
+}
+
+.message-text {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.accordion_details{
+    /* sets the left and right padding to 5px */
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    /* sets the bottom padding to 5px */
+    padding-bottom: 5px !important;
+}
+
+.thread-title {
+    color: #272727;
+}
+
+.gradient-paper {
+    background: #EFF0FE!important;
+}
+
+.gradient-card {
+    background: #E7EFFE!important;
+}
+
+.title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 10px;
+}
+
+/* ConversationThread.css */
+
+.message-card-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.message-card-icon {
+    margin-right: 10px;
+}
+
+.message-card-text {
+    /* empty class for future styling */
+}
+
+.no-select {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+}
