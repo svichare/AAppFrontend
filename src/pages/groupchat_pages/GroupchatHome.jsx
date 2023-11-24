@@ -117,6 +117,9 @@ const GroupchatHome = () => {
                     if (typeof topic === 'undefined') {
                         return;
                     }
+                    if (topic === null) {
+                        return;
+                    }
                     curTopicCountMap.set(topic, (curTopicCountMap.get(topic) || 0) + 1);
 
                     if (typeof subtopic === 'undefined') {
