@@ -30,6 +30,9 @@ const GroupchatHome = () => {
     const [topicCountMap, setTopicCountMap] = useState(new Map());
     const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
     const [topicDisplayMap, setTopicDisplayMap] = useState(new Map());
+    const [subtopicListed, setSubtopicListed] = useState(false);
+    const [selectedSubtopic, setSelectedSubtopic] = useState('');
+
     
 
     // Initialize Mixpanel
@@ -119,7 +122,7 @@ const GroupchatHome = () => {
                     if (typeof subtopic === 'undefined') {
                         return;
                     }
-                    var cur_pair = (topic, subtopic);
+                    const cur_pair = [topic, subtopic];
                     curTopicSubTopicCountMap.set(cur_pair, (curTopicSubTopicCountMap.get(cur_pair) || 0) + 1);
                 });
                 let topicArray = Array.from(curTopicCountMap);
@@ -144,66 +147,64 @@ const GroupchatHome = () => {
     const renderConversations = useMemo(() => {
 
         // Filter the threads based on the search term
-        const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
-        LOGGING && console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
+        LOGGING && console.log(`🔍 Filtering threads with subtopic : ${selectedSubtopic}`)
 
         // Get the threads that match the search term in the title
-        const titleMatches = threads.filter(thread => {
+        const subtopicMatches = threads.filter(thread => {
             if (!thread.isValid) return false;
-            const lowerCaseTitle = thread.title && thread.title.toLowerCase();
-            return lowerCaseTitle && lowerCaseTitle.includes(lowerCaseSearchTerm);
+            return (thread.subtopic === selectedSubtopic);
         });
-
-        // Get the threads that match the search term in the messages
-        const messageMatches = threads.filter(thread => {
-            if (!thread.isValid || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
-            return thread.messages.some(message => {
-                const lowerCaseText = message.text && message.text.toLowerCase();
-                return lowerCaseText && lowerCaseText.includes(lowerCaseSearchTerm);
-            });
-        });
-
-        // Combine the title and message matches based on ranking
-        const filteredThreads = [...titleMatches, ...messageMatches];
 
         // Update the filtered thread count
-        setFilteredThreadCount(filteredThreads.length);
+        setFilteredThreadCount(subtopicMatches.length);
 
         // Log the search term and the number of threads found
-        if (debouncedSearchTerm.length > 1) {
+        if (selectedSubtopic.length > 1) {
             mixpanel.track('Conversation Searched', {
-                'Search term': debouncedSearchTerm,
-                'threads found': filteredThreads.length
+                'Subtopic term': selectedSubtopic,
+                'threads found': subtopicMatches.length
             });
         }
 
-        const displayThreads = debouncedSearchTerm === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : filteredThreads;
+        const displayThreads = subtopicMatches;
 
         LOGGING && console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${debouncedSearchTerm}`);
 
         // Render the filtered threads
         return displayThreads.map((thread, index) => {
-            return (<ConversationThread key={index} thread={thread} autoExpand={filteredThreads.length === 1} />)
+            return (<ConversationThread key={index} thread={thread} autoExpand={subtopicMatches.length === 1} />)
         });
-    }, [threads, debouncedSearchTerm]);
+    }, [threads, selectedSubtopic]);
 
     // Handle suggestion click
-    const handleSuggestionClick = (suggestion) => {
+    const handleSuggestionClick = (suggestion, topicSubtopicCountMap) => {
         // update the topicDisplayMap to show subtopics.
-        let subtopicMap = new Map();
-        
-        console.log("Travering subtopic map : ", topicSubtopicCountMap.length );
-        for (const [key, value] of topicSubtopicCountMap) {
-            const [string1, string2] = key;
-        
-            // Check if string1 matches the filter string
-            if (string1 === suggestion) {
-              // Use string2 as the key in the new map
-              subtopicMap.set(string2, value);
+        if (subtopicListed  === true) {
+            // filter threads
+            console.log("Setting subtopic selection to : ", suggestion);
+            setSelectedSubtopic(suggestion);
+            if (suggestion === "Go back to all topics") {
+                setSubtopicListed(false);
+                setTopicDisplayMap(new Map(topicCountMap));
             }
-          }
+        } else {
+            setSubtopicListed(true);
+            let subtopicMap = new Map();
+            console.log("Travering subtopic map : ", topicSubtopicCountMap.size );
+            for (const [key, value] of topicSubtopicCountMap) {
+                const string1 = key[0];
+                const string2 = key[1];
+                // Check if string1 matches the filter string
+                if (string1 === suggestion) {
+                    console.log("Found topic match ", string1, "  subtopic is : ", string2);
+                  // Use string2 as the key in the new map
+                  subtopicMap.set(string2, topicSubtopicCountMap.get(key));
+                }
+              }
+            subtopicMap.set("Go back to all topics", 1);
+            setTopicDisplayMap(new Map(subtopicMap));
+        }
         
-        setTopicDisplayMap(new Map(subtopicMap));
     }
 
     return (
@@ -219,7 +220,7 @@ const GroupchatHome = () => {
                     <Chip className='chip'
                         key={key}
                         label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{`${key}: ${value}`}</span></>}
-                        onClick={() => handleSuggestionClick(key)}>
+                        onClick={() => handleSuggestionClick(key, topicSubtopicCountMap)}>
                     </Chip>
                 ))}
             </div>
