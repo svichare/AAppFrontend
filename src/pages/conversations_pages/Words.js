@@ -19,11 +19,21 @@ export const MARATHI_STOP_WORDS = [
     `chi`,
     `hota`,
     `kela`,
+    `aahe`,
+    `nahi`,
+    `kahi`,
+    `madhe`,
+    `var`,
+    `tya`,
+    `tht`,
+    `mag`,
+    `zala`,
+    `asa`,
+
 ]
 
 export const CUSTOM_STOP_WORDS = [
     `omitted`,
     `media`,
     `video`,
-    `doesnt`
 ];

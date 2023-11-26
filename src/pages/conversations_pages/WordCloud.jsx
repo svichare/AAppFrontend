@@ -13,15 +13,15 @@ const WordCloud = ({ threads, handleWordClick }) => {
         rotations: 1,
         rotationAngles: [0, 0],
         fontFamily: 'Sansation',
-        fontSizes: [20, 70],
-        fontWeight: 700,
+        fontSizes: [50, 150],
+        fontWeight: 500,
         padding: 5,
         spiral: 'archimedean',
         transitionDuration: 1000,
         deterministic: true,
         enableTooltip: false,
         enableOptimizations: true,
-        randomSeed: 42,
+        randomSeed: 420,
     };
 
     const processWordCloud = (threads, minimumWordLength) => {
@@ -56,7 +56,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
         }));
 
         wordCloudArray.sort((a, b) => b.value - a.value);
-        const topWords = wordCloudArray.slice(0, 50);
+        const topWords = wordCloudArray
 
         return topWords;
     };
