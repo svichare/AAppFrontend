@@ -3,17 +3,17 @@ import './WordCloud.css';
 import { LinearProgress } from '@mui/material';
 import { removeStopwords, eng, mar } from 'stopword';
 import ReactWordcloud from 'react-wordcloud';
-import { useNavigate } from 'react-router-dom';
+import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS } from './Words';
 
 const WordCloud = ({ threads, handleWordClick }) => {
     const [words, setWords] = useState(null);
-    const navigate = useNavigate();
+    const MINIMUM_WORD_LENGTH = 3;
 
     const wordCloudOptions = {
         rotations: 1,
         rotationAngles: [0, 0],
         fontFamily: 'Sansation',
-        fontSizes: [10, 100],
+        fontSizes: [20, 70],
         fontWeight: 700,
         padding: 5,
         spiral: 'archimedean',
@@ -24,8 +24,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
         randomSeed: 42,
     };
 
-    const processWordCloud = (threads) => {
-        const customStopWords = ['omitted', 'media', 'video']; // Custom stop words
+    const processWordCloud = (threads, minimumWordLength) => {
 
         const getWords = threads.flatMap((thread) =>
             thread.messages.flatMap((message) =>
@@ -38,9 +37,9 @@ const WordCloud = ({ threads, handleWordClick }) => {
         cloudWords = cloudWords.filter((word) => isNaN(word));
         cloudWords = removeStopwords(
             cloudWords,
-            [...eng, ...mar, ...customStopWords]
+            [...eng, ...mar, ...GENERIC_STOP_WORDS, ...MARATHI_STOP_WORDS, ...CUSTOM_STOP_WORDS]
         );
-        cloudWords = cloudWords.filter((word) => word.length > 4 && word.length < 15);
+        cloudWords = cloudWords.filter((word) => word.length >= minimumWordLength && word.length < 15);
 
         const wordCloudMap = new Map();
         cloudWords.forEach((word) => {
@@ -65,7 +64,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
     const processThreads = async () => {
         try {
             if (threads.length > 0) {
-                const extractedWords = processWordCloud(threads);
+                const extractedWords = processWordCloud(threads, MINIMUM_WORD_LENGTH);
                 setWords(extractedWords);
             } else {
                 setWords([]);
@@ -85,13 +84,16 @@ const WordCloud = ({ threads, handleWordClick }) => {
         }
 
         return (
+            <>
+
             <ReactWordcloud
                 words={words}
                 options={wordCloudOptions}
                 callbacks={{
                     onWordClick: handleWordClick,
                 }}
-            />
+                />
+            </>
         );
     };
 
