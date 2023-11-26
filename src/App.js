@@ -33,6 +33,7 @@ import Conversation from './pages/conversations_pages/Conversation.jsx';
 import ConversationsCodeError from './pages/conversations_pages/ConversationsCodeError.jsx';
 import FilterThreads from './pages/conversations_pages/FilterThreads.jsx';
 import Groups from './pages/conversations_pages/Groups.jsx';
+import WordCloudDemo from './pages/conversations_pages/WordCloudDemo.jsx';
 
 
 // Create a context for managing the parameter
@@ -113,6 +114,7 @@ const App = () => {
                 <Route path="/ErrorPage" Component={ErrorPage} />
                 <Route path='/KnowledgeBase' Component={ConversationsCodeError}></Route>
                 <Route path='/FilterThreads' Component={FilterThreads}></Route>
+                <Route path='/WordCloud' Component={WordCloudDemo}></Route>
                 <Route path="/KnowledgeBase/:collectionCode/search?/:query?" element={<Conversation />} />
                 {traitRoutes.map(route => (
                   <Route
