@@ -29,6 +29,8 @@ export const MARATHI_STOP_WORDS = [
     `mag`,
     `zala`,
     `asa`,
+    `apan`,
+    `chya`
 
 ]
 
