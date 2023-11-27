@@ -13,7 +13,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
         rotations: 1,
         rotationAngles: [0, 0],
         fontFamily: 'Sansation',
-        fontSizes: [50, 150],
+        fontSizes: [20, 150],
         fontWeight: 500,
         padding: 5,
         spiral: 'archimedean',
