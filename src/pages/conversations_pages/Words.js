@@ -30,7 +30,8 @@ export const MARATHI_STOP_WORDS = [
     `zala`,
     `asa`,
     `apan`,
-    `chya`
+    `chya`,
+    `asta`,
 
 ]
 
@@ -38,4 +39,5 @@ export const CUSTOM_STOP_WORDS = [
     `omitted`,
     `media`,
     `video`,
+    `videos`
 ];

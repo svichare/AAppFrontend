@@ -56,7 +56,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
         }));
 
         wordCloudArray.sort((a, b) => b.value - a.value);
-        const topWords = wordCloudArray
+        const topWords = wordCloudArray.slice(0, 200);
 
         return topWords;
     };
