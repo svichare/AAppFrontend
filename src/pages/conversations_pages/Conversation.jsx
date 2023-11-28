@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { API } from '@aws-amplify/api'
 import { LinearProgress, Box, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -19,97 +19,121 @@ import SearchBar from './SearchBar';
 import SearchSuggestions from './SearchSuggestions';
 
 const Conversation = () => {
+
+    // Get collection by collection code
+    const findCollectionByCode = (code) => COLLECTIONS.find(collection => collection.code === code)
+
     const navigate = useNavigate();
     const { query: urlSearchTerm } = useParams();
     const { collectionCode: urlCollectionCode } = useParams();
+    const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
     const [searchTermDebounced, setSearchTermDebounced] = useState(urlSearchTerm || '');
     const [threads, setThreads] = useState([]);
-    const [loading, setLoading] = useState(false);
     const [collection, setCollection] = useState(findCollectionByCode(urlCollectionCode));
+    const [displayThreads, setDisplayedThreads] = useState([]);
     const [displayedThreadCount, setDisplayedThreadCount] = useState(0);
     const [topicCountMap, setTopicCountMap] = useState(new Map());
     const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
 
-    // Initialize Mixpanel
-    mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
+    const textFieldRef = useRef(null);
 
-    // Get collection by collection code
-    function findCollectionByCode(code) {
-        return COLLECTIONS.find(collection => collection.code === code);
-    }
+    // Function to update the text field value
+    const updateTextField = (newValue) => {
+        if (textFieldRef.current) {
+            textFieldRef.current.value = newValue;
+        }
+    };
+
+    // Function to handle initial page load
+    const handleInitialPageLoad = () => {
+        // Perform all tasks that need to be done on initial page load
+        // For example, you might want to fetch some data from an API, set some state, etc.
+
+        setLoading(true);
+
+        // Initialize Mixpanel
+        mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
+
+        // Track the page view
+        mixpanel.track('Conversation Page Opened', {});
+
+        // Render the conversations
+        renderConversations()
+
+        // Update the text field
+        updateTextField(searchTermDebounced)
+
+    };
+
+    // Call the function inside a useEffect hook that runs only once when the component is mounted
+    useEffect(() => handleInitialPageLoad(), []);
 
     // Consolidated function to handle URL changes and update collection
     const handleURLChange = (code) => {
-        LOGGING && console.log("useEffect : URL Collection Code : ", code);
+        LOGGING && console.log("handling url change : URL Collection Code : ", code);
         const collection = findCollectionByCode(code);
-        if (collection) {
-            setCollection(collection);
-        } else {
-            navigate(`/KnowledgeBase/`);
-        }
+        collection ? setCollection(collection) : navigate(`/KnowledgeBase/`);
     };
 
     // Update Collection when the URL changes
-    useEffect(() => {
-        handleURLChange(urlCollectionCode);
-    }, [urlCollectionCode]);
+    useEffect(() => handleURLChange(urlCollectionCode), [urlCollectionCode]);
 
-    // Update the search term when the URL changes
-    useEffect(() => {
+
+
+    // Handles URL Search Term Modification
+    const handleSearchTermModification = () => {
         const modifiedSearchTerm = urlSearchTerm ? urlSearchTerm.replace(/\+/g, ' ') : '';
         if (modifiedSearchTerm !== searchTermDebounced) {
             setSearchTerm(modifiedSearchTerm || '');
+            updateTextField(modifiedSearchTerm || '');
             setSearchTermDebounced(modifiedSearchTerm || '');
         }
-    }, [urlSearchTerm]);
+    }
 
-    // Update the URL when the search term changes
-    useEffect(() => {
+    // Update the search term when the URL changes
+    useEffect(() => handleSearchTermModification(), [urlSearchTerm]);
+
+    // Handles Search Term URL Modification
+    const handleSearchTermURLModification = () => {
         const modifiedSearchTerm = searchTermDebounced.replace(/ /g, '+');
         navigate(`/KnowledgeBase/${collection && collection.code}/search/${modifiedSearchTerm}`);
-    }, [searchTermDebounced]);
+    }
+
+    // Update the URL when the search term changes
+    useEffect(() => handleSearchTermURLModification(), [searchTermDebounced]);
+
+    // Handles Fetching Conversations
+    const handleFetchConversations = () => { if (!collection) { return } fetchConversations(); LOGGING && console.log('Fetching conversations : Should happen only once'); }
 
     // Fetches the conversations once after the component is mounted only if the url code is valid
-    useEffect(() => {
-        if (!collection) {
-            return;
-        }
-        fetchConversations();
-        LOGGING && console.log('Fetching conversations : Should happen only once');
-    }, [collection]);
+    useEffect(() => handleFetchConversations(), [collection]);
 
 
-
-    // Extracted function to handle fetching conversations
+    // Handles fetching conversations
     const fetchConversations = async () => {
-        setLoading(true);
+        LOGGING && console.log(`🚀 Fetching threads from API`);
 
-        try {
-            LOGGING && console.log(`🚀 Fetching threads from API`);
-            mixpanel.track('Conversation Page Opened', {});
-
+        try {    
+            // Check if the URL collection code is valid
             const collection = findCollectionByCode(urlCollectionCode);
-            if (!collection) {
-                handleInvalidCollection();
-                return;
-            }
+            if (!collection) { handleInvalidCollection(); return; }
 
+            // Fetch threads from API
             const response = await fetchThreadsFromAPI(collection.name);
             handleFetchedThreads(response.data.getThreads);
-        } catch (error) {
-            handleFetchError(error);
         }
+        catch (error) { handleFetchError(error); }
     };
 
-    // Function to handle invalid collection
+    // Handles invalid collection
     const handleInvalidCollection = () => {
         console.error(`Invalid collection code : ${urlCollectionCode}`);
         setThreads([]);
         setLoading(false);
     };
 
-    // Function to handle fetched threads
+    // Handles fetched threads
     const handleFetchedThreads = (fetchedThreads) => {
         const THREAD_COUNT = fetchedThreads.length;
 
@@ -176,15 +200,6 @@ const Conversation = () => {
         }
     };
 
-
-    // Debounce the search term so that the API is not called on every keystroke
-    const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            setSearchTermDebounced(searchTerm);
-            event.target.blur();
-        }
-    }
-
     // Copy the URL to the clipboard
     const copyToClipboard = () => {
         navigator && navigator.clipboard && navigator.clipboard.writeText(window.location.href)
@@ -196,7 +211,7 @@ const Conversation = () => {
     };
 
     // Render the conversations
-    const renderConversations = useMemo(() => {
+    function renderConversations() {
         const lowerCaseSearchTerm = searchTermDebounced.toLowerCase();
 
         const titleMatches = threads.filter(thread => {
@@ -231,25 +246,30 @@ const Conversation = () => {
             });
         }
 
-        const displayThreads = searchTermDebounced === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : sortedThreads;
+        setDisplayedThreads(searchTermDebounced === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : sortedThreads)
 
         console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${searchTermDebounced}`);
 
         return displayThreads.map((thread, index) => (
             <ConversationThread key={index} thread={thread} autoExpand={sortedThreads.length === 1} />
         ));
-    }, [threads, searchTermDebounced]);
+    }
+
+    // Renders the conversations whenever the threads or search term (debounced) changes
+    useEffect(() => { renderConversations(); }, [threads, searchTermDebounced]);
 
 
     // Handle suggestion click
     const handleSuggestionSearch = (suggestion) => {
         setSearchTerm(suggestion);
+        updateTextField(suggestion);
         setSearchTermDebounced(suggestion);
     }
 
     // Function to clear search term
     const clearSearchTerm = () => {
         setSearchTerm('');
+        updateTextField('');
         setSearchTermDebounced('');
     };
 
@@ -264,10 +284,10 @@ const Conversation = () => {
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
                 setSearchTermDebounced={setSearchTermDebounced}
-                handleKeyPress={handleKeyPress}
                 copyToClipboard={copyToClipboard}
                 clearSearchTerm={clearSearchTerm}
                 displayedThreadCount={displayedThreadCount}
+                textFieldRef={textFieldRef}
             />
 
             {/* Search Suggestions */}
@@ -289,7 +309,9 @@ const Conversation = () => {
                 : (
                     <div className="conversation__body">
                     <div className="conversation__body__messages">
-                        {renderConversations}
+                            {displayThreads && displayThreads.map((thread, index) => (
+                                <ConversationThread key={index} thread={thread} autoExpand={displayedThreadCount === 1} />
+                            ))}
                         </div>
                     </div>
                 )}
