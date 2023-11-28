@@ -6,7 +6,7 @@ import ReactWordcloud from 'react-wordcloud';
 import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS } from './Words';
 
 const WordCloud = ({ threads, handleWordClick }) => {
-    const [words, setWords] = useState(null);
+    const [wordMap, setWordMap] = useState(null);
     const MINIMUM_WORD_LENGTH = 3;
 
     const wordCloudOptions = {
@@ -24,8 +24,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
         randomSeed: 420,
     };
 
-    const processWordCloud = (threads, minimumWordLength) => {
-
+    const processWords = (threads, minimumWordLength) => {
         const getWords = threads.flatMap((thread) =>
             thread.messages.flatMap((message) =>
                 message.text.toLowerCase().split(/\s+/)
@@ -41,6 +40,10 @@ const WordCloud = ({ threads, handleWordClick }) => {
         );
         cloudWords = cloudWords.filter((word) => word.length >= minimumWordLength && word.length < 15);
 
+        return cloudWords;
+    };
+
+    const generateWordCloud = (cloudWords) => {
         const wordCloudMap = new Map();
         cloudWords.forEach((word) => {
             if (wordCloudMap.has(word)) {
@@ -64,10 +67,11 @@ const WordCloud = ({ threads, handleWordClick }) => {
     const processThreads = async () => {
         try {
             if (threads.length > 0) {
-                const extractedWords = processWordCloud(threads, MINIMUM_WORD_LENGTH);
-                setWords(extractedWords);
+                const cloudWords = processWords(threads, MINIMUM_WORD_LENGTH);
+                const extractedWords = generateWordCloud(cloudWords);
+                setWordMap(extractedWords);
             } else {
-                setWords([]);
+                setWordMap([]);
             }
         } catch (error) {
             console.error('Error fetching threads: ', error);
@@ -79,7 +83,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
     }, []);
 
     const renderWordCloud = () => {
-        if (!words) {
+        if (!wordMap) {
             return <LinearProgress />;
         }
 
@@ -87,7 +91,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
             <>
 
             <ReactWordcloud
-                words={words}
+                    words={wordMap}
                 options={wordCloudOptions}
                 callbacks={{
                     onWordClick: handleWordClick,
