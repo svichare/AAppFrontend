@@ -27,7 +27,6 @@ const Conversation = () => {
     const { query: urlSearchTerm } = useParams();
     const { collectionCode: urlCollectionCode } = useParams();
     const [loading, setLoading] = useState(false);
-    const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
     const [searchTermDebounced, setSearchTermDebounced] = useState(urlSearchTerm || '');
     const [threads, setThreads] = useState([]);
     const [collection, setCollection] = useState(findCollectionByCode(urlCollectionCode));
@@ -82,7 +81,6 @@ const Conversation = () => {
     const handleSearchTermModification = () => {
         const modifiedSearchTerm = urlSearchTerm ? urlSearchTerm.replace(/\+/g, ' ') : '';
         if (modifiedSearchTerm !== searchTermDebounced) {
-            setSearchTerm(modifiedSearchTerm || '');
             updateTextField(modifiedSearchTerm || '');
             setSearchTermDebounced(modifiedSearchTerm || '');
         }
@@ -207,10 +205,21 @@ const Conversation = () => {
             });
     };
 
+    // Tracks the search
+    const trackSearch = (searchTerm, resultsCount) => {
+        if (searchTerm.length > 1) {
+            mixpanel.track('Conversation Searched', {
+                'Search term': searchTerm,
+                'threads found': resultsCount
+            });
+        }
+    };
+
     // Render the conversations
     function renderConversations() {
         const lowerCaseSearchTerm = searchTermDebounced.toLowerCase();
 
+        // Filter threads based on title
         const titleMatches = threads.filter(thread => {
             if (!thread.isValid) return false;
 
@@ -220,6 +229,7 @@ const Conversation = () => {
             return titleMatches;
         });
 
+        // Filter threads based on messages
         const messageMatches = threads.filter(thread => {
             if (!thread.isValid) return false;
 
@@ -232,20 +242,19 @@ const Conversation = () => {
             });
         });
 
+        // Sort the threads
         const sortedThreads = [...titleMatches, ...messageMatches];
 
-        setDisplayedThreadCount(sortedThreads.length);
+        // Track the search
+        trackSearch(searchTermDebounced, sortedThreads.length)
 
-        if (searchTermDebounced.length > 1) {
-            mixpanel.track('Conversation Searched', {
-                'Search term': searchTermDebounced,
-                'threads found': sortedThreads.length
-            });
-        }
-
+        // Set the displayed threads
         setDisplayedThreads(searchTermDebounced === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : sortedThreads)
 
-        console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${searchTermDebounced}`);
+        // Set the displayed thread count
+        setDisplayedThreadCount(sortedThreads.length);
+
+        LOGGING && console.log(`🔍 Displaying ${displayThreads.length} threads out of ${threads.length} threads that match the search term: ${searchTermDebounced}`);
     }
 
     // Renders the conversations whenever the threads or search term (debounced) changes
@@ -254,14 +263,12 @@ const Conversation = () => {
 
     // Handle suggestion click
     const handleSuggestionSearch = (suggestion) => {
-        setSearchTerm(suggestion);
         updateTextField(suggestion);
         setSearchTermDebounced(suggestion);
     }
 
     // Function to clear search term
     const clearSearchTerm = () => {
-        setSearchTerm('');
         updateTextField('');
         setSearchTermDebounced('');
     };
@@ -274,8 +281,6 @@ const Conversation = () => {
 
             {/* Search Bar */}
             <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={setSearchTerm}
                 setSearchTermDebounced={setSearchTermDebounced}
                 copyToClipboard={copyToClipboard}
                 clearSearchTerm={clearSearchTerm}
