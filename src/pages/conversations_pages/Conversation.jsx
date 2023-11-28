@@ -246,10 +246,6 @@ const Conversation = () => {
         setDisplayedThreads(searchTermDebounced === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : sortedThreads)
 
         console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${searchTermDebounced}`);
-
-        return displayThreads.map((thread, index) => (
-            <ConversationThread key={index} thread={thread} autoExpand={sortedThreads.length === 1} />
-        ));
     }
 
     // Renders the conversations whenever the threads or search term (debounced) changes
