@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { API } from '@aws-amplify/api'
-import { Button, Chip, IconButton, InputAdornment, TextField, LinearProgress, Box, Skeleton } from '@mui/material';
-import { KeyboardReturnRounded, Clear, FileCopyRounded } from '@mui/icons-material';
+import { LinearProgress, Box, Skeleton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser';
@@ -16,17 +15,19 @@ import {
     FEATURED_THREADS_COUNT,
     SKIP_THREADS_COUNT
 } from './ConversationSettings';
+import SearchBar from './SearchBar';
+import SearchSuggestions from './SearchSuggestions';
 
 const Conversation = () => {
     const navigate = useNavigate();
     const { query: urlSearchTerm } = useParams();
     const { collectionCode: urlCollectionCode } = useParams();
     const [searchTerm, setSearchTerm] = useState(urlSearchTerm || '');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(urlSearchTerm || '');
+    const [searchTermDebounced, setSearchTermDebounced] = useState(urlSearchTerm || '');
     const [threads, setThreads] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [collection, setCollection] = useState(getCollectionByCode(urlCollectionCode));
-    const [filteredThreadCount, setFilteredThreadCount] = useState(0);
+    const [collection, setCollection] = useState(findCollectionByCode(urlCollectionCode));
+    const [displayedThreadCount, setDisplayedThreadCount] = useState(0);
     const [topicCountMap, setTopicCountMap] = useState(new Map());
     const [topicSubtopicCountMap, setTopicSubtopicCountMap] = useState(new Map());
 
@@ -34,123 +35,152 @@ const Conversation = () => {
     mixpanel.init('a709584ba68b4297dce576a32d062ed6', { debug: true, track_pageview: true, persistence: 'localStorage' });
 
     // Get collection by collection code
-    function getCollectionByCode(code) {
+    function findCollectionByCode(code) {
         return COLLECTIONS.find(collection => collection.code === code);
     }
 
-    // Update Collection when the URL changes
-    useEffect(() => {
-        LOGGING && console.log("useEffect : URL Collection Code : ", urlCollectionCode);
-        const collection = getCollectionByCode(urlCollectionCode);
+    // Consolidated function to handle URL changes and update collection
+    const handleURLChange = (code) => {
+        LOGGING && console.log("useEffect : URL Collection Code : ", code);
+        const collection = findCollectionByCode(code);
         if (collection) {
             setCollection(collection);
-        }
-        else {
+        } else {
             navigate(`/KnowledgeBase/`);
         }
+    };
+
+    // Update Collection when the URL changes
+    useEffect(() => {
+        handleURLChange(urlCollectionCode);
     }, [urlCollectionCode]);
 
     // Update the search term when the URL changes
     useEffect(() => {
         const modifiedSearchTerm = urlSearchTerm ? urlSearchTerm.replace(/\+/g, ' ') : '';
-        if (modifiedSearchTerm !== debouncedSearchTerm) {
+        if (modifiedSearchTerm !== searchTermDebounced) {
             setSearchTerm(modifiedSearchTerm || '');
-            setDebouncedSearchTerm(modifiedSearchTerm || '');
+            setSearchTermDebounced(modifiedSearchTerm || '');
         }
     }, [urlSearchTerm]);
 
     // Update the URL when the search term changes
     useEffect(() => {
-        const modifiedSearchTerm = debouncedSearchTerm.replace(/ /g, '+');
+        const modifiedSearchTerm = searchTermDebounced.replace(/ /g, '+');
         navigate(`/KnowledgeBase/${collection && collection.code}/search/${modifiedSearchTerm}`);
-    }, [debouncedSearchTerm]);
+    }, [searchTermDebounced]);
 
     // Fetches the conversations once after the component is mounted only if the url code is valid
-    useEffect(() => { if (!collection) { return; } fetchConversations(); LOGGING && console.log('Fetching conversations : Should happen only once') }, [collection]);
+    useEffect(() => {
+        if (!collection) {
+            return;
+        }
+        fetchConversations();
+        LOGGING && console.log('Fetching conversations : Should happen only once');
+    }, [collection]);
 
-    // Function to fetch the conversations from the API
-    async function fetchConversations() {
+
+
+    // Extracted function to handle fetching conversations
+    const fetchConversations = async () => {
         setLoading(true);
 
         try {
-            //log the query
             LOGGING && console.log(`🚀 Fetching threads from API`);
-            mixpanel.track('Conversation Page Opened', {
-            });
+            mixpanel.track('Conversation Page Opened', {});
 
-            // use getCollectionByCode(urlCollectionCode)
-            const collection = getCollectionByCode(urlCollectionCode);
+            const collection = findCollectionByCode(urlCollectionCode);
             if (!collection) {
-                console.error(`Invalid collection code : ${urlCollectionCode}`);
-                setThreads([]);
-                setLoading(false);
+                handleInvalidCollection();
                 return;
             }
 
+            const response = await fetchThreadsFromAPI(collection.name);
+            handleFetchedThreads(response.data.getThreads);
+        } catch (error) {
+            handleFetchError(error);
+        }
+    };
 
-            const response = await API.graphql({
+    // Function to handle invalid collection
+    const handleInvalidCollection = () => {
+        console.error(`Invalid collection code : ${urlCollectionCode}`);
+        setThreads([]);
+        setLoading(false);
+    };
+
+    // Function to handle fetched threads
+    const handleFetchedThreads = (fetchedThreads) => {
+        const THREAD_COUNT = fetchedThreads.length;
+
+        if (THREAD_COUNT === 0) {
+            setThreads([]);
+            setLoading(false);
+            return;
+        }
+
+        setThreads(fetchedThreads);
+        updateTopicCountMaps(fetchedThreads);
+        setLoading(false);
+    };
+
+    // Function to update topic count maps
+    const updateTopicCountMaps = (threads) => {
+        const curTopicCountMap = new Map();
+        const curTopicSubTopicCountMap = new Map();
+        let threadTitleCount = 0;
+
+        threads.forEach(obj => {
+            const { topic, subtopic, title } = obj;
+
+            if (typeof title !== 'undefined') {
+                threadTitleCount++;
+            }
+
+            if (typeof topic !== 'undefined') {
+                curTopicCountMap.set(topic, (curTopicCountMap.get(topic) || 0) + 1);
+            }
+
+            if (typeof subtopic !== 'undefined' && typeof topic !== 'undefined') {
+                const cur_pair = `${topic}-${subtopic}`;
+                curTopicSubTopicCountMap.set(cur_pair, (curTopicSubTopicCountMap.get(cur_pair) || 0) + 1);
+            }
+        });
+
+        setTopicCountMap(curTopicCountMap);
+        setTopicSubtopicCountMap(curTopicSubTopicCountMap);
+        LOGGING && console.log("TopicMap size : ", curTopicCountMap.size, " title count ", threadTitleCount);
+        LOGGING && console.log("SubTopicMap size : ", curTopicSubTopicCountMap.size);
+    };
+
+    // Function to handle fetch error
+    const handleFetchError = (error) => {
+        console.error('Error fetching conversation:', error);
+        setThreads([]);
+        setLoading(false);
+    };
+
+    // Function to fetch threads from API
+    const fetchThreadsFromAPI = async (collectionName) => {
+        try {
+            return await API.graphql({
                 query: getThreads,
                 variables: {
-                    collection_name: collection.name,
+                    collection_name: collectionName,
                     key: undefined,
                     value: undefined
                 },
             });
-            LOGGING && console.log(`🛸 Fetched ${response.data.getThreads.length} ${response.data.getThreads.length === 1 ? 'thread' : 'threads'} from API : ${((s) => s > 1024 ? `${(s / 1024).toFixed(2)}MB` : `${s}KB`)((new Blob([JSON.stringify(response.data.getThreads)]).size / 1024).toFixed(2))}`);
-
-            const THREAD_COUNT = response.data.getThreads.length;
-
-            if (THREAD_COUNT === 0) {
-                LOGGING && console.log("No threads returned!");
-                setThreads([]);
-                setLoading(false);
-                return;
-            }
-            else {
-                const threads = response.data.getThreads;
-                setThreads(threads);
-                // Update the topic count map.
-                const curTopicCountMap = new Map();
-                const curTopicSubTopicCountMap = new Map();
-                var threadTitleCount = 0;
-                threads.forEach(obj => {
-                    const topic = obj.topic;
-                    const subtopic = obj.subtopic;
-                    const title = obj.title;
-
-                    if (typeof title !== 'undefined') {
-                        ++threadTitleCount;
-                    }
-
-                    // If the topic is not in the map, initialize count to 1; otherwise, increment the count
-                    if (typeof topic === 'undefined') {
-                        return;
-                    }
-                    curTopicCountMap.set(topic, (curTopicCountMap.get(topic) || 0) + 1);
-
-                    if (typeof subtopic === 'undefined') {
-                        return;
-                    }
-                    var cur_pair = (topic, subtopic);
-                    curTopicSubTopicCountMap.set(cur_pair, (curTopicSubTopicCountMap.get(cur_pair) || 0) + 1);
-                });
-                setTopicCountMap(curTopicCountMap);
-                LOGGING && console.log("TopicMap size : ", curTopicCountMap.size, " title count ", threadTitleCount);
-                setTopicSubtopicCountMap(curTopicSubTopicCountMap);
-                LOGGING && console.log("SubTopicMap size : ", curTopicSubTopicCountMap.size);
-                setLoading(false);
-            }
         } catch (error) {
-            console.error('Error fetching conversation:', error);
-            setThreads([]);
-            setLoading(false);
+            throw new Error(`Error fetching threads: ${error}`);
         }
     };
+
 
     // Debounce the search term so that the API is not called on every keystroke
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
-            setDebouncedSearchTerm(searchTerm);
+            setSearchTermDebounced(searchTerm);
             event.target.blur();
         }
     }
@@ -167,56 +197,61 @@ const Conversation = () => {
 
     // Render the conversations
     const renderConversations = useMemo(() => {
+        const lowerCaseSearchTerm = searchTermDebounced.toLowerCase();
 
-        // Filter the threads based on the search term
-        const lowerCaseSearchTerm = debouncedSearchTerm.toLowerCase();
-        LOGGING && console.log(`🔍 Filtering threads with search term : ${lowerCaseSearchTerm}`)
-
-        // Get the threads that match the search term in the title
         const titleMatches = threads.filter(thread => {
             if (!thread.isValid) return false;
-            const lowerCaseTitle = thread.title && thread.title.toLowerCase();
-            return lowerCaseTitle && lowerCaseTitle.includes(lowerCaseSearchTerm);
+
+            const lowerCaseTitle = (thread.title || '').toLowerCase();
+            const titleMatches = lowerCaseTitle.includes(lowerCaseSearchTerm);
+
+            return titleMatches;
         });
 
-        // Get the threads that match the search term in the messages
         const messageMatches = threads.filter(thread => {
-            if (!thread.isValid || (thread.title && thread.title.toLowerCase().includes(lowerCaseSearchTerm))) return false;
-            return thread.messages.some(message => {
-                const lowerCaseText = message.text && message.text.toLowerCase();
-                return lowerCaseText && lowerCaseText.includes(lowerCaseSearchTerm);
+            if (!thread.isValid) return false;
+
+            const lowerCaseTitle = (thread.title || '').toLowerCase();
+            const titleMatches = lowerCaseTitle.includes(lowerCaseSearchTerm);
+
+            return !titleMatches && thread.messages.some(message => {
+                const lowerCaseText = (message.text || '').toLowerCase();
+                return lowerCaseText.includes(lowerCaseSearchTerm);
             });
         });
 
-        // Combine the title and message matches based on ranking
-        const filteredThreads = [...titleMatches, ...messageMatches];
+        const sortedThreads = [...titleMatches, ...messageMatches];
 
-        // Update the filtered thread count
-        setFilteredThreadCount(filteredThreads.length);
+        setDisplayedThreadCount(sortedThreads.length);
 
-        // Log the search term and the number of threads found
-        if (debouncedSearchTerm.length > 1) {
+        if (searchTermDebounced.length > 1) {
             mixpanel.track('Conversation Searched', {
-                'Search term': debouncedSearchTerm,
-                'threads found': filteredThreads.length
+                'Search term': searchTermDebounced,
+                'threads found': sortedThreads.length
             });
         }
 
-        const displayThreads = debouncedSearchTerm === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : filteredThreads;
+        const displayThreads = searchTermDebounced === '' ? threads.slice(SKIP_THREADS_COUNT, SKIP_THREADS_COUNT + FEATURED_THREADS_COUNT) : sortedThreads;
 
-        LOGGING && console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${debouncedSearchTerm}`);
+        console.log(`🔍 Displaying ${displayThreads.length} ${displayThreads.length === 1 ? 'thread' : 'threads'} out of ${threads.length} ${threads.length === 1 ? 'thread' : 'threads'} that match the search term : ${searchTermDebounced}`);
 
-        // Render the filtered threads
-        return displayThreads.map((thread, index) => {
-            return (<ConversationThread key={index} thread={thread} autoExpand={filteredThreads.length === 1} />)
-        });
-    }, [threads, debouncedSearchTerm]);
+        return displayThreads.map((thread, index) => (
+            <ConversationThread key={index} thread={thread} autoExpand={sortedThreads.length === 1} />
+        ));
+    }, [threads, searchTermDebounced]);
+
 
     // Handle suggestion click
-    const handleSuggestionClick = (suggestion) => {
+    const handleSuggestionSearch = (suggestion) => {
         setSearchTerm(suggestion);
-        setDebouncedSearchTerm(suggestion);
+        setSearchTermDebounced(suggestion);
     }
+
+    // Function to clear search term
+    const clearSearchTerm = () => {
+        setSearchTerm('');
+        setSearchTermDebounced('');
+    };
 
     return (
         <div className="container">
@@ -225,51 +260,21 @@ const Conversation = () => {
             <h2>Explore the Knowledge Base</h2>
 
             {/* Search Bar */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <p style={{ marginLeft: '10px' }}>Search Results: {debouncedSearchTerm.length >= 2 ? filteredThreadCount : 0}</p>
-                    <Button className="square-button" onClick={copyToClipboard}>
-                        <FileCopyRounded />
-                    </Button>
-            </div>
-
-            {/* Search Input */}
-            <TextField
-                className='search__input'
-                variant="outlined"
-                placeholder="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={handleKeyPress}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <IconButton onClick={() => {
-                                setDebouncedSearchTerm(searchTerm);
-                                document.activeElement.blur();
-                            }}>
-                                <KeyboardReturnRounded />
-                            </IconButton>
-                            <IconButton onClick={() => {
-                                setSearchTerm('');
-                                setDebouncedSearchTerm('');
-                            }}>
-                                <Clear />
-                            </IconButton>
-                        </InputAdornment>
-                    ),
-                }}
+            <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                setSearchTermDebounced={setSearchTermDebounced}
+                handleKeyPress={handleKeyPress}
+                copyToClipboard={copyToClipboard}
+                clearSearchTerm={clearSearchTerm}
+                displayedThreadCount={displayedThreadCount}
             />
 
             {/* Search Suggestions */}
-            <div className='search-suggestions'>
-                {SUGGESTIONS.map(suggestion => (
-                    <Chip className='chip'
-                        key={suggestion}
-                        label={<><span role="img" aria-label="magnifying glass">🔍</span><span className="suggestion-text">{suggestion}</span></>}
-                        onClick={() => handleSuggestionClick(suggestion)}>
-                    </Chip>
-                ))}
-            </div>
+            <SearchSuggestions
+                suggestions={SUGGESTIONS}
+                handleSuggestionSearch={handleSuggestionSearch}
+            />
 
             {/* Threads */}
             {loading ?
