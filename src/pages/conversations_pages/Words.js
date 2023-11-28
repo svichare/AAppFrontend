@@ -41,3 +41,63 @@ export const CUSTOM_STOP_WORDS = [
     `video`,
     `videos`
 ];
+
+export const CONVERSATION_TOPICS = [
+    "music", "travel", "food", "technology", "sports", "books", "movies", "art", "nature", "science",
+    "photography", "fashion", "history", "health", "culture", "education", "work", "relationships",
+    "hobbies", "games", "adventure", "language", "philosophy", "fitness", "pets", "creativity",
+    "finance", "entertainment", "gardening", "cooking", "celebrities", "meditation", "leadership",
+    "business", "social", "environment", "design", "motivation", "family", "writing", "politics",
+    "humor", "dreams", "communication", "spirituality", "innovation", "selfcare", "learning",
+    "weather", "community", "traveling", "inspiration", "coding", "festivals", "volunteering",
+    "architecture", "nutrition", "astronomy", "psychology", "equality", "festivities", "advice",
+    "nature", "exercise", "charity", "gadgets", "success", "finance", "futurism", "cryptocurrency",
+    "crafts", "parenting", "friendship", "identity", "meditation", "DIY", "stress", "mindfulness",
+    "artificialintelligence", "automation", "blockchain", "virtualreality", "wanderlust", "wellness",
+    "startups", "globalization", "happiness", "resilience", "inclusivity", "minimalism", "sustainability",
+    "curiosity", "biohacking", "bioethics", "diversity", "veganism", "cybersecurity", "freedom", "legacy"
+];
+
+export const POLITICS = [
+    "politics", "india", "bjp", "congress", "modi", "pm", "narendra", "rahul", "gandhi", "aap",
+    "kejriwal", "amit", "shah", "sonia", "gandhi", "priyanka", "yogi", "adityanath", "mamata", "banerjee",
+    "police", "elections", "parliament", "government", "opposition", "minister", "democracy", "vote",
+    "campaign", "corruption", "policy", "constitution", "law", "justice", "rally", "debate", "speech",
+    "constituency", "legislation", "manifesto", "budget", "diplomacy", "coalition", "leadership",
+    "votebank", "ideology", "citizenship", "reform", "seats", "assembly", "legislature", "cabinet",
+    "freedom", "protest", "media", "socialism", "capitalism", "communism", "secularism", "nationalism",
+    "president", "party", "candidate", "voting", "referendum", "activism", "revolution", "alliance",
+    "foreignpolicy", "policy", "bureaucracy", "supremecourt", "chiefminister", "oppositionparty",
+    "voteofconfidence", "campaigning", "politicalparty", "civilrights", "lobbying", "stateelections",
+    "politicalsystem", "voterturnout", "psephology", "constituencymap", "governmentformation",
+    "partymanifesto", "politicalrally", "politicalspeech", "politicaldebate", "policyimplementation",
+    "partyalliance", "politicalcampaign", "politicalactivism", "politicalrevolution", "civicduty"
+];
+
+export const RELIGION = [
+    "religion", "hinduism", "hindu", "islam", "muslim", "christianity", "christian", "buddhism", "buddhist",
+    "judaism", "jewish", "sikhism", "sikh", "taoism", "tao", "confucianism", "confucian", "shintoism",
+    "shinto", "jainism", "jain", "zoroastrianism", "zoroastrian", "spirituality", "faith", "belief",
+    "prayer", "worship", "god", "goddess", "deity", "priest", "monk", "nun", "temple", "mosque", "church",
+    "synagogue", "gurdwara", "pilgrimage", "ritual", "ceremony", "sacred", "holy", "soul", "afterlife",
+    "heaven", "hell", "sin", "salvation", "reincarnation", "karma", "meditation", "enlightenment",
+    "asceticism", "spiritual", "spirit", "divine", "sacrament", "practitioner", "clergy", "congregation",
+    "worshipper", "disciple", "prophet", "revelation", "scripture", "bible", "koran", "quran", "torah",
+    "vedas", "guru", "priesthood", "monasticism", "monastery", "nunnery", "mosque", "church", "synagogue",
+    "gurdwara", "pilgrimage", "ritual", "ceremony", "sacred", "holy", "soul", "afterlife", "heaven", "hell",
+    "sin", "salvation", "reincarnation", "karma", "meditation", "enlightenment", "asceticism", "spiritual",
+    "spirit", "divine", "sacrament", "practitioner", "clergy", "congregation", "worshipper", "disciple",
+    "prophet", "revelation", "scripture", "bible", "koran", "quran", "torah", "vedas", "guru", "priesthood",
+    "monasticism", "monastery", "nunnery", "mosque", "church", "synagogue", "gurdwara", "pilgrimage", "ritual",
+    "ceremony", "sacred", "holy", "soul", "afterlife", "heaven", "hell", "sin", "salvation", "reincarnation",
+    "karma", "meditation", "enlightenment", "asceticism", "spiritual", "spirit", "divine", "sacrament",
+    "practitioner", "clergy", "congregation", "worshipper", "disciple", "prophet", "revelation", "scripture",
+    "bible", "koran", "quran", "torah", "vedas", "guru", "priesthood", "monasticism", "monastery", "nunnery",
+    "mosque", "church", "synagogue", "gurdwara", "pilgrimage", "ritual", "ceremony", "sacred", "holy", "soul",
+    "afterlife", "heaven", "hell", "sin", "salvation", "reincarnation", "karma", "meditation", "enlightenment",
+    "asceticism", "spiritual", "spirit", "divine", "sacrament", "practitioner", "clergy", "congregation",
+    "worshipper", "disciple", "prophet", "revelation", "scripture", "bible", "koran", "quran", "torah", "vedas",
+    "guru", "priesthood", "monasticism", "monastery", "nunnery", "mosque", "church", "synagogue", "gurdwara",
+    "pilgrimage", "ritual", "ceremony", "sacred", "holy", "soul", "afterlife", "heaven", "hell", "sin",
+    "salvation", "reincarnation", "karma", "meditation", "enlightenment", "asceticism", "spiritual", "spirit"
+];
