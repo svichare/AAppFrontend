@@ -19,8 +19,6 @@ const SearchBar = ({
         }
     }
 
-    console.log(textFieldRef?.current?.value)
-
     return (
         <div>
             <div style={{ display: 'flex', alignItems: 'center' }}>

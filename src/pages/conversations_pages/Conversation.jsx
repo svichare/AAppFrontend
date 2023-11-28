@@ -58,9 +58,6 @@ const Conversation = () => {
         // Track the page view
         mixpanel.track('Conversation Page Opened', {});
 
-        // Render the conversations
-        renderConversations()
-
         // Update the text field
         updateTextField(searchTermDebounced)
 
