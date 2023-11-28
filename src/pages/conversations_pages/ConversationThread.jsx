@@ -1,29 +1,16 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Accordion, AccordionSummary, AccordionDetails, IconButton } from '@mui/material';
 import './ConversationThread.css';
 import { DownloadRounded } from '@mui/icons-material';
-import domtoimage from 'dom-to-image';
-import { saveAs } from 'file-saver';
-import logo from '../../assets/logo/always_around_me.png';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useImageConversion from '../../hooks/useImageConversion';
+import useEmoji from '../../hooks/useEmoji';
 
-const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'];
 
-const hashString = (str) => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        hash += str.charCodeAt(i);
-    }
-    return hash;
-};
+const ChatMessage = ({ text, sender }) => {
+    const emojis = ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵'];
+    const { getEmoji } = useEmoji(emojis);
 
-const getEmoji = (name) => {
-    const hash = hashString(name);
-    const index = hash % emojis.length;
-    return emojis[index];
-};
-
-const ChatMessage = ({ text, sender, messageType }) => {
     return (
         <Card className='message-card gradient-card'>
             <CardContent className='card-content'>
@@ -44,46 +31,26 @@ const ChatMessage = ({ text, sender, messageType }) => {
     );
 };
 
+
 const ConversationThread = ({ thread, autoExpand }) => {
 
     const threadRef = useRef(null);
-
-    const handleShare = async () => {
-        if (threadRef.current) {
-            const logoImg = document.createElement('img');
-            logoImg.src = logo;
-            threadRef.current.prepend(logoImg); // prepend to add the logo at the top
-
-            domtoimage.toBlob(threadRef.current)
-                .then(blob => {
-                    saveAs(blob, `${thread.title}.png`);
-                })
-                .catch(error => {
-                    console.error('Error converting thread to image:', error);
-                })
-                .finally(() => {
-                    threadRef.current.removeChild(logoImg);
-                });
-        }
-
-        console.log("⬇️ Download", thread.title);
-    };
-
     const [isExpanded, setIsExpanded] = useState(autoExpand);
+    const { convertToImage } = useImageConversion(threadRef);
 
-    const handleAccordionChange = (event, newIsExpanded) => {
+    useEffect(() => {
+        setIsExpanded(autoExpand);
+    }, [autoExpand]);
+
+    const handleAccordionChange = (_, newIsExpanded) => {
         setIsExpanded(newIsExpanded);
     };
 
-    React.useEffect(() => {
-        if (autoExpand) {
-            setIsExpanded(true);
-        }
-        else {
-            setIsExpanded(false);
-        }
-    }
-        , [autoExpand]);
+    const handleShare = () => {
+        if (!threadRef.current) return;
+        convertToImage(thread.title);
+        console.log("⬇️ Download", thread.title);
+    };
 
     return (
         <>
