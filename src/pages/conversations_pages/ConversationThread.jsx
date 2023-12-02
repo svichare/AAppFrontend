@@ -20,10 +20,15 @@ const ChatMessage = ({ text, sender }) => {
                             <span style={{ fontSize: '2em' }}>{getEmoji(sender)}</span>
                         </Typography>
                     </div>
-                    <div className='message-card-text'>
-                        <Typography variant="body1" component="div" className='message-text'>
-                            {text}
-                        </Typography>
+                    <div className='message-card-details'>
+                        <div className='message-card-sender'>
+                            {sender}
+                        </div>
+                        <div className='message-card-text'>
+                            <Typography variant="body1" component="div" className='message-text'>
+                                {text}
+                            </Typography>
+                        </div>
                     </div>
                 </div>
             </CardContent>
