@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './WordCloud.css';
 import { LinearProgress } from '@mui/material';
-import { removeStopwords, eng, mar } from 'stopword';
 import ReactWordcloud from 'react-wordcloud';
-import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS } from './Words';
 
-const WordCloud = ({ threads, handleWordClick }) => {
+const WordCloud = ({ words, handleWordClick }) => {
     const [wordMap, setWordMap] = useState(null);
-    const MINIMUM_WORD_LENGTH = 3;
 
     const wordCloudOptions = {
         rotations: 1,
@@ -22,25 +19,6 @@ const WordCloud = ({ threads, handleWordClick }) => {
         enableTooltip: false,
         enableOptimizations: true,
         randomSeed: 420,
-    };
-
-    const processWords = (threads, minimumWordLength) => {
-        const getWords = threads.flatMap((thread) =>
-            thread.messages.flatMap((message) =>
-                message.text.toLowerCase().split(/\s+/)
-            )
-        );
-
-        let cloudWords = getWords.map((word) => word.replace(/\W/g, ''));
-        cloudWords = cloudWords.filter((word) => word !== '');
-        cloudWords = cloudWords.filter((word) => isNaN(word));
-        cloudWords = removeStopwords(
-            cloudWords,
-            [...eng, ...mar, ...GENERIC_STOP_WORDS, ...MARATHI_STOP_WORDS, ...CUSTOM_STOP_WORDS]
-        );
-        cloudWords = cloudWords.filter((word) => word.length >= minimumWordLength && word.length < 15);
-
-        return cloudWords;
     };
 
     const generateWordCloud = (cloudWords) => {
@@ -64,11 +42,10 @@ const WordCloud = ({ threads, handleWordClick }) => {
         return topWords;
     };
 
-    const processThreads = async () => {
+    const processWords = async () => {
         try {
-            if (threads.length > 0) {
-                const cloudWords = processWords(threads, MINIMUM_WORD_LENGTH);
-                const extractedWords = generateWordCloud(cloudWords);
+            if (words.length > 0) {
+                const extractedWords = generateWordCloud(words);
                 setWordMap(extractedWords);
             } else {
                 setWordMap([]);
@@ -79,7 +56,7 @@ const WordCloud = ({ threads, handleWordClick }) => {
     };
 
     useEffect(() => {
-        processThreads();
+        processWords();
     }, []);
 
     const renderWordCloud = () => {

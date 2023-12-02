@@ -71,7 +71,7 @@ export const POLITICS = [
     "voteofconfidence", "campaigning", "politicalparty", "civilrights", "lobbying", "stateelections",
     "politicalsystem", "voterturnout", "psephology", "constituencymap", "governmentformation",
     "partymanifesto", "politicalrally", "politicalspeech", "politicaldebate", "policyimplementation",
-    "partyalliance", "politicalcampaign", "politicalactivism", "politicalrevolution", "civicduty"
+    "partyalliance", "politicalcampaign", "politicalactivism", "politicalrevolution", "civicduty", "hitler"
 ];
 
 export const RELIGION = [

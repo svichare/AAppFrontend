@@ -4,79 +4,124 @@ import { LinearProgress } from '@mui/material';
 import { API } from 'aws-amplify';
 import WordCloud from './WordCloud';
 import { useNavigate } from 'react-router-dom';
+import { removeStopwords, eng, mar } from 'stopword';
+import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS, POLITICS, RELIGION, CONVERSATION_TOPICS } from './Words';
 
 
 const WordCloudDemo = () => {
     const collection = { code: 'spr', name: 'thread_details_s_p_r' };
-    const [threads, setThreads] = useState(null);
+    const [words, setWords] = useState(null);
+    const [conversationTopicWords, setConversationTopicWords] = useState(null);
+    const [politicalWords, setPoliticalWords] = useState(null);
+    const [religionWords, setReligionWords] = useState(null);
+    const [topics, setTopics] = useState(null);
+    const [subtopics, setSubTopics] = useState(null);
+
+    const MINIMUM_WORD_LENGTH = 3;
+    const FILTER_CATEGORIES = 1;
+
+
     const navigate = useNavigate();
 
-    // IndexedDB setup
-    const openDB = async () => {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open("threadsDB", 1);
 
-            request.onerror = (event) => {
-                console.error("Error opening IndexedDB", event);
-                reject(event);
-            };
+    const fetchThreads = async () => {
+        try {
 
-            request.onsuccess = (event) => {
-                resolve(event.target.result);
-            };
+            const response = await API.graphql({
+                query: getThreads,
+                variables: {
+                    collection_name: collection.name,
+                    key: undefined,
+                    value: undefined,
+                },
+            });
 
-            request.onupgradeneeded = (event) => {
-                const db = event.target.result;
-                db.createObjectStore("threads");
-            };
-        });
+            let threads = response.data.getThreads;
+            console.log('Fetch using API : threads : ', threads);
+
+
+            return threads;
+
+        } catch (error) {
+            console.error('Error fetching threads: ', error);
+        }
     };
 
-    const fetchThreads = async (forceRefresh = false, cacheExpiry = 60 * 60 * 1000) => {
+    const filterAllowedWords = (words, allowedWords) => {
+        if (allowedWords) {
+            const filteredWords = words.filter((word) => allowedWords.includes(word));
+            return filteredWords;
+        } else {
+            return words;
+        }
+    };
+
+    const processThreads = (threads) => {
         try {
-            const db = await openDB();
-            const transaction = db.transaction(["threads"], "readonly");
-            const store = transaction.objectStore("threads");
-            const getThreadsRequest = store.get("threads");
-
-            getThreadsRequest.onsuccess = async (event) => {
-                let threads = event.target.result;
-                let cacheTimestamp = Date.now();
-
-                if (threads) {
-                    cacheTimestamp = threads.cacheTimestamp;
-                    threads = threads.data;
-                }
-
-                if (forceRefresh || !threads || Date.now() - cacheTimestamp > cacheExpiry) {
-                    const response = await API.graphql({
-                        query: getThreads,
-                        variables: {
-                            collection_name: collection.name,
-                            key: undefined,
-                            value: undefined,
-                        },
-                    });
-
-                    threads = response.data.getThreads;
-                    console.log('threads: ', threads);
-
-                    const writeTransaction = db.transaction(["threads"], "readwrite");
-                    const writeStore = writeTransaction.objectStore("threads");
-                    writeStore.put({ data: threads, cacheTimestamp: Date.now() }, "threads");
-                }
-
-                setThreads(threads);
-            };
+            if (threads.length > 0) {
+                const processedWords = extractWords(threads, MINIMUM_WORD_LENGTH);
+                return processedWords;
+            } else {
+                return [];
+            }
         } catch (error) {
             console.error('Error fetching threads: ', error);
         }
     };
 
 
-    useEffect(() => {
-        fetchThreads();
-    }, []);
+    const extractWords = (threads, minimumWordLength) => {
+        const getWords = threads.flatMap((thread) =>
+            thread.messages.flatMap((message) =>
+                message.text.toLowerCase().split(/\s+/)
+            )
+        );
+
+        let cloudWords = getWords.map((word) => word.replace(/\W/g, ''));
+        cloudWords = cloudWords.filter((word) => word !== '');
+        cloudWords = cloudWords.filter((word) => isNaN(word));
+        cloudWords = removeStopwords(
+            cloudWords,
+            [...eng, ...mar, ...GENERIC_STOP_WORDS, ...MARATHI_STOP_WORDS, ...CUSTOM_STOP_WORDS]
+        );
+        cloudWords = cloudWords.filter((word) => word.length >= minimumWordLength && word.length < 15);
+
+        return cloudWords;
+    };
+
+    const extractTopics = (threads) => {
+        let threadTopics = []
+        let threadSubTopics = []
+
+        threads.forEach((thread) => {
+            threadTopics.push(thread.topic);
+            threadSubTopics.push(thread.subtopic);
+        }
+        );
+
+        setTopics(threadTopics);
+        setSubTopics(threadSubTopics);
+    }
+
+    const fetchThreadsAndProcessWords = async () => {
+        const threads = await fetchThreads();
+
+        extractTopics(threads);
+
+        const processedWords = threads ? processThreads(threads) : [];
+
+        const conversationTopicWords = filterAllowedWords(processedWords, CONVERSATION_TOPICS);
+        const politicalWords = filterAllowedWords(processedWords, POLITICS);
+        const religionWords = filterAllowedWords(processedWords, RELIGION);
+
+        setWords(processedWords);
+        setPoliticalWords(politicalWords);
+        setReligionWords(religionWords);
+        setConversationTopicWords(conversationTopicWords);
+    }
+
+
+    useEffect(() => { fetchThreadsAndProcessWords(); }, []);
 
     const handleWordClick = (word) => {
         console.log('Word clicked: ', word);
@@ -88,7 +133,23 @@ const WordCloudDemo = () => {
     return (
         <div className="word-cloud-container">
             <div className="word-cloud">
-                {threads ? <WordCloud threads={threads} handleWordClick={handleWordClick} /> : <LinearProgress />}
+                <h1>All Words</h1>
+                {words ? <WordCloud words={words} handleWordClick={handleWordClick} /> : <LinearProgress />}
+
+                <h1>Conversation Topics</h1>
+                {conversationTopicWords ? <WordCloud words={conversationTopicWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
+
+                <h1>Political Words</h1>
+                {politicalWords ? <WordCloud words={politicalWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
+
+                <h1>Religion Words</h1>
+                {religionWords ? <WordCloud words={religionWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
+
+                <h1>Topics</h1>
+                {topics ? <WordCloud words={topics} handleWordClick={handleWordClick} /> : <LinearProgress />}
+
+                <h1>Sub Topics</h1>
+                {subtopics ? <WordCloud words={subtopics} handleWordClick={handleWordClick} /> : <LinearProgress />}
             </div>
         </div>
     );
