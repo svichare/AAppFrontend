@@ -242,8 +242,28 @@ const Conversation = () => {
             });
         });
 
+        // Filter threads based on topic
+        const topicMatches = threads.filter(thread => {
+            if (!thread.isValid) return false;
+
+            const lowerCaseTopic = (thread.topic || '').toLowerCase();
+            const topicMatches = lowerCaseTopic.includes(lowerCaseSearchTerm);
+
+            return topicMatches;
+        });
+
+        // Filter threads based on subtopic
+        const subtopicMatches = threads.filter(thread => {
+            if (!thread.isValid) return false;
+
+            const lowerCaseSubtopic = (thread.subtopic || '').toLowerCase();
+            const subtopicMatches = lowerCaseSubtopic.includes(lowerCaseSearchTerm);
+
+            return subtopicMatches;
+        });
+
         // Sort the threads
-        const sortedThreads = [...titleMatches, ...messageMatches];
+        const sortedThreads = [...titleMatches, ...messageMatches, ...topicMatches, ...subtopicMatches];
 
         // Track the search
         trackSearch(searchTermDebounced, sortedThreads.length)
