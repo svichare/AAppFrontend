@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './WordCloud.css';
-import { LinearProgress } from '@mui/material';
 import ReactWordcloud from 'react-wordcloud';
 
 const WordCloud = ({ words, handleWordClick }) => {
-    const [wordMap, setWordMap] = useState(null);
 
+    //  Configures the Word cloud 
     const wordCloudOptions = {
         rotations: 1,
         rotationAngles: [0, 0],
@@ -21,66 +20,28 @@ const WordCloud = ({ words, handleWordClick }) => {
         randomSeed: 420,
     };
 
-    const generateWordCloud = (cloudWords) => {
+    // Converts an array of words into a word cloud data structure
+    const generateWordCloudData = (words) => {
         const wordCloudMap = new Map();
-        cloudWords.forEach((word) => {
-            if (wordCloudMap.has(word)) {
-                wordCloudMap.set(word, wordCloudMap.get(word) + 1);
-            } else {
-                wordCloudMap.set(word, 1);
-            }
-        });
-
-        const wordCloudArray = Array.from(wordCloudMap).map(([text, value]) => ({
-            text,
-            value,
-        }));
-
-        wordCloudArray.sort((a, b) => b.value - a.value);
-        const topWords = wordCloudArray.slice(0, 200);
-
-        return topWords;
+        words.forEach((word) => { wordCloudMap.set(word, (wordCloudMap.get(word) || 0) + 1); });
+        const wordCloudData = [...wordCloudMap].map(([text, value]) => ({ text, value })).sort((a, b) => b.value - a.value);
+        return wordCloudData.slice(0, 200);
     };
 
-    const processWords = async () => {
-        try {
-            if (words.length > 0) {
-                const extractedWords = generateWordCloud(words);
-                setWordMap(extractedWords);
-            } else {
-                setWordMap([]);
-            }
-        } catch (error) {
-            console.error('Error fetching threads: ', error);
-        }
-    };
+    // Generates word cloud data
+    const wordCloudData = words.length > 0 ? generateWordCloudData(words) : null;
 
-    useEffect(() => {
-        processWords();
-    }, []);
-
-    const renderWordCloud = () => {
-        if (!wordMap) {
-            return <LinearProgress />;
-        }
-
-        return (
-            <>
-
+    // Renders the word cloud
+    return (
+        <div className="word-cloud-container">
             <ReactWordcloud
-                    words={wordMap}
+                className="word-cloud"
+                words={wordCloudData}
                 options={wordCloudOptions}
                 callbacks={{
                     onWordClick: handleWordClick,
                 }}
-                />
-            </>
-        );
-    };
-
-    return (
-        <div className="word-cloud-container">
-            <div className="word-cloud">{renderWordCloud()}</div>
+            />
         </div>
     );
 };
