@@ -4,7 +4,7 @@ import WordCloud from './WordCloud';
 import { useNavigate } from 'react-router-dom';
 import { removeStopwords, eng, mar } from 'stopword';
 import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS, POLITICS, RELIGION, CONVERSATION_TOPICS } from './Words';
-import useThreads from './UseThreads';
+import useThreads from '../../hooks/useThreads';
 
 
 const WordCloudDemo = () => {

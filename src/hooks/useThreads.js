@@ -1,7 +1,7 @@
 import useSWR from 'swr'
-import { getThreads } from '../../graphql/queries'
+import { getThreads } from '../graphql/queries'
 import { API } from '@aws-amplify/api'
-import { COLLECTIONS } from './ConversationSettings'
+import { COLLECTIONS } from '../pages/conversations_pages/ConversationSettings'
 
 
 export default function useThreads(collectionCode) {
