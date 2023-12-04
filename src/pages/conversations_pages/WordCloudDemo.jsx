@@ -47,24 +47,20 @@ const WordCloudDemo = () => {
     // Processes threads into an array of words
     let processedWords = threads ? processThreads(threads) : null;
 
+    const wordCloudDemoConfig = {
+        'all': { label: 'All Words', filter: null },
+        'generic_topics': { label: 'Conversation Topics', filter: CONVERSATION_TOPICS },
+        'religion': { label: 'Religion', filter: RELIGION },
+        'politics': { label: 'Politics', filter: POLITICS },
+        'topics': { label: 'Topics', filter: (threads) => extractTopics(threads)[0] },
+        'sub_topics': { label: 'Sub Topics', filter: (threads) => extractTopics(threads)[1] }
+    }
+
     // Filters words based on the word cloud
-    switch (wordCloud) {
-        case 'generic_topics':
-            processedWords = filterAllowedWords(processedWords, CONVERSATION_TOPICS);
-            break;
-        case 'religion':
-            processedWords = filterAllowedWords(processedWords, RELIGION);
-            break;
-        case 'politics':
-            processedWords = filterAllowedWords(processedWords, POLITICS);
-            break;
-        case 'topics':
-        case 'sub_topics':
-            const [topics, subTopics] = extractTopics(threads);
-            processedWords = wordCloud === 'topics' ? topics : subTopics;
-            break;
-        default:
-            break;
+    if (wordCloudDemoConfig[wordCloud]?.filter) {
+        processedWords = Array.isArray(wordCloudDemoConfig[wordCloud].filter) ?
+            filterAllowedWords(processedWords, wordCloudDemoConfig[wordCloud].filter) :
+            wordCloudDemoConfig[wordCloud].filter(threads);
     }
 
     // Handles word click
@@ -78,18 +74,21 @@ const WordCloudDemo = () => {
         <div className="word-cloud-container">
             <div className="word-cloud">
                 <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                    <Button onClick={() => setWordCloud('all')}>All Words</Button>
-                    <Button onClick={() => setWordCloud('generic_topics')}>Conversation Topics</Button>
-                    <Button onClick={() => setWordCloud('religion')}>Religion</Button>
-                    <Button onClick={() => setWordCloud('politics')}>Politics</Button>
-                    <Button onClick={() => setWordCloud('topics')}>Topics</Button>
-                    <Button onClick={() => setWordCloud('sub_topics')}>Sub Topics</Button>
+                    {Object.keys(wordCloudDemoConfig).map(key => (
+                        <Button
+                            key={key}
+                            disabled={key === wordCloud}
+                            onClick={() => setWordCloud(key)}
+                        >
+                            {wordCloudDemoConfig[key].label}
+                        </Button>
+                    ))}
                 </ButtonGroup>
 
                 <WordCloud words={processedWords} handleWordClick={handleWordClick} />
             </div>
         </div>
     );
-};
+}
 
 export default WordCloudDemo;
