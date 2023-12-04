@@ -1,155 +1,92 @@
-import React, { useEffect, useState } from 'react';
-import { getThreads } from '../../graphql/queries';
-import { LinearProgress } from '@mui/material';
-import { API } from 'aws-amplify';
+import React, { useState } from 'react';
+import { LinearProgress, ButtonGroup, Button } from '@mui/material';
 import WordCloud from './WordCloud';
 import { useNavigate } from 'react-router-dom';
 import { removeStopwords, eng, mar } from 'stopword';
 import { GENERIC_STOP_WORDS, MARATHI_STOP_WORDS, CUSTOM_STOP_WORDS, POLITICS, RELIGION, CONVERSATION_TOPICS } from './Words';
+import useThreads from './UseThreads';
 
 
 const WordCloudDemo = () => {
     const collection = { code: 'spr', name: 'thread_details_s_p_r' };
-    const [words, setWords] = useState(null);
-    const [conversationTopicWords, setConversationTopicWords] = useState(null);
-    const [politicalWords, setPoliticalWords] = useState(null);
-    const [religionWords, setReligionWords] = useState(null);
-    const [topics, setTopics] = useState(null);
-    const [subtopics, setSubTopics] = useState(null);
-
     const MINIMUM_WORD_LENGTH = 3;
-    const FILTER_CATEGORIES = 1;
-
-
     const navigate = useNavigate();
+    const [wordCloud, setWordCloud] = useState('all'); // ['all', 'generic_topics', 'religion', 'politics']
 
+    // Fetches threads from the database
+    const { threads, isLoading, isError } = useThreads(collection.code);
 
-    const fetchThreads = async () => {
-        try {
+    // Handles errors and loading
+    if (isError) return <div>failed to load</div>
+    if (isLoading) return <LinearProgress />
 
-            const response = await API.graphql({
-                query: getThreads,
-                variables: {
-                    collection_name: collection.name,
-                    key: undefined,
-                    value: undefined,
-                },
-            });
-
-            let threads = response.data.getThreads;
-            console.log('Fetch using API : threads : ', threads);
-
-
-            return threads;
-
-        } catch (error) {
-            console.error('Error fetching threads: ', error);
-        }
-    };
-
-    const filterAllowedWords = (words, allowedWords) => {
-        if (allowedWords) {
-            const filteredWords = words.filter((word) => allowedWords.includes(word));
-            return filteredWords;
-        } else {
-            return words;
-        }
-    };
-
+    // Converts threads into an array of words
     const processThreads = (threads) => {
-        try {
-            if (threads.length > 0) {
-                const processedWords = extractWords(threads, MINIMUM_WORD_LENGTH);
-                return processedWords;
-            } else {
-                return [];
-            }
-        } catch (error) {
-            console.error('Error fetching threads: ', error);
-        }
+        if (threads.length === 0) { return [] }
+        const stopwords = [...eng, ...mar, ...GENERIC_STOP_WORDS, ...MARATHI_STOP_WORDS, ...CUSTOM_STOP_WORDS];
+        return threads.flatMap(thread => thread.messages.flatMap(message => message.text.toLowerCase().split(/\s+/)))
+            .map(word => word.replace(/\W/g, ''))
+            .filter(word => word.length >= MINIMUM_WORD_LENGTH && word.length < 15 && removeStopwords([word], stopwords).length > 0);
     };
 
-
-    const extractWords = (threads, minimumWordLength) => {
-        const getWords = threads.flatMap((thread) =>
-            thread.messages.flatMap((message) =>
-                message.text.toLowerCase().split(/\s+/)
-            )
-        );
-
-        let cloudWords = getWords.map((word) => word.replace(/\W/g, ''));
-        cloudWords = cloudWords.filter((word) => word !== '');
-        cloudWords = cloudWords.filter((word) => isNaN(word));
-        cloudWords = removeStopwords(
-            cloudWords,
-            [...eng, ...mar, ...GENERIC_STOP_WORDS, ...MARATHI_STOP_WORDS, ...CUSTOM_STOP_WORDS]
-        );
-        cloudWords = cloudWords.filter((word) => word.length >= minimumWordLength && word.length < 15);
-
-        return cloudWords;
-    };
-
+    // Extracts topics and subtopics from threads
     const extractTopics = (threads) => {
         let threadTopics = []
         let threadSubTopics = []
-
         threads.forEach((thread) => {
             threadTopics.push(thread.topic);
             threadSubTopics.push(thread.subtopic);
         }
         );
-
-        setTopics(threadTopics);
-        setSubTopics(threadSubTopics);
+        return [threadTopics, threadSubTopics]
     }
 
-    const fetchThreadsAndProcessWords = async () => {
-        const threads = await fetchThreads();
+    // Filters words based on the allowed words
+    const filterAllowedWords = (words, allowedWords) => allowedWords ? words.filter(word => allowedWords.includes(word)) : words;
 
-        extractTopics(threads);
+    // Processes threads into an array of words
+    let processedWords = threads ? processThreads(threads) : null;
 
-        const processedWords = threads ? processThreads(threads) : [];
-
-        const conversationTopicWords = filterAllowedWords(processedWords, CONVERSATION_TOPICS);
-        const politicalWords = filterAllowedWords(processedWords, POLITICS);
-        const religionWords = filterAllowedWords(processedWords, RELIGION);
-
-        setWords(processedWords);
-        setPoliticalWords(politicalWords);
-        setReligionWords(religionWords);
-        setConversationTopicWords(conversationTopicWords);
+    // Filters words based on the word cloud
+    switch (wordCloud) {
+        case 'generic_topics':
+            processedWords = filterAllowedWords(processedWords, CONVERSATION_TOPICS);
+            break;
+        case 'religion':
+            processedWords = filterAllowedWords(processedWords, RELIGION);
+            break;
+        case 'politics':
+            processedWords = filterAllowedWords(processedWords, POLITICS);
+            break;
+        case 'topics':
+        case 'sub_topics':
+            const [topics, subTopics] = extractTopics(threads);
+            processedWords = wordCloud === 'topics' ? topics : subTopics;
+            break;
+        default:
+            break;
     }
 
-
-    useEffect(() => { fetchThreadsAndProcessWords(); }, []);
-
+    // Handles word click
     const handleWordClick = (word) => {
         console.log('Word clicked: ', word);
         navigate(`/KnowledgeBase/${collection.code}/search/${word.text}`);
     }
 
-
-
+    // Renders the word cloud
     return (
         <div className="word-cloud-container">
             <div className="word-cloud">
-                <h1>All Words</h1>
-                {words ? <WordCloud words={words} handleWordClick={handleWordClick} /> : <LinearProgress />}
+                <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    <Button onClick={() => setWordCloud('all')}>All Words</Button>
+                    <Button onClick={() => setWordCloud('generic_topics')}>Conversation Topics</Button>
+                    <Button onClick={() => setWordCloud('religion')}>Religion</Button>
+                    <Button onClick={() => setWordCloud('politics')}>Politics</Button>
+                    <Button onClick={() => setWordCloud('topics')}>Topics</Button>
+                    <Button onClick={() => setWordCloud('sub_topics')}>Sub Topics</Button>
+                </ButtonGroup>
 
-                <h1>Conversation Topics</h1>
-                {conversationTopicWords ? <WordCloud words={conversationTopicWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
-
-                <h1>Political Words</h1>
-                {politicalWords ? <WordCloud words={politicalWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
-
-                <h1>Religion Words</h1>
-                {religionWords ? <WordCloud words={religionWords} handleWordClick={handleWordClick} /> : <LinearProgress />}
-
-                <h1>Topics</h1>
-                {topics ? <WordCloud words={topics} handleWordClick={handleWordClick} /> : <LinearProgress />}
-
-                <h1>Sub Topics</h1>
-                {subtopics ? <WordCloud words={subtopics} handleWordClick={handleWordClick} /> : <LinearProgress />}
+                <WordCloud words={processedWords} handleWordClick={handleWordClick} />
             </div>
         </div>
     );
