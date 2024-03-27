@@ -93,7 +93,8 @@ export default function CaregiverGPT() {
         <div>
           <div className="CaregiverGPTMain">
             <div className="CaregiverGPTTopbar">
-              <h3>Ask me any specific detail directly ..</h3>
+              <h3>Ask me any specific detail directly..</h3>
+              <h4>(eg: what should I cook for dinner? What should I play with them? How to give bath to them?)</h4>
               <textarea className="CaregiverGPTInputText" value={query}
                 onChange={(e) => {setQuery(e.target.value);}} type="text" rows="2" />
               <div className="GoBackButton" key={999} >
