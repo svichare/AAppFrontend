@@ -17,14 +17,14 @@ async function GetAppSyncResponse(query_str, dependent_string_id) {
       },
     });
     console.log("Checking response  : " + dependent_string_id);
-    if (typeof response.data.getGPTResponse == 'undefined') {
-      return "Mock response. ";
+    if (typeof response.data.getGPTResponseLangchain == 'undefined') {
+      return "Trouble fetching reply Thanks Sam Altman! Please retry a resonable number of times";
     }
     console.log("Returning data from lambda for ID : " + dependent_string_id);
-    return response.data.getGPTResponse;
+    return response.data.getGPTResponseLangchain;
   } catch (error) {
     console.error(`Cought error in function : ${error}`);
-    return "Error calling the GPT endpoint";
+    return "Error calling the GPT endpoint. Please retry a resonable number of times";
   }
 }
 
