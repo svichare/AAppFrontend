@@ -1,0 +1,70 @@
+# this is an auto generated file. This will be overwritten
+
+mutation UpdateTraitResponse(
+  $updateTraitResponseInput: UpdateTraitResponseInput
+) {
+  updateTraitResponse(updateTraitResponseInput: $updateTraitResponseInput) {
+    status
+    __typename
+  }
+}
+
+mutation UpdateProfile($updateProfileInput: UpdateProfileInput) {
+  updateProfile(updateProfileInput: $updateProfileInput) {
+    status
+    __typename
+  }
+}
+
+mutation AddDependent($addDependentInput: AddDependentInput) {
+  addDependent(addDependentInput: $addDependentInput) {
+    status
+    __typename
+  }
+}
+
+mutation UpdateDependentBio($updateDependentInput: UpdateDependentInput) {
+  UpdateDependentBio(updateDependentInput: $updateDependentInput) {
+    status
+    __typename
+  }
+}
+
+mutation DeleteDependent($deleteDependentInput: DeleteDependentInput) {
+  deleteDependent(deleteDependentInput: $deleteDependentInput) {
+    status
+    __typename
+  }
+}
+
+mutation MarkThreadValidity(
+  $collection_name: String
+  $thread_id: String
+  $new_validity: Boolean
+) {
+  markThreadValidity(
+    collection_name: $collection_name
+    thread_id: $thread_id
+    new_validity: $new_validity
+  ) {
+    status
+    __typename
+  }
+}
+
+mutation MarkMessageValidity(
+  $collection_name: String
+  $thread_id: String
+  $new_validity: Boolean
+  $message_text: String
+) {
+  markMessageValidity(
+    collection_name: $collection_name
+    thread_id: $thread_id
+    new_validity: $new_validity
+    message_text: $message_text
+  ) {
+    status
+    __typename
+  }
+}

@@ -4,13 +4,13 @@ import { useParams } from 'react-router-dom';
 import "./OpenAICaregiver.css"
 
 import { API } from '@aws-amplify/api'
-import { getGPTResponse } from '../../graphql/queries'
+import { getGPTResponseLangchain } from '../../graphql/queries'
 
 async function GetAppSyncResponse(query_str, dependent_string_id) {
   try { 
     console.log("Checking request  : " + dependent_string_id);
     const response = await API.graphql({
-      query: getGPTResponse,
+      query: getGPTResponseLangchain,
       variables: {
         query: query_str,
         public_id: dependent_string_id

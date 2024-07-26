@@ -1,0 +1,220 @@
+# this is an auto generated file. This will be overwritten
+
+query GetTraitCategory($id: ID!) {
+  getTraitCategory(id: $id) {
+    id
+    Name
+    Description
+    TraitCount
+    __typename
+  }
+}
+
+query AllTraitCategories {
+  allTraitCategories {
+    id
+    Name
+    Description
+    TraitCount
+    __typename
+  }
+}
+
+query GetTraitCategoryResponseCounts($dependent_id: String) {
+  getTraitCategoryResponseCounts(dependent_id: $dependent_id) {
+    trait_category_id
+    response_counts
+    __typename
+  }
+}
+
+query GetTraitQuestionList($id: ID!) {
+  getTraitQuestionList(id: $id) {
+    QuestionList {
+      id
+      Name
+      Description
+      Type
+      DefaultSelection
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetTraitOptionList($id: ID!) {
+  getTraitOptionList(id: $id) {
+    OptionList {
+      id
+      option_text
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetParentDetails($email: String) {
+  getParentDetails(email: $email) {
+    id
+    name
+    last_name
+    image_url
+    country
+    state
+    city
+    email
+    dependents {
+      id
+      name
+      thumbnail_url
+      image_url
+      string_id
+      public_id
+      diagnosis
+      verbal
+      age
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetDependentDetails($dependent_id: String) {
+  getDependentDetails(dependent_id: $dependent_id) {
+    id
+    name
+    thumbnail_url
+    image_url
+    string_id
+    public_id
+    diagnosis
+    verbal
+    age
+    __typename
+  }
+}
+
+query GetDependentProfileComplete($dependent_id: String) {
+  getDependentProfileComplete(dependent_id: $dependent_id)
+}
+
+query GetDependentPublicDetails($public_id: String) {
+  getDependentPublicDetails(public_id: $public_id) {
+    id
+    name
+    thumbnail_url
+    image_url
+    string_id
+    public_id
+    diagnosis
+    verbal
+    age
+    __typename
+  }
+}
+
+query GetTraitCategoryResponses($compound_id: String) {
+  getTraitCategoryResponses(compound_id: $compound_id) {
+    compound_id
+    dependent_id
+    trait_category_id
+    trait_responses {
+      trait_id
+      text_response
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetTraitCategoryDisplayStrings($compound_id: String) {
+  getTraitCategoryDisplayStrings(compound_id: $compound_id) {
+    compound_id
+    dependent_id
+    trait_category_id
+    trait_display_strings {
+      Trait
+      Response
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetCaregiverProfile($dependent_id: String) {
+  getCaregiverProfile(dependent_id: $dependent_id) {
+    dependent_id
+    caregiver_categories {
+      trait_category_name
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetCaregiverProfilePublic($public_id: String) {
+  getCaregiverProfilePublic(public_id: $public_id) {
+    dependent_id
+    caregiver_categories {
+      trait_category_name
+      __typename
+    }
+    __typename
+  }
+}
+
+query GetGPTResponse($query: String, $public_id: String) {
+  getGPTResponse(query: $query, public_id: $public_id)
+}
+
+query GetGPTResponseLangchain($query: String, $public_id: String) {
+  getGPTResponseLangchain(query: $query, public_id: $public_id)
+}
+
+query GetThreadsAndMessages(
+  $threads_to_read: Int
+  $threads_to_skip: Int
+  $collection_name: String
+) {
+  getThreadsAndMessages(
+    threads_to_read: $threads_to_read
+    threads_to_skip: $threads_to_skip
+    collection_name: $collection_name
+  ) {
+    title
+    _id
+    tags
+    messages {
+      sender
+      text
+      messageType
+      isValid
+      __typename
+    }
+    isValid
+    isValidQnA
+    topic
+    subtopic
+    __typename
+  }
+}
+
+query GetThreads($collection_name: String, $key: String, $value: String) {
+  getThreads(collection_name: $collection_name, key: $key, value: $value) {
+    title
+    _id
+    tags
+    messages {
+      sender
+      text
+      messageType
+      isValid
+      __typename
+    }
+    isValid
+    isValidQnA
+    topic
+    subtopic
+    __typename
+  }
+}

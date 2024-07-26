@@ -182,6 +182,11 @@ export const getGPTResponse = /* GraphQL */ `
     getGPTResponse(query: $query, public_id: $public_id)
   }
 `;
+export const getGPTResponseLangchain = /* GraphQL */ `
+  query GetGPTResponseLangchain($query: String, $public_id: String) {
+    getGPTResponseLangchain(query: $query, public_id: $public_id)
+  }
+`;
 export const getThreadsAndMessages = /* GraphQL */ `
   query GetThreadsAndMessages(
     $threads_to_read: Int
